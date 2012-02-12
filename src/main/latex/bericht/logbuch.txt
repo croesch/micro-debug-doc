@@ -117,3 +117,9 @@
 10.02.2012 (2 h)
 	- #2 hide details of FileFormatException from the user, log details
 	- #19 Reset Output and Input buffers when resetting processor
+11.02.2012
+	- #15 Improve naming
+12.02.2012 (1 h)
+	- #4 Print traced register only when value changes
+	- #12 LS-STACK don't show value at initial SP value
+	- eigenes Repository für Dokumentation und eines für GUI angelegt
