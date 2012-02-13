@@ -123,3 +123,6 @@
 	- #4 Print traced register only when value changes
 	- #12 LS-STACK don't show value at initial SP value
 	- eigenes Repository für Dokumentation und eines für GUI angelegt
+13.02.2012 (4,5 h)
+	- #16 Improve implementation of Memory
+	- (#17 Splitt class Mic1)
