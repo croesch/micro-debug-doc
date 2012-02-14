@@ -126,3 +126,5 @@
 13.02.2012 (4,5 h)
 	- #16 Improve implementation of Memory
 	- (#17 Splitt class Mic1)
+14.02.2012 (1 h)
+	- #17 abgeschlossen
