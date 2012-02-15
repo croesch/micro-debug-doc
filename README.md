@@ -1,6 +1,6 @@
 # micro-debug-doc
 
-Contains documentation of croesch/micro-debug needed for university. This project contains a lot of material only needed for studying and will be deleted when the final paper has been written.
+Contains documentation of [croesch/micro-debug](https://github.com/croesch/micro-debug) needed for university. This project contains a lot of material only needed for studying and will be deleted when the final paper has been written.
 
 ## Languages
 
