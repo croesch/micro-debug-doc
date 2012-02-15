@@ -128,3 +128,8 @@
 	- (#17 Splitt class Mic1)
 14.02.2012 (1 h)
 	- #17 abgeschlossen
+15.02.2012 (3 h)
+	- #18 Argument#OUTPUT_FILE doesn't close opened stream
+	- sonar aktualisiert
+	- Maven Informationen erweitert (pom)
+	- Release 0.1 durchgeführt
