@@ -136,3 +136,8 @@
 16.02.2012 (2,5 h)
 	- Startskripte hinzugefügt für Windows und Linux
 	- pom.xml angepasst, um gewisse Dateien nicht ins .jar zu packen
+17.02.2012 (4 h)
+	- #21 Exception when executing LS-MACRO-CODE
+	- #20 Settings - provide default values
+	- #5 IJVMCommandArgument.LABEL - improve representation
+	- README für GitHub geschrieben
