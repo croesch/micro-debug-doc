@@ -141,5 +141,6 @@
 	- #20 Settings - provide default values
 	- #5 IJVMCommandArgument.LABEL - improve representation
 	- README für GitHub geschrieben
-18.02.2012 (1 h)
+18.02.2012 (2 h)
 	- LIESMICH aus README erstellt
+	- Version 0.2 erstellt und Dateien hochgeladen
