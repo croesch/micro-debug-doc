@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de">
+<head>
+	
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta name="author" content="Christian R&ouml;sch" />
+  <meta name="publisher" content="Christian R&ouml;sch" />
+  <meta name="copyright" content="Christian R&ouml;sch" />
+  <meta name="audience" content="Alle" />
+  <meta http-equiv="content-language" content="de" />
+  <meta name="robots" content="index, follow" />
+  
+  <title>micro-debug - LIESMICH</title>
+</head>
+
+<body>
+<h1>micro-debug - LIESMICH</h1>
+  <h2>Allgemein und Benutzung</h2>
+  <p>
+    micro-debug ist ein Debugger f&uuml;r den Prozessor Mic-1, der von <em>Andrew S. Tannenbaum</em> entwickelt wurde <a href="http://cw.prenhall.com/bookbind/pubbooks/tanenbaum2/">Structured Computer Organization, Fourth Edition</a> (<a href="http://www.prenhall.com/">Prentice-Hall</a>, 1998) und von <em>Prof. Dr. Karl Stroetmann</em> detailliert beschrieben.
+    Du kannst sowohl Assembler-Code, als auch den Mikro-Assembler-Code debuggen.
+  </p>
+  <p>
+    Der Debugger wurde in einer Studienarbeit an der DHBW Stuttgart entwickelt.
+    Die Studienarbeit ist in dem Projekt <a href="https://github.com/croesch/micro-debug-doc">croesch/micro-debug-doc</a> gespeichert.
+  </p>
+
+  <h3>Systemanforderungen</h3>
+  <p>
+    Der Debugger l&auml;uft mit Java, du ben&ouml;tigst also kein spezielles Betriebssystem. Es gen&uuml;gt mindestens <strong>Java 5</strong> installiert zu haben.
+  </p>
+
+  <h3>Installation / Start</h3>
+
+  <p>
+    Hier wird beschrieben, wie Du den Debugger mit einem der Release-Dateien installierst (.zip-Dateien).
+    F&uuml;r Entwickler gibt es weiter unten Hilfe, wie man den Quelltext benutzt und kompiliert.
+  </p>
+  <ol>
+    <li>Lade <code>micro-debug-version.zip</code> von der <a href="https://github.com/croesch/micro-debug/downloads">Projektseite</a> herunter</li>
+    <li>Entpacke die .zip-Datei</li>
+    <li>Der Debugger ben&ouml;tigt keine Installation, er kann jetzt gestartet werden; durch folgende Schritte kannst Du den Debugger starten, hier am Beispiel Linux beschrieben:
+      <ol>
+	<li>&Ouml;ffne die Kommandozeile</li>
+	<li>Wechsle in das entpackte Verzeichnis <code>$ cd micro-debug-version/</code></li>
+	<li>F&uuml;hre das Startskript aus <code>$ ./micro-debug.sh --help</code></li>
+      </ol>
+    </li>
+  </ol>
+
+  <h3>Erste Schritte</h3>
+
+  <p>
+    F&uuml;r detaillierte Informationen zur Benutzung kannst du den Debugger wie gerade beschrieben mit dem Argument <code>--help</code> starten.
+    Um zun&auml;chst mal eine Assembler-Datei mit einer Mikro-Assembler-Implementierung auszuf&uuml;hren, f&uuml;hre folgendes Kommando aus
+    <code>
+      $ ./micro-debug.sh pfad-zum-mikro-assembler.mic1 pfad-zum-assembler.ijvm
+    </code>.
+    Hierbei ist das erste Argument der relative oder absolute Pfad zum <strong>Bytecode</strong> des Mikro-Assemblers
+    und das zweite Argument der relative oder absolute Pfad zum <strong>Bytecode</strong> des Assemblers.
+  </p>
+
+  <p>
+    Um die genaue Syntax f&uuml;r verf&uuml;gbare Befehle einzusehen, gib den Befehl <code>HELP</code> ein,
+    nachdem der Debugger gestartet ist und eine Eingabe erwartet (mit <code>micro-debug&gt;</code>).
+  </p>
+
+  <p>
+    Der Prozessor kann auch Eingaben ben&ouml;tigen; um zu unterscheiden, wer gerade eine Eingabe von Dir erwartet, gibt der Prozessor vorher die Zeile <code>mic1&gt;</code> aus.
+  </p>
+
+  <h3>Konfiguration</h3>
+
+  <p>
+    Im Verzeichnis <code>config</code> sind verschiedene Dateien, um das Verhalten des Debuggers zu beeinflussen.
+  </p>
+
+  <p>
+    Die Datei <code>micro-debug.properties</code> kannst Du nutzen, um einige Werte zu bestimmen wie beispielsweise die Gr&ouml;&szlig;e des Hauptspeichers oder die Startwerte der Register.
+  </p>
+
+  <p>
+    Die Date <code>logging.properties</code> enth&auml;lt die Konfiguration f&uuml;r den Java Logger, die automatisch benutzt wird, wenn du das Startskript benutzt.
+    Bei Fragen, wie du den Logger im Detail konfigurierst, schau Dir die Dokumentation von <code>java.util.logging</code> an.
+  </p>
+
+  <h3>Internationalisierung</h3>
+
+  <p>
+    Der Debugger verwendet XML-Dateien, um Dir Text in deiner Landessprache anzuzeigen (au&szlig;er Log-Ausgaben). Diese Dateien sind im Verzeichnis <code>config/lang/</code> enthalten.
+  </p>
+
+  <p>
+    Der Debugger sucht nach vier Dateien, wenn Du ihn ausf&uuml;hrst:
+  </p>
+
+  <ol>
+    <li>
+      <code>text_lang_CT_var1.xml</code>,
+      wobei <code>lang</code> die Sprache, <code>CT</code> die L&auml;nderkennung und <code>var1</code> die Variante ist, die die Sprachumgebung deiner JVM ausgeben.
+      Diese Datei ist die spezifischste und wird zuerst geladen (sofern sie existiert). Schl&uuml;ssel, die hier nicht gefunden werden, werden in den folgenden Dateien gesucht.
+    </li>
+    <li><code>text_lang_CT.xml</code></li>
+    <li><code>text_lang.xml</code></li>
+    <li>
+      <code>text.xml</code>, die Basis-Datei f&uuml;r die Internationalisierung.
+      Wenn ein Schl&uuml;ssel bisher noch nicht gefunden wurde oder die anderen Dateien nicht existieren, dann wird er in dieser Datei gesucht.
+    </li>
+  </ol>
+
+  <p>
+    Wenn Du den Debugger &uuml;bersetzen m&ouml;chtest (oder eine &Uuml;bersetzung installieren willst),
+    f&uuml;ge die Dateien mit den Namen wie oben beschrieben in das Verzeichnis <code>config/lang/</code> und starte den Debugger neu.
+    Er sollte dann automatisch die neuen Dateien benutzen,
+    sofern sie spezifischer sind als die bisherigen und die Sprach-, L&auml;nder- und Variationskennung enthalten, die das Locale Deiner JVM ausgibt.
+  </p>
+
+  <p>
+    Wenn du einen Fehler in der &Uuml;bersetzung findest, oder den Debugger in Deine Sprache &uuml;bersetzen m&ouml;chtest, lass es uns bitte wissen!
+    Wir w&uuml;rden uns freuen deinen Beitrag dem Projekt hinzuzuf&uuml;gen!
+  </p>
+
+  <h2>Mitarbeit</h2>
+
+  <p>
+    Obwohl dieses Projekt in einer Studienarbeit entwickelt wurde, kannst Du nun deinen Teil dazu beitragen. Es gibt verschiedene Wege dies zu tun:
+  </p>
+
+  <ul>
+    <li>Du kannst die Sprachdateien in deine Sprache &uuml;bersetzen (siehe oben)</li>
+    <li>Du kannst den Debugger testen und Bugs oder Anforderungen im Issue-Tracking-System eingeben</li>
+    <li>Du kannst einen Bug fixen und deine &Auml;nderungen am Code beitragen</li>
+    <li>Du kannst uns einfach wissen lassen, dass du den Debugger benutzt und deine Erfahrungen mit der Nutzung beschreiben</li>
+  </ul>
+
+  <h3>Issue-Tracking-System</h3>
+
+  <p>
+    Du hast einen Bug gefunden? Oder hast einen Vorschlag, um den Debugger zu verbessern? Dann erstelle bitte ein Issue direkt auf GitHub!
+  </p>
+
+  <p>
+    <a href="https://github.com/croesch/micro-debug/issues">https://github.com/croesch/micro-debug/issues</a>
+  </p>
+
+  <h3>Entwicklung</h3>
+
+  <p>
+    Nachdem Du das repository geforkt hast und eine lokale Kopie ausgecheckt hast, kannst du <strong>maven</strong> nutzen, um das Projekt zu bauen und Tests auszuf&uuml;hren:
+  </p>
+
+  <ul>
+    <li><code>$ mvn clean package</code> zum Kompilieren, Testen und Packetieren des Projekts</li>
+    <li><code>$ mvn test</code> zum Kompilieren und Ausf&uuml;hren der Tests</li>
+  </ul>
+
+  <p>
+    Du kannst nun Code &auml;ndern, Tests schreiben und deine &Auml;nderungen testen.
+    Nachdem Du erfolgreich eine &Auml;nderung fertig gestellt hast, kannst Du sie in dein &ouml;ffentliches repository pushen und ein <strong>pull request</strong> stellen.
+  </p>
+
+  <p>
+    <strong>Bitte entwickle in Feature-Branches!</strong> Schau Dir dazu die <a href="http://help.github.com/fork-a-repo/">Hilfe auf GitHub</a> an.
+  </p>
+
+  <h2>Copyright und Lizenzierung</h2>
+
+  <p>
+    Copyright &copy; 2011-2012 Christian R&ouml;sch; Copyright &copy; 1999 Prentice-Hall, Inc.
+  </p>
+
+  <h3>Autoren</h3>
+
+  <p>
+    <strong>Christian R&ouml;sch</strong>
+  </p>
+
+  <ul>
+    <li><a href="https://github.com/croesch">https://github.com/croesch</a></li>
+    <li><code>christianroesch:: at ::gmx.net</code></li>
+  </ul>
+
+  <p>
+    <strong>Ray Ontko</strong>
+  </p>
+
+  <ul>
+    <li><a href="http://www.ontko.com/~rayo/">http://www.ontko.com/~rayo/</a></li>
+    <li><code>rayo:: at ::ontko.com</code></li>
+  </ul>
+
+  <h3>Lizenz</h3>
+
+  <p>
+    Das Projekt ist lizenziert unter der GPLv3+: GNU GPL Version 3 oder h&ouml;her <a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>.
+  </p>
+
+  <p>
+    Offizielle englische Fassung:<br />
+    <em>
+    License GPLv3+: GNU GPL version 3 or later <a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>.<br />
+    This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.
+    </em>
+  </p>
+
+</body>
+</html>
