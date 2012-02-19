@@ -129,3 +129,5 @@ Beim reset des Debuggers, reicht es den Prozessor zurücksetzen und Breakpoints 
 
 
 Breakpoint bei Register, nur wenn Wert gesetzt wird, oder jedes Mal, wenn das Register den Wert hat?
+-----------------------------------------------------
+In der ijvm.conf Datei ist für IOR 0x80 oder 0xB0 richtig? Mein mic1-Code sagt 0xB0 aber bisher ist 0x80 gesetzt.
