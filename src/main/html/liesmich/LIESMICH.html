@@ -79,9 +79,19 @@
     Die Datei <code>micro-debug.properties</code> kannst Du nutzen, um einige Werte zu bestimmen wie beispielsweise die Gr&ouml;&szlig;e des Hauptspeichers oder die Startwerte der Register.
   </p>
 
+  <h4>Logger</h4>
+
   <p>
     Die Date <code>logging.properties</code> enth&auml;lt die Konfiguration f&uuml;r den Java Logger, die automatisch benutzt wird, wenn du das Startskript benutzt.
     Bei Fragen, wie du den Logger im Detail konfigurierst, schau Dir die Dokumentation von <code>java.util.logging</code> an.
+  </p>
+
+  <h4>ijvm.conf</h4>
+
+  <p>
+    Da das Verzeichnis <code>config</code> im Klassenpfad vor der jar-Datei des Debuggers steht, kannst Du einzelne Dateien einfach Ersetzen, indem Du sie in das <code>config</code>
+    Verzeichnis legst. Der Debugger benutzt eine <code>ijvm.conf</code> Datei, um den Assembler-Code zu disassemblieren; diese ist in der jar-Datei enthalten.
+    Wenn Du deine eigene <code>ijvm.conf</code> Datei nutzen m&ouml;chtest, dann lege sie einfach in das <code>config</code> Verzeichnis und starte den Debugger neu.
   </p>
 
   <h3>Internationalisierung</h3>
