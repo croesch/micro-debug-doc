@@ -144,3 +144,10 @@
 18.02.2012 (2 h)
 	- LIESMICH aus README erstellt
 	- Version 0.2 erstellt und Dateien hochgeladen
+19.02.2012 (3 h)
+	- #24 Remove IDIV from ijvm.conf
+	- #23 Fix classpath problem in start scripts
+	- micro-debug-doc#3 Add note how to change ijvm.conf
+	- Version 0.2.1 erstellt und Dateien hochgeladen
+	- Fix getestet (Linux und Windows)
+	- Abgabe I
