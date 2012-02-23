@@ -155,3 +155,5 @@
 	- #25 Split class Parameter
 	- #22 Remove JavaDoc warnings
 	- #26 für XML-Dateien implementiert (ohne Tests)
+23.02.2012 (2 h)
+	- #26 Improve resource management
