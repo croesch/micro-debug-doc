@@ -157,3 +157,5 @@
 	- #26 für XML-Dateien implementiert (ohne Tests)
 23.02.2012 (2 h)
 	- #26 Improve resource management
+25.02.2012 (3 h)
+	- Entwicklungsumgebung für GUI-Projekt eingerichtet
