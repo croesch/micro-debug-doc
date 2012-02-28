@@ -159,3 +159,6 @@
 	- #26 Improve resource management
 25.02.2012 (3 h)
 	- Entwicklungsumgebung für GUI-Projekt eingerichtet
+28.02.2012 (4,5 h)
+	- Zeitplan für GUI-Entwicklung aufgestellt
+	- GUI#2 Command line arguments
