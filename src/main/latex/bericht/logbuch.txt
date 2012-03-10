@@ -168,3 +168,5 @@
 	- GUI#3 About frame - fertig
 09.03.2012 (5,5 h)
 	- GUI#4 Frame before starting debugger - angefangen
+10.03.2012 (3,5 h)
+	- GUI#4 Frame before starting debugger - fertig
