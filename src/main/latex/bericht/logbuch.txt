@@ -182,3 +182,5 @@
 	- #27 GUI angepasst, so dass Dateipfad beim Neuaufbau des Startframes bestehen bleibt, wenn nicht falsch
 19.03.2012 (3 h)
 	- GUI#8 Implement a component that is able to view line numbers
+20.03.2012 (3 h)
+	- GUI#9 Analyse und Entwurf eines Rulers für Breakpoints
