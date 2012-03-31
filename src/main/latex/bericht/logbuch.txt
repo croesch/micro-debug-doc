@@ -190,3 +190,7 @@
 	- GUI#18 Add abstraction layer to line number viewing component
 30.03.2012 (2 h)
 	- GUI#10 Implement a code area - angefangen
+31.03.2012 (7,5 h)
+	- GUI#10 Implement a code area - weiter implementiert
+	- GUI#11 Implement code area for micro code
+	- GUI#19 Mark inherited JavaDoc
