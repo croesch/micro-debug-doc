@@ -194,3 +194,7 @@
 	- GUI#10 Implement a code area - weiter implementiert
 	- GUI#11 Implement code area for micro code
 	- GUI#19 Mark inherited JavaDoc
+02.04.2012 (1 h)
+	- Besprechung
+03.04.2012 (2,5 h)
+	- GUI#10 Implement a code area - noch Highlight eingefügt
