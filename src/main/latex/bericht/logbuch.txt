@@ -198,3 +198,5 @@
 	- Besprechung
 03.04.2012 (2,5 h)
 	- GUI#10 Implement a code area - noch Highlight eingefügt
+05.04.2012 (2,5 h)
+	- GUI#12 Implement code area for macro code
