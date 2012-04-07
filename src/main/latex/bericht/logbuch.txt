@@ -204,3 +204,6 @@
 	- #33 Mark inherited JavaDoc comments
 	- #28 Script is only executable from same directory
 	- Nullable/NotNull-Annotation erstellt
+07.04.2012 (2 h)
+	- GUI#15 Plan erstellt über weiteres Vorgehen
+	- GUI#15 MDScrollPane erstellt
