@@ -207,3 +207,7 @@
 07.04.2012 (2 h)
 	- GUI#15 Plan erstellt über weiteres Vorgehen
 	- GUI#15 MDScrollPane erstellt
+08.04.2012 (2 h)
+	- GUI#15 MDSplitPane erstellt
+	- GUI#15 MDPanel erstellt
+	- GUI#15 grundlegende Aufteilung des Frames implementiert
