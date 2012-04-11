@@ -214,3 +214,10 @@
 09.04.2012 (3 h)
 	- GUI#15 MDCheckBox erstellt
 	- GUI#15 RegisterPanel implementiert
+10.04.2012 (7 h)
+	- #14 Implement breakpoint for registers without value
+	- GUI#15 RegisterController implementiert
+	- GUI#15 MemoryPanel implementiert
+	- GUI#21 Konstruktoren zu MDLabel und NumberLabel hinzugefügt
+	- !!! Stunden auf der Suche nach Performance-Leak verbracht !!!
+	-     --> kein Ergebnis
