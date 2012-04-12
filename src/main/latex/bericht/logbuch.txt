@@ -214,10 +214,15 @@
 09.04.2012 (3 h)
 	- GUI#15 MDCheckBox erstellt
 	- GUI#15 RegisterPanel implementiert
-10.04.2012 (7 h)
+11.04.2012 (7 h)
 	- #14 Implement breakpoint for registers without value
 	- GUI#15 RegisterController implementiert
 	- GUI#15 MemoryPanel implementiert
 	- GUI#21 Konstruktoren zu MDLabel und NumberLabel hinzugefügt
 	- !!! Stunden auf der Suche nach Performance-Leak verbracht !!!
 	-     --> kein Ergebnis
+12.04.2012 (4,5 h)
+	- Performance-Leak weiter analysiert:
+	  -> Ursache scheint BasicRobot-Instanziierung zu sein
+	  -> Kleines Performance-Problem lösbar, wenn FocusTraversalPolicy überschrieben wird, um nicht ein Array-Sort der 130K Labels zu provozieren
+	  -> Anfrage an FEST-Mailingliste gestellt: http://groups.google.com/group/easytesting/browse_thread/thread/803d444f23e0cd49
