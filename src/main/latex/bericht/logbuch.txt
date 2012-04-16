@@ -226,3 +226,8 @@
 	  -> Ursache scheint BasicRobot-Instanziierung zu sein
 	  -> Kleines Performance-Problem lösbar, wenn FocusTraversalPolicy überschrieben wird, um nicht ein Array-Sort der 130K Labels zu provozieren
 	  -> Anfrage an FEST-Mailingliste gestellt: http://groups.google.com/group/easytesting/browse_thread/thread/803d444f23e0cd49
+16.04.2012 (2,5 h)
+	- GUI#15 RegisterPanel/Controller abgeschlossen
+	- GUI#15 MemoryController implementiert
+	- GUI#15 DebuggerTAView implementiert
+	- NotNull / Nullable eingeführt
