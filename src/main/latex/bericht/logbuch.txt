@@ -231,3 +231,5 @@
 	- GUI#15 MemoryController implementiert
 	- GUI#15 DebuggerTAView implementiert
 	- NotNull / Nullable eingeführt
+17.04.2012 (1 h)
+	- GUI#15 ProcessorTAView implementiert
