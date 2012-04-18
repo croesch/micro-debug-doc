@@ -233,3 +233,5 @@
 	- NotNull / Nullable eingeführt
 17.04.2012 (1 h)
 	- GUI#15 ProcessorTAView implementiert
+18.04.2012 (3 h)
+	- GUI#15 MicroCodeView implementiert
