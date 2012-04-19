@@ -235,3 +235,5 @@
 	- GUI#15 ProcessorTAView implementiert
 18.04.2012 (3 h)
 	- GUI#15 MicroCodeView implementiert
+19.04.2012 (3 h)
+	- GUI#15 MacroCodeView implementiert und abstrakte CodeView extrahiert
