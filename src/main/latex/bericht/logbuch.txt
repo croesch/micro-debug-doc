@@ -237,3 +237,8 @@
 	- GUI#15 MicroCodeView implementiert
 19.04.2012 (3 h)
 	- GUI#15 MacroCodeView implementiert und abstrakte CodeView extrahiert
+10.05.2012 (5 h)
+	- GUI#15 MDTabbedPane implementiert
+	- GUI#15 Code-Areas in TabbedPane gesetzt
+	+++ Performance-Leak beseitigt +++
+	  Anstatt für jedes Wort zwei Labels anzulegen nutze ich eine sehr geringe Anzahl an Labels und aktualisiere deren Inhalt mittels einer Scrollbar
