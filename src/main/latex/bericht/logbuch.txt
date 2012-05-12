@@ -242,3 +242,9 @@
 	- GUI#15 Code-Areas in TabbedPane gesetzt
 	+++ Performance-Leak beseitigt +++
 	  Anstatt für jedes Wort zwei Labels anzulegen nutze ich eine sehr geringe Anzahl an Labels und aktualisiere deren Inhalt mittels einer Scrollbar
+11.05.2012 (3 h)
+	- GUI#15 CodeController implementiert (Micro)
+	  Macro funktioniert noch nicht
+12.05.2012 (3 h)
+	- GUI#15 CodeController für MacroCode gefixt
+	- GUI#15 ABOUT Action implementiert
