@@ -248,3 +248,5 @@
 12.05.2012 (3 h)
 	- GUI#15 CodeController für MacroCode gefixt
 	- GUI#15 ABOUT Action implementiert
+13.05.2012 (3,5 h)
+	- GUI#15 MICRO_STEP, STEP, RUN, RESET Actions implementiert
