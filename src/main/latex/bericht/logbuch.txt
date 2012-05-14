@@ -250,3 +250,5 @@
 	- GUI#15 ABOUT Action implementiert
 13.05.2012 (3,5 h)
 	- GUI#15 MICRO_STEP, STEP, RUN, RESET Actions implementiert
+14.05.2012 (2 h)
+	- GUI#15 Menü implementiert
