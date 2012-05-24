@@ -255,3 +255,6 @@
 21.05.2012 (0,5 h)
 	- GUI#15 Komponenten integriert
 	- GUI#23-32 erstellt
+24.05.2012 (1,5 h)
+	- GUI#23 Titel für MainFrame
+	- GUI#24 Startgröße für MainFrame und Startpositionen für Slider konfigurierbar
