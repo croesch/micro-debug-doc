@@ -258,3 +258,5 @@
 24.05.2012 (1,5 h)
 	- GUI#23 Titel für MainFrame
 	- GUI#24 Startgröße für MainFrame und Startpositionen für Slider konfigurierbar
+25.05.2012 (1 h)
+	- GUI#27 Shortcuts für Menüeinträge definiert
