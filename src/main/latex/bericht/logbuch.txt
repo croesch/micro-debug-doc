@@ -260,3 +260,7 @@
 	- GUI#24 Startgröße für MainFrame und Startpositionen für Slider konfigurierbar
 25.05.2012 (1 h)
 	- GUI#27 Shortcuts für Menüeinträge definiert
+26.05.2012 (7 h)
+	- GUI#25 Thread implementiert um Actions auszuführen
+	- GUI#26 Action implementiert, um Debugger zu beenden
+	- GUI#32 Textareas scrollen am Beginn in Zeile 0/1
