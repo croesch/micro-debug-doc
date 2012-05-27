@@ -264,3 +264,11 @@
 	- GUI#25 Thread implementiert um Actions auszuführen
 	- GUI#26 Action implementiert, um Debugger zu beenden
 	- GUI#32 Textareas scrollen am Beginn in Zeile 0/1
+27.05.2012 (7 h)
+	- GUI#22 Deactivate other input when requesting input for proces
+	- GUI#40 Make wide use of @NotNull and @Nullable
+	- GUI#33 Replace TabbedPane by another SplitPane
+	- GUI#39 MainFrame is not resizable
+	- GUI#41 Code areas break lines
+	- GUI#36 Implement possibility to switch number representation
+	- GUI#34 Make Input field having a colored background
