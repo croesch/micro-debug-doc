@@ -1,11 +1,42 @@
 \chapter*{Einleitung}
-%	Problemstellung
-%	Aufbau der Arbeit
-Die vorliegende Arbeit stellt einen Debugger für einen CISC-Prozessor vor. Hierbei handelt es sich um den in \cite{Stroetmann2007} vorgestellten Prozessor \emph{Mic-1}:
-\begin{quotation}
-``Die Abkürzung CISC steht hier für \emph{complex instruction set computer} und drückt aus, dass die Maschinensprache wesentlich umfangreicher ist als bei einem RISC-Prozessor.''
-\end{quotation}
+Die vorliegende Arbeit stellt \md{} vor, den Debugger für den CISC-Prozessor, der in \cite{Tanenbaum1998} vorgestellt wird: \mic.
 
-Im Gegensatz zu einem RISC-Prozessor sind die Maschinenbefehle in einem CISC-Prozessor nicht in Hardware implementiert, sondern werden durch einen Mikroprogramm-Speicher definiert. Dieser wird in Mikro-Assembler programmiert und ermöglicht es, die Maschinenbefehle flexibel zu steuern.
+Im Gegensatz zu einem RISC-Prozessor sind die Maschinenbefehle in der \mic{} nicht in Hardware implementiert, sondern werden durch einen Mikroprogramm-Speicher definiert. Dieser wird in Mikro-Assembler programmiert und ermöglicht es Maschinenbefehle auf einem hohen Abstraktionsniveau zu definieren und ohne Veränderung der Hardware anzupassen.
 
-Der Debugger soll dazu die Entwicklung von Mikro-Assembler- und Assembler-Programmen für den CISC-Prozessor erleichtern.
+\section*{Aufgabenstellung}
+Im Skript der Vorlesung Rechnertechnik \notiz{Verweis auf Skript der VL Rechnertechnik einfügen} wurde ein Mikro-Assembler für die \mic{} vorgestellt. Ziel dieser Arbeit istder Entwurf und die Implementierung eines Debuggers für diesen Mikro-Assembler. Der Debugger soll die Entwicklung von Mikro-Assembler- und Assembler-Programmen für die \mic{} erleichtern.
+
+In der Arbeit sollen dabei hauptsächlich zwei Teilaufgaben bearbeitet werden.
+
+\subsection*{Debugger für die Konsole}
+Zunächst soll eine Version des Debuggers entwickelt werden, der über die Konsole bedient wird. Das Ziel dabei ist eine Implementierung des Debuggers unabhängig von der Darstellung der Ein- und Ausgabe.
+
+Der Debugger soll in der Lage sein zwei Binärdateien einzulesen: eine Datei, die den Mikro-Assembler enthält und eine, die den Assembler-Code enthält. Der Assembler-Code soll grundsätzlich frei wählbar sein, als Referenz für diese Arbeit soll aber der IJVM-Assembler dienen.
+
+Der Benutzer soll Breakpoints (Haltepunkte) definieren können, die die Simulation des Mikro-Assembler-Programms unterbrechen. Hierbei soll der Benutzer die Möglichkeit bekommen, Breakpoints für bestimmte Mikro-Assembler-Instruktionen aber auch für bestimmte Assembler-Instruktionen zu definieren.
+
+Die Werte ausgewählter Register sollen vom Benutzer sowohl angezeigt, als auch überwacht werden können -- ebenso der Inhalt des Stacks.
+
+\subsection*{GUI für den Debugger}
+Im zweite Teil der Aufgabe soll für den entwickelten Debugger eine grafische \notiz{graphisch/grafisch} Oberfläche entwickelt werden.
+
+Die grafische Oberfläche soll sowohl den Mikro-Assembler als auch den Assembler anzeigen. Auch die Register mit ihren Werten und der Stack soll sichtbar sein.
+
+Die grafische Oberfläche soll dem Benutzer ermöglichen, Breakpoints über die Oberfläche zu setzen. Außerdem soll dem Benutzer angezeigt werden, welcher Mikro-Assembler- und Assembler-Befehl gerade abgearbeitet wird.
+
+Da in dieser Arbeit ein allumfassender Debugger weder geschaffen werden kann noch soll, ist besonders darauf zu achten, die Wartung und Erweiterung des Debuggers Außenstehenden Personen zu ermöglichen. Besonders der zu schreibende Code soll daher gut dokumentiert werden; beispielsweise andere Studenten sollen sich in den Code einarbeiten können und neue Funktionalitäten implementieren oder bestehende Funktionalitäten anpassen können.
+
+\section*{Aufbau der Arbeit}
+Die Arbeit ist in zwei Teile geteilt: Im ersten Teil wird die Bedienung und im zweiten Teil wird die Entwicklung des \md{} erläutert.
+
+\subsection*{Bedienung}
+Im Kapitel \ref{allgemein} wird beschrieben, wie man den \md{} konfiguriert und in andere Sprachen übersetzen kann. Außerdem wird beschrieben, wie man die Log-Ausgaben des \md{} nutzen und konfigurieren kann.
+
+Die Bedienung des \md{} in der Konsolenvariante wird im Kapitel \ref{bed-konsole} beschrieben; Es werden die Parameter des \md{} erklärt, die verschiedenen Befehle erläutert und ein Beispiel gezeigt, wie ein Fehler mit dem Debugger gefunden werden kann.
+
+Im Kapitel \ref{bed-gui} wird die grafische Oberfläche beschrieben; Es werden die Unterschiede zur Konsolenvariante genannt, die verschiedenen Oberflächenelemente erklärt und ein Beispiel gezeigt, wie ein Fehler mit dem Debugger mit grafischer Oberfläche gefunden werden kann.
+
+\subsection*{Entwicklung}
+Im Kapitel \ref{werkzeuge} werden einige Werkzeuge beschrieben, die zur Entwicklung des \md{} genutzt wurden und deren Verständnis nötig ist, um selbst Änderungen am Projekt vorzunehmen.
+
+Die nachfolgenden Kapitel beschreiben, welche Funktionalität des \md{} durch welche Klassen erledigt werden. Kapitel \ref{prozessor} gibt einen Überblick über die Simulation der \mic{} und zeigt welcher Code die jeweilige Hardwarekomponente repräsentiert. Im Kapitel \ref{konsole} wird der Coder für die Konsolenvariante und in \ref{gui} der Code für die grafische Oberfläche erklärt.
