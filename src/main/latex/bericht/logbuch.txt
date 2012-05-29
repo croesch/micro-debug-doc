@@ -272,3 +272,6 @@
 	- GUI#41 Code areas break lines
 	- GUI#36 Implement possibility to switch number representation
 	- GUI#34 Make Input field having a colored background
+29.05.2012 (5,5 h)
+	- Kapitel Einleitung und Allgemein geschrieben
+
