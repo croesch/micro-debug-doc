@@ -274,4 +274,7 @@
 	- GUI#34 Make Input field having a colored background
 29.05.2012 (5,5 h)
 	- Kapitel Einleitung und Allgemein geschrieben
-
+30.05.2012 (8 h)
+	- Kapitel Konsole geschrieben (ohne Tut.)
+	- micro-debug V0.3.0 release
+	- micro-debug-gui V0.1 release
