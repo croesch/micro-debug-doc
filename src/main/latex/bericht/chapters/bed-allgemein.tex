@@ -20,7 +20,7 @@ Die Konsolenvariante nutzt bislang einen Thread, die Version des \md{} mit grafi
 
 \section{Konfiguration}
 \label{konfiguration}
-Wie oben bereits angedeutet findet die Konfiguration des \md{} in \texttt{.properties}-Dateien statt. Die Konfigurationsdatei für den \md{} ist die Datei \texttt{config/micro-debug.properties} -- wie in \texttt{.properties}-Dateien üblich, werden hier Key/Value\notiz{Key/value!?}-Paare hinterlegt.
+Wie oben bereits angedeutet findet die Konfiguration des \md{} in \datei{properties}en statt. Die Konfigurationsdatei für den \md{} ist die Datei \texttt{config/micro-debug.properties} -- wie in \datei{properties}en üblich, werden hier Key/Value\notiz{Key/value!?}-Paare hinterlegt.
 
 \begin{lstlisting}[language=sh,caption={Eintrag in \texttt{conf/micro-debug.properties}},label=lst:md-props-entry]
 # default value for the register CPP
@@ -29,7 +29,7 @@ mic1.register.cpp.defval = 0x4000
 
 Listing \ref{lst:md-props-entry} zeigt einen beispielhaften Eintrag in der Konfigurationsdatei: Den Startwert für das Register CPP\notiz{Register Befehl erstellen?}. Diese Datei kann für jeden Schlüssel genau einen Wert enthalten, ist für einen Schlüssel kein Wert konfiguriert oder ist ein ungültiger Wert konfiguriert, nutzt der Debugger den Standardwert für den jeweiligen Schlüssel.\notiz{Prüfen und ggf. einfügen, dass fallback anständig geloggt wird und das dann hier auch erwähnen.}
 
-Dadurch ist es möglich ein Update des \md{} durch die Ersetzung der \texttt{.jar}-Datei\notiz{Datei-Befehl!?} zu realisieren. Denn vom Benutzer geänderte Werte müsste er in der neuen Version wieder mühsam nachpflegen; das Nutzen von Standardwerten bei fehlenden Konfigurationseinträgen ermöglicht es dem Benutzer seine persönliche Konfigurationsdatei von Version zu Version des \md{} zu behalten.\notiz{Überlegen, ob nicht irgendwo ein Update-Abschnitt sinnvoll ist}
+Dadurch ist es möglich ein Update des \md{} durch die Ersetzung der \datei{jar} zu realisieren. Denn vom Benutzer geänderte Werte müsste er in der neuen Version wieder mühsam nachpflegen; das Nutzen von Standardwerten bei fehlenden Konfigurationseinträgen ermöglicht es dem Benutzer seine persönliche Konfigurationsdatei von Version zu Version des \md{} zu behalten.\notiz{Überlegen, ob nicht irgendwo ein Update-Abschnitt sinnvoll ist}
 
 \subsection{Zahlenformat}
 \label{zahlenformat}
@@ -102,7 +102,7 @@ Die Datei ist zeilenweise zu lesen, wobei eine Zeile nach folgendem Format aufge
 \label{lokalisierung}
 Die Ausgaben des \md{} wurden in Englisch geschrieben -- weitere Sprachen können leicht über das Verzeichnis \texttt{conf/lang/} hinzugefügt werden.
 
-In diesem Verzeichnis liegen verschiedene XML-Dateien, die dazu dienen, dem Benutzer Ausgaben in seiner Landessprache anzuzeigen. Die Sprache, die der Benutzer angezeigt bekommt, hängt von der Locale-Einstellung des Computers ab.
+In diesem Verzeichnis liegen verschiedene \datei{xml}, die dazu dienen, dem Benutzer Ausgaben in seiner Landessprache anzuzeigen. Die Sprache, die der Benutzer angezeigt bekommt, hängt von der Locale-Einstellung des Computers ab.
 
 Der \md{} sucht dann für diese Sprache folgende vier Dateien, die Key/Value-Paare für die Textkonstanten enthalten:
 \begin{description}
@@ -165,4 +165,4 @@ Die Werte können Platzhalter enthalten. Platzhalter gelten nur für ein bestimm
 
 Zusätzlich zu den \texttt{text...xml}-Dateien gibt es bei der grafischen Oberfläche des \md{} auch \texttt{text-gui...xml}-Dateien, die die Textkonstanten für die grafische Oberfläche enthalten.
 
-Die Log-Ausgaben sind immer auf Englisch und können über die XML-Dateien nicht verändert werden.
+Die Log-Ausgaben sind immer auf Englisch und können über die \datei{xml} nicht verändert werden.
