@@ -1,133 +1,194 @@
 \chapter{Interaktion per Konsole}
 \label{bed-konsole}
-Zunächst soll der Debugger für eine Bedienung per Kommandozeile entwickelt werden. Der Benutzer soll den Debugger starten können und anschließend über die Eingabe von verschiedenen Kommandos steuern können.
+Wie in Kapitel \ref{allgemein} beschrieben, muss der \md{} nicht installiert werden: Vom Herunterladen bis zum Starten des \md{} genügen folgende Schritte.
 
-Um entsprechenden (Mikro-)Assembler-Bytecode debuggen zu können, ist es nötig den CISC-Prozessor simulieren zu können. Im Jahr 2004 wurde von Thomas Kutzer eine Studienarbeit zum Thema ``Mic-1 Simulator'' verfasst. Der Debugger soll den darin entwickelten Simulator ersetzen und um einige Funktionen ergänzen. Der Debugger soll sich daher per Kommandozeile bedienen lassen, wie der Simulator --- das heißt, er muss folgende Befehle unterstützen:
+\begin{enumerate}
+\item Die Datei \texttt{micro-debug-version.zip} von der Projektseite\notiz{Verweis auf Seite} herunterladen
+\item Die \datei{zip} entpacken in ein beliebiges Verzeichnis (bspw. \texttt{/opt/micro-debug/})
+\item Das Verzeichnis des \md{} dem \texttt{PATH} hinzufügen
+\item Den \md{} starten -- mit \texttt{\$ micro-debug.sh -{}-help}
+\end{enumerate}
+
+Der \md{} kann durch einige Parameter gesteuert werden und wird nach dem Start durch Befehle gesteuert. Sowohl die Parameter als auch die Befehle werden nun erklärt und anschließend wird ein beispielhafter Ablauf mit dem \md{} beschrieben.
+
+\section{Parameter}
+Der Standardaufruf für den \md{} ist in Listing \ref{lst:aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur Mikro-Assembler- und zur Assembler-Bytecode-Datei. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur Mikro-Assembler- und dann der Pfad zur assembler-Datei gegeben wird. Werden die beiden Pfade vertauscht, so startet der \md{} nicht und bricht mit einer Fehlermeldung ab.
+
+\begin{lstlisting}[language=sh,caption={Aufruf des \md{} -- Konsolenversion},label=lst:aufruf-konsolenversion]
+  micro-debug.sh [PARAMETER]... MIC1 IJVM
+\end{lstlisting}
+
+Neben den beiden Dateipfaden gibt es im folgende optionale Parameter. Jeder Parameter kann sowohl in der langen (mit doppeltem Minus) als auch in der kurzen (einfaches Minus gefolgt von einem Zeichen) angegeben werden.
+
 \begin{description}
-\item[help] \hspace*{\fill}\\
+\item[-h, -{}-help]
+  ist dieser Parameter gegeben, so wird die Hilfe angezeigt, die neben den verschiedenen Aufrufmöglichkeiten die möglichen Parameter erklärt. Zusätzlich werden noch einige andere Informationen, wie Kontaktmöglichkeiten, angezeigt.
 
-Zeigt einen Hilfe-Text an, der die möglichen Befehle und jeweils eine kurze Beschreibung anzeigt.
+\item[-o, -{}-output-file FILE]
+  ermöglicht die Umlenkung der Ausgabe der \mic{} (nicht des \md{}) in eine Datei. Normalerweise wird die Ausgabe der \mic{} auf der Konsole ausgegeben.
 
-\item[run] \hspace*{\fill}\\
+  Mit dem Argument \texttt{FILE} wird hier der Pfad zur Datei gegeben, in die die Ausgabe geschrieben werden soll. Wenn die Datei bereits existiert, wird die Ausgabe an das Ende der Datei angehängt.
 
-Der Debugger simuliert die Abarbeitung des Assembler- und Mikro-Assembler-Programms bis zu einem Haltepunkt oder bis zum Programmende.
+  Unter Linux kann man dann in einer zweiten Konsole diese Datei beispielsweise mit \texttt{tail -f} anzeigen und die Ausgabe der \mic{} komfortabel von der Ausgabe des \md{} trennen. In diesem Szenario ist auch der Parameter \texttt{-{}-unbuffered-output} sinnvoll.
+\item[-u, -{}-unbuffered-output]
+  verhindert die Pufferung der Ausgabe der \mic{}. Normalerweise gibt der \md{} die Ausgabe der \mic{} zeilenweise aus, also erst bei der Ausgabe eines Zeilenumbruchs. Verwendet man den Parameter \texttt{-{}-output-file} oder möchte man aus sonstigen Gründen jedes ausgegebene Zeichen der \mic{} direkt auf der Konsole sehen, so ist dieser Parameter die Lösung.
 
-\item[step] \emph{[n]}
+  \emph{Vorsicht!} Wird dieser Parameter ohne \texttt{-{}-output-file} genutzt, so kann es sehr schwer werden, die ausgegebenen Zeichen der \mic{} ausfindig zu machen, da sie womöglich in der Menge der Ausgaben von \md{} untergehen.
 
-Der Debugger simuliert die Ausführung von \emph{n} Instruktionen des Assembler-Programms. Hierbei ist der Parameter \emph{n} eine natürliche Zahl und kann weggelassen werden; in diesem Fall wird eine Instruktion ausgeführt.
+\item[-v, -{}-version]
+  gibt die Version des \md{} aus.
+\end{description}
 
-\item[reset] \hspace*{\fill}\\
+Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben wurden, so startet der Debugger nicht. Dies kann genutzt werden, um ohne vorhandene Bytecode-Dateien Informationen über den \md{} anzeigen zu können. Listing \ref{lst:aufrufe-ohne-start} zeigt, dass der \md{} daher auch ohne Bytecode-Dateien aufgerufen werden kann.
 
-Der Debugger wird in den Anfangszustand zurückgesetzt: Der Debugger verhält sich, als wäre er gerade gestartet worden.
+\begin{lstlisting}[language=sh,caption={Aufruf des \md{} ohne Start -- Konsolenversion},label=lst:aufrufe-ohne-start]
+  micro-debug.sh --help
+  micro-debug.sh --version
+\end{lstlisting}
 
-\item[set] \emph{Register Wert}
+Bei der Abarbeitung der gegebenen Parameter hängt die Reihenfolge der Parameter nicht von der Reihenfolge ab, in der sie dem \md{} als Parameter übergeben wurden. Wichtig ist nur, dass die beiden Bytecode-Dateien die letzten beiden Parameter und in der richtigen Reihenfolge aufgeführt sind.
 
-Es wird das angegebene \emph{Register} auf den übergebenen \emph{Wert} gesetzt; dieser muss als Dezimalzahl eingegeben werden.
+\section{Befehle}
+Ist der \md{} gestartet lässt er sich durch verschiedene Befehle steuern, die am Ende dieses Abschnitt ausführlich beschrieben werden.
 
-\item[setmemory] \emph{Adresse Wert}
+Bei der Bedienung des \md{} gibt es die Möglichkeit, dass zwischen den verschiedenen Befehlen auch Eingaben für die \mic{} zu liefern sind. Damit der Benutzer sieht, ob die Eingabe vom \md{} oder der \mic{} erwartet wird, schreibt der \md{} '\texttt{micro-debug> }' und die \mic{} '\texttt{mic1> }' bevor eine Eingabe erwartet wird.
 
-Es wird das \emph{Wort} an der angegebenen \emph{Adresse} auf den übergebenen \emph{Wert} gesetzt; \emph{Adresse} und \emph{Wert} müssen als Dezimalzahl eingegeben werden. Der Speicher wird byteweise addressiert.
+Die verschiedenen Befehle können ein oder mehrere Argumente benötigen. Die Argumente können einem der folgenden Datentypen gehören:
+\begin{description}
+\item[Register] ist der Name eines Registers, also \reg{CPP}, \reg{H}, \reg{LV}, \reg{MAR}, \reg{MBR}, \reg{MBRU}, \reg{MDR}, \reg{OPC}, \reg{PC}, \reg{SP} oder \reg{TOS}.
+\item[Zahl] ist eine Zahl im Wertebereich eines Integers\notiz{Verweis?}. Die Formate für die Eingabe der Zahl sind in Abschnitt \ref{zahlenformat} beschrieben.
+\end{description}
 
-\item[break] \emph{Register Wert}
+Je nach Befehl kann der zulässige Wertebereich jedoch noch weiter eingeschränkt sein -- eine solche Einschränkung ergibt sich aus der Beschreibung des jeweiligen Befehls.
 
-Es wird ein bedingter Haltepunkt gesetzt: Sobald das angegebene \emph{Register} den Wert \emph{Wert} erhält, hält der Debugger.
+\begin{description}
+\item[break] \emph{Register [Zahl]}
 
-\item[ls-break] \hspace*{\fill}\\
-
-Es werden alle Haltepunkte angezeigt --- mit der jeweiligen Bedingung.
-
-\emph{Beachte:} Dieser Befehl entspricht in etwa dem Befehl \texttt{rmbreak} aus dem Simulator von Thomas Kutzer. Da sich die Funktionalität allerdings verändert hat, wird alternativ der Befehl \texttt{ls-break} benutzt.
-
-\item[ls-reg] \emph{[Register]}
-
-Es wird der Inhalt von \emph{Register} angezeigt. Wird der optionale Parameter weggelassen, werden die Inhalte aller Register angezeigt.
-
-\emph{Hinweis:} Dieser Befehl entspricht dem Befehl \texttt{show} aus dem Simulator von Thomas Kutzer.
-
-\item[ls-mem] \emph{Start Stop}
-
-Es wird der Inhalt des Hauptspeichers zwischen den Adressen \emph{Start} und \emph{Stop} angezeigt. Die Adressen müssen als Dezimalzahl angegeben werden und adressieren den Speicher byteweise.
-
-\emph{Hinweis:} Dieser Befehl entspricht dem Befehl \texttt{dump} aus dem Simulator von Thomas Kutzer.
-
-\item[trace-reg] \emph{[Register]}
-
-Es wird das \emph{Register} zum \emph{Beobachten} registriert, dadurch wird dessen Inhalt nach jedem Simulationsschritt des Debuggers angezeigt. Wird der optionale Parameter weggelassen, werden alle Register zum \emph{Beobachten} registriert.
-
-\emph{Hinweis:} Dieser Befehl entspricht dem Befehl \texttt{trace} aus dem Simulator von Thomas Kutzer.
-
-\item[untrace-reg] \emph{[Register]}
-
-Es wird das \emph{Register} vom \emph{Beobachten} deregistriert, dadurch wird dessen Inhalt nach einem Simulationsschritt des Debuggers nicht mehr angezeigt. Wird der optionale Parameter weggelassen, werden alle Register deregistriert.
-
-\emph{Hinweis:} Dieser Befehl entspricht dem Befehl \texttt{untrace} aus dem Simulator von Thomas Kutzer.
-
-% TODO überprüfen, ob das wirklich umsetzbar ist!
-\item[trace-var] \emph{[Variable]}
-
-Es wird die \emph{Variable} zum \emph{Beobachten} registriert, dadurch wird deren Inhalt nach jedem Simulationsschritt des Debuggers angezeigt. Wird der optionale Parameter weggelassen, werden alle Variablen zum \emph{Beobachten} registriert.
-
-\item[untrace-var] \emph{[Variable]}
-
-Es wird die \emph{Variable} vom \emph{Beobachten} deregistriert, dadurch wird deren Inhalt nach einem Simulationsschritt des Debuggers nicht mehr angezeigt. Wird der optionale Parameter weggelassen, werden alle Variablen deregistriert.
-
-\item[trace-mic] \hspace*{\fill}\\
-
-Es wird der \emph{Mikro-Assembler-Code} zum \emph{Beobachten} registriert, dadurch wird jede ausgeführte Mikro-Instruktion des Debuggers angezeigt.
-
-\item[untrace-mic] \hspace*{\fill}\\
-
-Es wird der \emph{Mikro-Assembler-Code} zum \emph{Beobachten} deregistriert, dadurch wird ausgeführte Mikro-Instruktionen des Debuggers nicht mehr angezeigt.
-
-\item[trace-mac] \hspace*{\fill}\\
-
-Es wird der \emph{Assembler-Code} zum \emph{Beobachten} registriert, dadurch wird jede ausgeführte Assembler-Instruktion des Debuggers angezeigt.
-
-\item[untrace-mac] \hspace*{\fill}\\
-
-Es wird der \emph{Assembler-Code} zum \emph{Beobachten} deregistriert, dadurch wird ausgeführte Assembler-Instruktionen des Debuggers nicht mehr angezeigt.
+  setzt einen Breakpoint für das gegebene \emph{Register}: Sobald das Register den Wert \emph{Zahl} erhält, hält der \md{}. Der \md{} hält erst, nachdem das Register den Wert erhalten hat -- da dies unter Umständen zu spät ist, gibt es die Möglichkeit, das Argument \emph{Zahl} wegzulassen. Wird nur ein Register angegeben, hält der \md{} bevor das Register einen neuen Wert zugewiesen bekommt.
 
 \item[exit] \hspace*{\fill}\\
 
-Der Debugger wird beendet.
-\end{description}
+  beendet den \md{} und gibt eventuell belegte Ressourcen wieder frei.
 
-Zusätzlich zu den im Simulator vorhandenen Befehlen soll der Debugger folgende Befehle unterstützen:
-\begin{description}
-\item[micro-step] \emph{[n]}
+\item[help] \hspace*{\fill}\\
 
-Der Debugger simuliert die Ausführung von \emph{n} Instruktionen des Mikro-Assembler-Programms. Hierbei ist der Parameter \emph{n} eine natürliche Zahl und kann weggelassen werden; in diesem Fall wird eine Instruktion ausgeführt.
+  zeigt die verfügbaren Befehle mit einer kurzen Beschreibung an. Auch hier sind noch einige weitere Informationen über das Projekt enthalten.
 
-\item[rm-break] \emph{Nummer}
+\item[ls-break] \hspace*{\fill}\\
 
-Es wird der Haltepunkt \emph{Nummer} entfernt. Der Parameter \emph{Nummer} ist eine natürliche Zahl und bezieht sich auf die Nummerierung, die durch \texttt{ls-break} erhalten wird. Die Haltepunkte werden anschließend neu nummeriert, so dass ein erneuter Aufruf von \texttt{ls-break} empfohlen wird.
+  zeigt alle Breakpoints mit deren jeweiligen Bedingung an. Jeder Breakpoint erhält eine Identifikationsnummer, die bei anderen Operationen, wie dem Entfernen, angegeben werden müssen.
 
-\item[micro-break] \emph{Adresse}
+\item[ls-macro-code] \emph{[Zahl1 [Zahl2]]}
 
-Es wird ein Haltepunkt hinzugefügt, der die Simulation des Debuggers anhält, sobald der Bytecode des Mikro-Assemblers an der \emph{Adresse} ausgeführt werden soll. \emph{Adresse} wird hierbei als Dezimalzahl übergeben.
+  zeigt den disassemblierten Assembler-Code an. Dabei gibt es drei mögliche Konstellationen der Parameter:
+  \begin{itemize}
+  \item Wird kein Parameter gegeben, wird der vollständige Assembler-Code angezeigt.
+  \item Wird ein Parameter \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der nächsten auszuführenden Codezeile angezeigt.
+  \item werden beide Parameter gegeben, wird der Assembler-Code von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
+  \end{itemize}
 
-\item[macro-break] \emph{Adresse}
+  Da der \md{} nur den Bytecode kennt, gibt es eigentlich keine Zeilen. Der \md{} schreibt pro Zeile einen Befehl (inklusive Argumente), somit existieren Zeilennummern, die für den \md{} als Referenz dienen.
 
-Es wird ein Haltepunkt hinzugefügt, der die Simulation des Debuggers anhält, sobald der Bytecode des Assemblers an der \emph{Adresse} ausgeführt werden soll. \emph{Adresse} wird hierbei als Dezimalzahl übergeben.
+\item[ls-micro-code] \emph{[Zahl1 [Zahl2]]}
+
+  zeigt den disassemblierten Mikro-Assembler-Code an und arbeitet wie \texttt{ls-macro-code}. Es gibt drei mögliche Konstellationen der Parameter:
+  \begin{itemize}
+  \item Wird kein Parameter gegeben, wird der vollständige Mikro-Assembler-Code angezeigt.
+  \item Wird ein Parameter \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der nächsten auszuführenden Codezeile angezeigt.
+  \item werden beide Parameter gegeben, wird der Mikro-Assembler-Code von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
+  \end{itemize}
+
+  Da der \md{} nur den Bytecode kennt, gibt es eigentlich keine Zeilen. Der \md{} schreibt pro Zeile eine Mikroinstruktion (die $36~Bit$, die die Instruktion spezifizieren), somit existieren Zeilennummern, die für den \md{} als Referenz dienen.
+
+\item[ls-mem] \emph{Zahl1 Zahl2}
+
+  zeigt den Inhalt des Hauptspeichers zwischen den Adressen (inklusive) \emph{Zahl1} und \emph{Zahl2} an. Die Adressen des Speichers sind Wortadressen -- jedes Wort enthält $32~Bit$.
+
+\item[ls-reg] \emph{[Register]}
+
+  zeigt den Wert von dem gegebenen \emph{Register} an; wird das optionale Argument weggelassen, werden alle Register und deren Werte angezeigt.
 
 \item[ls-stack] \hspace*{\fill}\\
 
-Es wird der aktuelle Inhalt des Stacks angezeigt.
+  zeigt den aktuellen Stack an.
 
-\item[ls-micro-code] \emph{[Nummer1 [Nummer2]]}
+  \emph{Hinweis:} Dieser Befehl wird durch die Konfigurationsoption \texttt{stack.elements.to.hide} beeinflusst. Normalerweise wird der Stack von dem initialen Stackpointer bis zum aktuellen Stackpointer ausgegeben. Da dies unter Umständen mehr Elemente liefert, als der Stack tatsächlich enthält, gibt es die Möglichkeit über die Konfiguration die ersten Elemente nicht auszugeben.
 
-Es wird der disassemblierte Programmcode des Mikro-Assemblers angezeigt. Dabei gibt es drei Varianten des Befehls:
-\begin{itemize}
-\item Ohne Parameter wird der komplette Mikro-Assembler-Code angezeigt.
-\item Mit einem Parameter \emph{Nummer1} wird die angegebene Anzahl an Zeilen vor und nach der nächsten auszuführenden Codezeile angezeigt.
-\item Mit zwei Parametern, die beide Zeilennummern darstellen, wird der Code von Zeile \emph{Nummer1} bis zur Zeile \emph{Nummer2} angezeigt. 
-\end{itemize}
+Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sicherstellen, dass \texttt{stack.elements.to.hide = 0} konfiguriert ist.
 
-\item[ls-macro-code] \emph{[Nummer1 [Nummer2]]}
+\item[macro-break] \emph{Zahl}
 
-Dieser Befehl entspricht dem Befehl \texttt{ls-micro-code}, mit dem Unterschied, dass \texttt{ls-macro-code} sich auf den disassemblierten Assembler-Code bezieht.
+  fügt einen Breakpoint hinzu, der den \md{} anhält, sobald der Bytecode des Assemblers an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-macro-code} angezeigten Zeilennummern sein.
 
+\item[micro-break] \emph{Zahl}
+
+  fügt einen Breakpoint hinzu, der den \md{} anhält, sobald der Bytecode des Mikro-Assemblers an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-micro-code} angezeigten Zeilennummern sein.
+
+\item[micro-step] \emph{[Zahl]}
+
+  führt die nächsten \emph{Zahl} Mikro-Instruktionen aus; wird kein Argument gegeben, so wird eine Instruktion ausgeführt.
+
+\item[reset] \hspace*{\fill}\\
+
+  die \mic{} wird in den Anfangszustand zurückgesetzt: Der Hauptspeicher und die Register werden auf die initialen Werte zurückgesetzt. Auch die Ein- und Ausgabe der \mic{} wird geleert. Die Informationen des \md{}, vor allem die Breakpoints, bleiben allerdings erhalten und müssen vom Benutzer nicht erneut gesetzt werden.
+
+\item[rm-break] \emph{Zahl}
+
+  entfernt den Breakpoint mit der Nummer \emph{Zahl}. Die Nummer des Breakpoints ist die Identifikationsnummer, die mit \texttt{ls-break} angezeigt wird.
+
+\item[run] \hspace*{\fill}\\
+  
+  führt alle Instruktionen bis zum Programmende oder bis zum nächsten Breakpoint aus.
+
+  \emph{Hinweis:} Unter Umständen und ungünstigem Programmcode kann das zu debuggende Programm in eine Schleife geraten, welche ohne Breakpoints nur durch den Programmabbruch beendet werden kann.
+
+\item[set] \emph{Register Zahl}
+
+  weist dem \emph{Register} den Wert \emph{Zahl} zu.
+
+\item[set-mem] \emph{Zahl1 Zahl2}
+
+  schreibt den Wert \emph{Zahl2} an die Wortadresse \emph{Zahl1} im Hauptspeicher.
+
+  \emph{Hinweis:} Auch wenn dieser Befehl offensichtlich dazu genutzt werden könnte den Assembler-Code zu manipulieren, ist er für diesen Zweck nicht vorgesehen.
+
+\item[step] \emph{[Zahl]}
+
+  führt die nächsten \emph{Zahl} Instruktionen aus; wird kein Argument gegeben, so wird eine Instruktion ausgeführt.
+
+\item[trace-mac] \hspace*{\fill}\\
+  
+  der Assembler-Code wird nun beobachtet. Dadurch wird jede Assembler-Instruktion angezeigt, nachdem sie ausgeführt wurde.
+
+\item[trace-mic] \hspace*{\fill}\\
+
+  der Mikro-Assembler-Code wird nun beobachtet. Dadurch wird jede Mikro-Assembler-Instruktion angezeigt, nachdem sie ausgeführt wurde.
+
+\item[trace-reg] \emph{[Register]}
+
+  das gegebene \emph{Register} wird nun beobachtet. Dadurch wird der Wert des Registers angezeigt, wenn er sich ändert. Wird das optionale Argument weggelassen, werden alle \emph{Register} beobachtet.
+
+\item[trace-var] \emph{Zahl}
+
+  die Variable \emph{Zahl} wird nun beobachtet. Dadurch wird der Inhalt der Variable angezeigt, wenn er sich ändert.
+
+  \emph{Zahl} ist die Nummer der lokalen Variable. Wird eine Methode im Assembler-Code aufgerufen, ändert sich der Zeiger \reg{LV} und damit auch die Identität der lokalen Variablen. Wird also Variable Nummer~1 in Methode X beobachtet und führt der \md{} gerade Methode Y aus, wird eine Änderung der jetzigen lokalen Variable~1 nicht ausgegeben (sofern diese nicht auch beobachtet wird).
+
+\item[untrace-mac] \hspace*{\fill}\\
+  
+  beendet das Beobachten des Assembler-Codes. Dadurch werden ausgeführte Assembler-Instruktionen nun nicht mehr ausgegeben.
+
+\item[untrace-mic] \hspace*{\fill}\\
+
+  beendet das Beobachten des Mikro-Assembler-Codes. Dadurch werden ausgeführte Mikro-Assembler-Instruktionen nun nicht mehr ausgegeben.
+
+\item[untrace-reg] \emph{[Register]}
+
+  beendet das Beobachten des gegebenen \emph{Register}s. Wird das optionale Argument weggelassen, wird nun kein Register mehr beobachtet.
+
+\item[untrace-var] \emph{Zahl}
+
+  beendet das Beobachten der lokalen Variable Nummer \emph{Zahl}.
 \end{description}
 
-% TODO überlegen
-Unabhängig von den Befehlen soll es möglich sein gewisse Zahlen sowohl als Dezimal- als auch Hexadezimalzahl anzugeben. Möglicherweise sind auch Binär- und Oktalzahlen nötig. Es ist möglich dies über ein Parameter beim Programmstart global zu setzen, oder für jeden Befehl einzeln zu bestimmen.
+\section{Tutorial}
