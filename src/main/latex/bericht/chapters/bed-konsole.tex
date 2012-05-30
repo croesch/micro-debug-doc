@@ -12,7 +12,7 @@ Wie in Kapitel \ref{allgemein} beschrieben, muss der \md{} nicht installiert wer
 Der \md{} kann durch einige Parameter gesteuert werden und wird nach dem Start durch Befehle gesteuert. Sowohl die Parameter als auch die Befehle werden nun erklärt und anschließend wird ein beispielhafter Ablauf mit dem \md{} beschrieben.
 
 \section{Parameter}
-Der Standardaufruf für den \md{} ist in Listing \ref{lst:aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur Mikro-Assembler- und zur Assembler-Bytecode-Datei. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur Mikro-Assembler- und dann der Pfad zur assembler-Datei gegeben wird. Werden die beiden Pfade vertauscht, so startet der \md{} nicht und bricht mit einer Fehlermeldung ab.
+Der Standardaufruf für den \md{} ist in Listing \ref{lst:aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur Mikro-Assembler- und zur Assembler-Bytecode-Datei\notiz{Irgendwo den Aufbau der beiden Dateien erwähnen}. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur Mikro-Assembler- und dann der Pfad zur assembler-Datei gegeben wird. Werden die beiden Pfade vertauscht, so startet der \md{} nicht und bricht mit einer Fehlermeldung ab.
 
 \begin{lstlisting}[language=sh,caption={Aufruf des \md{} -- Konsolenversion},label=lst:aufruf-konsolenversion]
   micro-debug.sh [PARAMETER]... MIC1 IJVM
