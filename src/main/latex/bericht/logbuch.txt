@@ -278,3 +278,5 @@
 	- Kapitel Konsole geschrieben (ohne Tut.)
 	- micro-debug V0.3.0 release
 	- micro-debug-gui V0.1 release
+31.05.2012 (4 h)
+	- Kapitel GUI geschrieben (ohne Tut.)
