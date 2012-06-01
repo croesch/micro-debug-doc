@@ -24,4 +24,93 @@ Für den \md{} und die \mdg{} habe ich für nahezu jede Klasse automatisierte Te
 
 Die Tests sind nicht nur indirekt über die Refaktorierung eine gute Möglichkeit, den Code besser zu verstehen: Möchte man das Verhalten oder die Funktion einer Klasse verstehen, sind die automatisierten Tests der entsprechenden Testklasse ein guter Anlaufpunkt. Denn in jedem Test werden für verschiedene Eingaben die erwarteten Ausgaben beschrieben und dadurch gezeigt, wie sich die Klasse verhalten soll.
 
+Dazu möchte ich ein kleines Beispiel geben: \lstref{integerparser-code} zeigt den Code, den wir versuchen wollen zu verstehen. Die beiden Testmethoden sind in \lstref{integerparser-test1} und \lstref{integerparser-test2} zu sehen. Ohne die JavaDoc\notiz{JavaDoc!?}-Kommentare, die hier nicht aufgeführt sind, ist es nicht ganz einfach den Code aus \lstref{integerparser-code} zu verstehen.
+
+\begin{lstlisting}[caption={\klasse{IntegerParser} -- relevante Methoden},label=\lstlbl{integerparser-code}]
+  @Nullable
+  public Integer parse(final String toParse) {
+    if (toParse == null) {
+      return null;
+    }
+
+    try {
+      // try parsing and if this works, it was a valid number
+      return Integer.valueOf(toParse);
+    } catch (final NumberFormatException nfe) {
+      // number might be 0x.. or .._.., so split the number in radix and the number
+      // convert aliases (0x,0b,..) to the correct notation
+      final String[] num = convertAliases(toParse).split("_");
+      if (num.length != 2) {
+        // not a valid number - no idea what to do
+        return null;
+      }
+
+      // number is a special number
+      try {
+        // try to parse the number with the specified radix
+        return Integer.valueOf(num[0], Integer.parseInt(num[1]));
+      } catch (final NumberFormatException nfe2) {
+        // didn't work -> invalid number
+        return null;
+      }
+    }
+  }
+
+  @NotNull
+  private String convertAliases(final String num) {
+    if (num.length() > 1 && num.charAt(0) == '0') {
+      switch (Character.toLowerCase(num.charAt(1))) {
+        case 'b': return num.substring(2) + "_2";
+        case 'o': return num.substring(2) + "_8";
+        case 'x': return num.substring(2) + "_16";
+        default:  return num;
+      }
+    }
+    return num;
+  }
+\end{lstlisting}
+
+Wenn wir uns aber den Testcode aus \lstref{integerparser-test1} anschauen, dann erhalten wir schnell eine Ahnung, was die Klasse macht. Wir können unsere Vermutung nun an \lstref{integerparser-test2} noch überprüfen. Handelt es sich hier um die Funktionalität, die in \secref{zahlenformat} vorgestellt wurde?
+
+\begin{lstlisting}[caption={\klasse{IntegerParser} -- Test auf Validität},label=\lstlbl{integerparser-test1}]
+  @Test
+  public void testNumber_Valid() {
+    IntegerParser parser = new IntegerParser();
+    assertThat(parser.parse("12")).isEqualTo(12);
+    assertThat(parser.parse("0x12")).isEqualTo(0x12);
+    assertThat(parser.parse("12_16")).isEqualTo(0x12);
+    assertThat(parser.parse("1234_10")).isEqualTo(1234);
+    assertThat(parser.parse("1010_2")).isEqualTo(10);
+    assertThat(parser.parse("0b1010")).isEqualTo(10);
+    assertThat(parser.parse("11010_002")).isEqualTo(26);
+    assertThat(parser.parse("1g_17")).isEqualTo(33);
+    assertThat(parser.parse("-1g_17")).isEqualTo(-33);
+    assertThat(parser.parse("-1G_17")).isEqualTo(-33);
+    assertThat(parser.parse("-011")).isEqualTo(-11);
+    assertThat(parser.parse("-0000")).isEqualTo(0);
+    assertThat(parser.parse("0o0")).isEqualTo(0);
+    assertThat(parser.parse("0o27")).isEqualTo(23);
+    assertThat(parser.parse("27_8")).isEqualTo(23);
+    assertThat(parser.parse("0B0")).isEqualTo(0);
+    assertThat(parser.parse("0O0")).isEqualTo(0);
+    assertThat(parser.parse("0X0")).isEqualTo(0);
+  }
+\end{lstlisting}
+
+Wie wir sehen, werden der zu testenden Klasse Zeichenketten übergeben und geprüft, ob das Ergebnis die erwartete Zahl ist. Unsere Vermutung war also korrekt. Wir sehen auch, welche Werte die Komponente zurückgibt, wenn wir ungültige Zeichenketten übergeben: \texttt{null}. Dadurch haben wir also erstens eine gute Vorstellung davon, was die Klasse macht und zweitens durch den automatisierten Test gesichert, dass wir bei künftigen Refaktorierungen oder sonstigen Änderungen das Verhalten nicht manipulieren.
+
+\begin{lstlisting}[caption={\klasse{IntegerParser} -- Test auf Invalidität},label=\lstlbl{integerparser-test2}]
+  @Test
+  public void testNumber_Invalid() {
+    IntegerParser parser = new IntegerParser();
+    assertThat(parser.parse("")).isNull();
+    assertThat(parser.parse(" ")).isNull();
+    assertThat(parser.parse("\t")).isNull();
+    assertThat(parser.parse("A")).isNull();
+    assertThat(parser.parse("1010_a")).isNull();
+    assertThat(parser.parse("2010_2")).isNull();
+    assertThat(parser.parse("a010_2")).isNull();
+  }
+\end{lstlisting}
+
 Zusammenfassend lässt sich sagen, dass für mich die ausführlichen automatisierten Tests das Erreichen der beiden wichtigsten Ziele sichern: leichte Erweiterbarkeit und gute Lesbarkeit des Codes. Sicherlich habe ich in das Schreiben ausführlicher Tests viel Zeit investiert, wodurch ich weniger Zeit für die Entwicklung von Programmcode hatte. Ich denke aber, dass durch diese anfängliche Zeiteinbuße und bei kontinuierlicher Pflege der Tests dauerhaft viel Zeit gespart werden kann: in der Praxis habe ich schon oft erfahren, wie viel Zeit verloren gehen kann, wenn ungenügend getestet wird.
