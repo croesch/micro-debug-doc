@@ -33,6 +33,11 @@
 %	\startprintinglogo
  	\include{chapters/einleitung}\clearpage
 	\tableofcontents\clearpage
+	\printglossary\clearpage
+	\printglossary[type=\acronymtype, title={Abkürzungsverzeichnis}, toctitle={Abkürzungsverzeichnis}]\clearpage
+	\listoffigures\clearpage
+	%\listoftables\clearpage
+	\lstlistoflistings\clearpage
 	\pagenumbering{arabic}
 
 	\include{part-bedienung}\clearpage
@@ -40,11 +45,6 @@
 
 	\appendix
 	\pagenumbering{Roman}
-	\printglossary\clearpage
-	\printglossary[type=\acronymtype, title={Abkürzungsverzeichnis}, toctitle={Abkürzungsverzeichnis}]\clearpage
-	\listoffigures\clearpage
-	%\listoftables\clearpage
-	\lstlistoflistings\clearpage
 	\bibliography{bericht}\clearpage
 	\include{erklaerung}\clearpage
 
