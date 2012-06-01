@@ -1,2 +1,73 @@
 \chapter{Implementierung der Konsolenvariante}
 \chplbl{konsole}
+Das Verständnis über die Simulation der \mic{} haben wir nun erlangt und wollen uns jetzt dem \md{} selbst widmen. In den folgenden Abschnitten möchte ich in \secref{k-ablauf} zunächst skizzieren, welche Klassen im Programmablauf welche Rolle spielen. Danach möchte ich in \secref{k-konfiguration} erläutern, wie die Konfigurationsdateien gelesen werden und in \secref{k-lokalisierung} wie die Lokalisierungsdateien interpretiert werden. Am Ende dieses Kapitels möchte ich in \secref{k-packages} die einzelnen \packages{} beschreiben, damit du einen vollständigen Überblick über den Code des \md{} erhälst.
+
+\section{Programmablauf}
+\seclbl{k-ablauf}
+Nachdem Du den \md{} das ein oder andere Mal benutzt hast, ist wahrscheinlich der einfachste Einstieg in den Code am Programmablauf zu erklären. Daher möchte ich in diesem Abschnitt einige Schritte im Programmablauf aufgreifen und die beteiligten Klassen erwähnen.
+
+\subsection{Verarbeitung der Argumente}
+Wie Du an den Startskripten erkennen kannst ist die \texttt{main()}-Methode in der Klasse \klasse{MicroDebug} enthalten. In dieser Klasse wird zunächst geprüft, wie viele Argumente der Benutzer angegeben hat und dann entsprechende Aktionen eingeleitet.
+
+Wir nehmen nun an, der Benutzer möchte den \md{} starten und hat daher mindestens zwei Argumente angegeben; in diesem Fall verarbeitet die Methode \texttt{createArgumentList(String[])} in der Klasse \klasse{AArgument} die Argumente. Diese Klasse ist auch gleichzeitig die Basisklasse für alle verfügbaren Argumente. Die Argumente, die jeweils noch Parameter besitzen können, werden dann in der Methode \texttt{executeTheArguments(Map<AArgument, String[]>)} nacheinander ausgeführt.
+
+Hier wird die Methode \texttt{execute(String ...)} an jedem Argument mit den dazugehörigen Parametern ausgeführt. Diese Methode gibt einen Wahrheitswert zurück, der bestimmt, ob der \md{} nach Ausführung des Arguments starten darf oder nicht.
+
+\subsection{Aufbau der Debugumgebung}
+Nachdem die Argumente abgearbeitet wurden und der \md{} starten darf, werden die beiden Bytecode-Dateipfade eingelesen und in Objekte der Klasse \klasse{InputStream} verwandelt. Dann wird, wie im vorherigen Kapitel beschrieben, mit diesen beiden Objekten die \mic{} erzeugt. Hierbei kann es sein, dass bereits im Konstruktor eine \emph{Exception} auftritt, wenn eine der Dateien nicht das erwartete Format haben. Daher kümmert sich die Klasse \klasse{MicroDebug} auch um die Fehlerbehandlung.
+
+Ist die \mic{} erzeugt, kann nun die Umgebung des eigentlichen Debuggers gestartet werden. Hier ist die zentrale Klasse die \klasse{Debugger}: in dieser Klasse befindet sich die Schleife zum Einlesen der Benutzerinstruktionen, aber dazu im \secref{k-benutzerinstruktionen} mehr. In der Klasse \klasse{Debugger} wird auch eine Instanz der Klasse \klasse{Mic1Interpreter} erzeugt, die die eigentlichen Debug-Funktionen sammelt und delegiert. Sie dient besonders als Abstraktionsebene zwischen Benutzerinstruktionen und dem Prozessor \mic{}, so dass die \mic{} nicht mit Debug-Funktionalität gefüllt wird.
+
+Die Klasse \klasse{Mic1Interpreter} delegiert einige Funktionalität an zwei wichtige Klassen, die hier erzeugt werden: \klasse{TraceManager}, zum Beobachten von Prozessorvariablen und \klasse{MemoryInterpreter}, der eine Abstraktionsebene über der Klasse \klasse{Memory} darstellt und den Assembler-Code disassemblieren kann.
+
+
+\subsection{Verarbeitung der Benutzerinstruktionen}
+\seclbl{k-benutzerinstruktionen}
+Nachdem nun die Argumente verarbeitet wurden, die \mic{} erzeugt wurde und die Debug-Funktionen initialisiert wurden, wird in der Klasse \klasse{MicroDebug} die Methode \texttt{run()} an der Klasse \texttt{Debugger} aufgerufen und damit die Schleife für die Bearbeitung der Benutzerinstruktionen gestartet. Das Erzeugen der Benutzerinstruktionen funktioniert ähnlich, wie das Erzeugend er Argumente: die Methode \texttt{of(String)} der Klasse \klasse{UserInstruction} wandelt einen \emph{String} in eine Benutzerinstruktion um.
+
+Anschließend wird diese mit den eventuellen Parametern ausgeführt: mit der Methode \texttt{execute(Mic1Interpreter,String ...)}. Der Unterschied zu der Verarbeitung der Argument ist, dass die Benutzerinstruktionen keine Klassenhierarchie bilden, sondern in einer Enumeration implementiert sind. Demzufolge enthält die Klasse \klasse{UserInstruction} die Implementierung aller Benutzerinstruktionen -- was sie zu einer der größten und komplexesten Klassen im \md{} macht.
+
+Auch diese Methode gibt einen Wahrheitswert zurück -- dieser gibt an, ob der \md{} nach Ausführung der Benutzerinstruktion beendet werden soll oder nicht. Beendet der Benutzer den Debugger mit dem Befehl \texttt{EXIT}, dann terminiert die Methode \texttt{run()} in \klasse{Debugger} und damit auch am Ende die \texttt{main()}-Methode in \klasse{MicroDebug}.
+
+\subsection{Verarbeitung der Konfiguration}
+\seclbl{k-konfiguration}
+Der Benutzer hat (wie in \secref{konfiguration} beschrieben) die Möglichkeit, den \md{} zu konfigurieren. Das Einlesen der Konfiguration geschieht implizit, das heißt wenn die erste Konfigurationsoption benötigt wird.
+
+Das \package{} \pck{settings} enthält verschiedene Klassen, die alle einen anderen Typ von Konfigurationsoption enthalten. Diese Klassen sind als Enumerations implementiert und nutzen meist die Klasse \klasse{PropertiesProvider} -- die Klasse, die Zugriff auf die tatsächlichen Dateien hat. Dieser Mechanismus ist etwas komplex, daher möchte ich hier die einzelnen Schritte erklären, die beim Abfragen der ersten Konfigurationsoption ausgeführt werden:
+
+\begin{enumerate}
+\item An der Klasse \klasse{PropertiesProvider} wird die Methode \texttt{getInstance()} aufgerufen und damit die einzige Instanz der Klasse erzeugt.
+\item An diesem Objekt wird die Methode \texttt{get(String,String)} aufgerufen, die einen Dateinamen und den Schlüssel der Konfigurationsoption erhält.
+\item Das Objekt ruft an sich selbst \texttt{getProperties(String)} mit dem Dateinamen auf.
+\item Das Objekt hält eine \emph{Map} mit einem \emph{Properties}-Objekt für jeden Dateinamen, da diese \emph{Map} noch leer ist, wird die Methode \texttt{createNewProperties(String)} mit dem Namen der Datei aufgerufen. Diese Methode wird von jeder Unterklasse überschrieben und liest die Datei nun ein und erzeugt ein \emph{Properties}-Objekt, welches nun in die \emph{Map} gelegt wird, um bei späteren Aufrufen darauf zuzugreifen.\itmlbl{create-props}
+\item Dieses \emph{Properties}-Objekt wird nun einige Methodenaufrufe zurückgereicht und daran wird dann die Methode \emph{getProperty(String)} aufgerufen, um den Wert der Konfigurationsoption zu erhalten.
+\item Der erhaltene Wert wird nun bis in den Konstruktor der Enumeration zurückgegeben und dort auf Validität überprüft. Stellt sich heraus, dass der Wert ungültig ist, wird die Konfigurationsoption mit einem Standardwert belegt. Das Ergebnis steht dem Benutzer dann zur Verfügung.
+\end{enumerate}
+
+Die Klasse \klasse{PropertiesProvider} erbt von \klasse{APropertiesProvider}, die einige der gerade beschriebenen Funktionalität enthält. Es gibt nämlich weitere Unterklassen, die Beispielsweise Konfigurationen aus \datei{xml}en lesen.
+
+\subsection{Verarbeitung der Lokalisierung}
+\seclbl{k-lokalisierung}
+Die Verarbeitung der Lokalisierung geschieht analog zur im \secref{k-konfiguration} beschriebenen Verarbeitung der Konfiguration.
+
+Allerdings werden die Lokalisierungsdateien aus \datei{xml}en gelesen und deshalb die Klasse \klasse{XMLPropertiesProvider} genutzt. Der einzige Unterschied besteht in \itmref{create-props} des Ablaufs in \secref{k-konfiguration}: Statt einem gewöhnlichen \emph{Properties}-Objekt wird hier ein Objekt der Klasse \klasse{XMLI18nProperties} erzeugt. Diese Klasse ist für das in \secref{lokalisierung} beschriebene Verhalten verantwortlich: Im Konstruktor liest sie die Dateien von allgemein nach spezifisch und ergänzt beschreibt so die erzeugten Key/Value-Paare.
+
+\section{\packages}
+\seclbl{k-packages}
+Nachdem Du nun die Hauptklassen des \md{} kennen gelernt hast und nun einen groben Überblick über die Klassen haben solltest, möchte ich nun nochmal alle \packages{} erwähnen und kurz ihren Inhalt beschreiben. Danach solltest Du für die meisten Eigenschaften des \md{} ein Gefühl haben, wo die Implementierung zu finden ist. Der \md{} besteht aus folgenden \packages{}:
+
+\begin{description}
+\item[annotation] dieses \package{} enthält nur Annotationen. Zur Zeit \texttt{@Nullable} und \texttt{@NotNull}, die dazu genutzt werden, um Methoden zu markieren, ob sie \texttt{null} zurückgeben oder nicht. Auch Variablen können damit markiert werden, um zu definieren, ob sie den Wert \texttt{null} annehmen können oder nicht. Diese Annotationen helfen bei der Navigation durch den Code, denn einmal analysiert und markiert erspart man sich beim nächsten Betrachten der Methode die Analyse.
+\item[argument] enthält die Klasse \klasse{AArgument} und ihre Unterklassen -- somit alle möglichen Argumente des \md{}.
+\item[commons] enthält Klassen, die nicht zugeordnet werden konnten. Beispielsweise \klasse{Reader} und \klasse{Printer}, die für die Ein- und Ausgabe des \md{} verantwortlich sind. Auch die Klasse \klasse{Utils} befindet sich hier -- sie enthält einige Methoden, die keinem genauen Objekt und keiner Klasse zugeordnet werden konnten, wie beispielsweise die Methode \texttt{toBinaryString(int)}, die eine Zahl in eine Zeichenkette wandelt, die die Binärrepresentation der Zahl darstellt.
+\item[console] enthält die Debug-Klassen, die speziell für die Benutzung per Konsole konzipiert sind. Hier sind die Klassen \klasse{Debugger}, \klasse{UserInstruction} und \klasse{Mic1Interpreter} zu finden.
+\item[debug] enthält Klassen, die mit Breakpoints zu tun haben. Hier sind sowohl der \klasse{BreakpointManager} zu finden, als auch die verschiedenen Unterklassen von \klasse{Breakpoint}, die die verschiedenen Breakpoints darstellen. Diese Unterklassen von \klasse{Breakpoint} müssen nur in dem \package{} sichtbar sein -- für den \klasse{BreakpointManager}.
+\item[error] enthält eigene \emph{Exceptions}.
+\item[i18n] enthält die Enumeration \klasse{Text}, die die Klasse \klasse{XMLPropertiesProvider} nutzt, um Textkonstanten aus den Lokalisierungsdateien zu lesen und im ganzen Programm verfügbar zu machen.
+\item[mic1] wie in \chpref{prozessor} beschrieben.
+\item[parser] enthält das Interface \klasse{IParser} und dessen Unterklassen: \klasse{IntegerParser} und \klasse{RegisterParser}, die aus Zeichenketten das entsprechende Objekt parsen. \klasse{IntegerParser} liest beispielsweise Zahlen ein nach dem in \secref{zahlenformat} beschriebenen Zahlenformat und gibt ein \emph{Integer}-Objekt zurück.
+\item[properties] enthält die Logik, wie Konfigurationsdateien einzulesen und zu speichern sind. Hier sind beispielsweise die Klassen \klasse{APropertiesProvider}, \klasse{PropertiesProvider}, \klasse{XMLPropertiesProvider} und \klasse{XMLI18nProperties} zu finden.
+\item[settings] enthält verschiedene Einstellungs-Enumerationen, zur Zeit eine für intern und eine vom Benutzer zu ändernde. Angedacht ist, dass künftig in der Datei \texttt{micro-debug.properties} nicht nur ganzzahlige Einstellungen stattfinden, sondern auch Wahrheitswerte oder Farbeinstellungen. Jeder Datentyp hätte dann in diesem \package{} eine Klasse, die alle auf die selbe Datei zugreifen. So wäre intern die Typsicherheit gewährleistet und der Benutzer hätte in einer einzigen Datei alle Einstellungen, die er je nach Konfigurationsoption mit Zahlenwerten, Wahrheitswerten oder sonstigem angibt.
+
+Für jeden Datentyp kann hier eine eigene Enumeration genutzt werden, die eine Unterklasse von \klasse{PropertiesProvider} nutzt, da diese Klasse wie in \secref{k-konfiguration} beschrieben die Dateien in einem Zwischenspeicher hält. Dadurch wird jede Konfigurationsdatei nur einmal gelesen und kann dann von den verschiedenen Einstellungs-Enumerationen ausgewertet werden -- jede Enumeration nutzt die Werte aus der Datei, die sie selbst benötigt.
+\end{description}
