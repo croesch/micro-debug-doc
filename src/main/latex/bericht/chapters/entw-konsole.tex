@@ -14,6 +14,7 @@ Wir nehmen nun an, der Benutzer möchte den \md{} starten und hat daher mindeste
 Hier wird die Methode \texttt{execute(String ...)} an jedem Argument mit den dazugehörigen Parametern ausgeführt. Diese Methode gibt einen Wahrheitswert zurück, der bestimmt, ob der \md{} nach Ausführung des Arguments starten darf oder nicht.
 
 \subsection{Aufbau der Debugumgebung}
+\seclbl{k-aufbau-debugger}
 Nachdem die Argumente abgearbeitet wurden und der \md{} starten darf, werden die beiden Bytecode-Dateipfade eingelesen und in Objekte der Klasse \klasse{InputStream} verwandelt. Dann wird, wie im vorherigen Kapitel beschrieben, mit diesen beiden Objekten die \mic{} erzeugt. Hierbei kann es sein, dass bereits im Konstruktor eine \emph{Exception} auftritt, wenn eine der Dateien nicht das erwartete Format haben. Daher kümmert sich die Klasse \klasse{MicroDebug} auch um die Fehlerbehandlung.
 
 Ist die \mic{} erzeugt, kann nun die Umgebung des eigentlichen Debuggers gestartet werden. Hier ist die zentrale Klasse die \klasse{Debugger}: in dieser Klasse befindet sich die Schleife zum Einlesen der Benutzerinstruktionen, aber dazu im \secref{k-benutzerinstruktionen} mehr. In der Klasse \klasse{Debugger} wird auch eine Instanz der Klasse \klasse{Mic1Interpreter} erzeugt, die die eigentlichen Debug-Funktionen sammelt und delegiert. Sie dient besonders als Abstraktionsebene zwischen Benutzerinstruktionen und dem Prozessor \mic{}, so dass die \mic{} nicht mit Debug-Funktionalität gefüllt wird.
