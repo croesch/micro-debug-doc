@@ -1,8 +1,67 @@
-\chapter{Prozessor Mic1}
-\label{prozessor}
+\chapter{Implementierung der \mic}
+\chplbl{prozessor}
+Nachdem Dir nun die Werkzeuge vertraut sind, wollen wir uns dem Code widmen. Der erste Schritt für den \md{} ist die Simulation der \mic{}, erst wenn das zufriedenstellend funktioniert, kann man die Debug-Funktionen entwickeln. Wir werden uns daher in diesem Kapitel die Implementierung des Prozessors anschauen und welche Besonderheiten es gibt.
+
+Für die Implementierung der \mic{} ist es nötig, sich ein Abstraktionsniveau auszusuchen, auf dem implementiert wird. Wir werden in den folgenden Abschnitten sehen, dass ich mich zu einer relativ hardwarenahen Implementierung entschieden habe. Daher habe ich zunächst folgende zu implementierende Komponenten identifiziert: die \gls{alu} inklusive Shifter, die Register, der Mikro-Code-Speicher inklusive der darin abgelegten Instruktionen und der Hauptspeicher.
+
+Aufgrund der \mvn\notiz{maven Referenz?}-Architektur liegt der Java\notiz{Java Referenz?}-Code in dem Verzeichnis \texttt{src/main/java/} und die entsprechenden Tests dazu in \texttt{src/test/java/}. In diesen Verzeichnissen findest du eine \package-Struktur, die unter dem \package{} \pck{com.github.croesch.micro_debug} beginnt, alle Klassen des \md{} sind in diesem \package{} oder in \subpackages{} zu finden.
+
+Auch der Code für die \mic{} befindet sich in einem solchen \subpackage: \pck{com.github.croesch.micro_debug.mic1}. In diesem Verzeichnis gibt es die Klasse \klasse{Mic1}, die wir uns in \secref{mic-zusammensetzung} genauer anschauen werden. Alle weiteren Klassen, die den \mic{} bilden sind in folgenden \subpackages{} zu finden:
+\begin{description}
+\item[alu] bildet die \gls{alu} ab und ist in \secref{mic-alu} beschrieben.
+\item[api] enthält einige Interfaces, um die Implementierung der \mic{} unabhängig gestalten zu können.
+\item[controlstore] bildet den Mikro-Code-Speicher und die Mikro-Instruktionen ab und ist in \secref{mic-instructions} beschrieben.
+\item[io] bildet die Ein- und Ausgabe der \mic{} ab. Die Klasse \klasse{Input} dient zum Einlesen einzelner Zeichen und enthält einen Puffer, der die noch nicht von der \mic{} gelesenen Zeichen enthält, da vom Benutzer nur zeilenweise Eingaben gemacht werden können.
+
+Die Klasse \klasse{Output} dient zur Ausgabe einzelner Zeichen und puffert, falls die Ausgabe gepuffert erfolgen soll, die ausgegebenen Zeichen bis ein Zeilenumbruch ausgegeben wird.
+\item[mem] bildet den Hauptspeicher ab und ist in \secref{mic-mem} beschrieben.
+\item[mpc] bildet die Komponenten ab, die zusammen für die Berechnung des nächsten \gls{mpc} verantwortlich sind und ist in \secref{mic-mpc} beschrieben.
+\item[register] bildet die Register der \mic{} ab und ist in \secref{mic-register} beschrieben.
+\item[shifter] bildet den Shifter ab und ist in \secref{mic-alu} beschrieben.
+\end{description}
+
+Durch die \package-Struktur solltest Du schon einen groben Einblick haben, wo welche Komponenten implementiert sind. Zum besseren Verständnis möchte ich nun nochmal die Hardware-Komponenten der \mic{} betrachten und ihre Implementierungen beschreiben.
+
 \section{ALU}
-\section{MPC-Berechnung}
-\section{Mic1-Instruktionen}
+\seclbl{mic-alu}
+Die \gls{alu} der \mic{} setzt sich aus 32~Ein-Bit-\gls{alu}s zusammen, so ist die \gls{alu} auch implementiert. Die Klasse \klasse{Alu} benutzt 32~Instanzen der Klasse \klasse{OneBitAlu}, zur Berechnung der Ausgabewerte -- damit ist die \gls{alu} die Komponente, die am hardwarenahesten implementiert ist.
+
+Die Klasse besitzt eine Methode \texttt{calculate()}, in der aus den Eingangssignalen das Ausgangssignal der \gls{alu} berechnet wird. Dieses Signal wird an den Shifter weitergeleitet, die Klasse \klasse{Shifter} im gleichnamigen \package{} bildet diese Funktionalität ab und besitzt ebenso eine Methode \texttt{calculate()}, um die Verarbeitung der Signale anzustoßen.
+
+Die Berechnung der \gls{alu} und des Shifters werden bei jedem Zyklus der \mic{} angestoßen. Durch die sehr hardwarenahe Implementierung bilden sie daher vermutlich ein Performanzengpass zur Laufzeit des \md.
+
 \section{Register}
+\seclbl{mic-register}
+Die Dateneingänge der \gls{alu} wird mit den Inhalten zweier Register gefüllt und das Ergebnis des Shifters wird wiederum in verschiedene Register geschrieben. Die Register sind im \md{} als Enumeration \klasse{Register} im gleichnamigen \package{} implementiert. Sie erfüllen lediglich die Aufgabe einer 32~Bit Variable.
+
+Das Register \reg{MBR} kann im \mic{} mit oder ohne Vorzeichenerweiterung gelesen werden. Dieses Verhalten ist im \md{} dadurch realisiert, dass es ein Register \reg{MBR} und ein Register \reg{MBRU} gibt. \reg{MBRU} enthält daher den Wert ohne Vorzeichenerweiterung und das Register \reg{MBR} enthält den Wert mit Vorzeichenerweiterung. Bei der Vorzeichenerweiterung wird wie bei der \mic{} davon ausgegangen, dass der ursprüngliche Wert in 8~Bit vorlag.
+
+Dass die Register als Enumeration implementiert sind hat den Vorteil, dass man von allen Klassen leicht auf die Register zugreifen kann, aber den Nachteil, dass allein durch die Code-Struktur nicht deutlich wird, zu welcher logischen Einheit die Register gehören.
+
+\section{Mic1-Instruktionen}
+\seclbl{mic-instructions}
+Welche Berechnung mit welchen Registerwerten ausgeführt wird und in welches Register das Ergebnis geschrieben wird, regeln die Signale der Mikro-Instruktionen. Die Mikro-Instruktionen (\klasse{MicroInstruction}) sind im Mikro-Code-Speicher (\klasse{MicroControlStore}) abgelegt.
+
+Zur besseren Lesbarkeit des Codes nutzt die Implementierung der Mikro-Instruktion Unterklassen von \klasse{SignalSet}, um die verschiedenen Signale zu gruppieren. Die Darstellung der Mikro-Instruktion für den Benutzer ist in der Klasse \klasse{MicroInstructionDecoder} implementiert. Wie wird eine Mikro-Instruktion erzeugt? Der Mikro-Code-Speicher ist in der \datei{mic1} definiert; aus dieser Datei kann die Klasse \klasse{MicroInstructionReader} einzelne Mikro-Instruktionen erzeugen.
+
+Meine Implementierung der Mikro-Instruktion, der Darstellung einer Mikro-Instruktion und dem Einlesen einer Mikro-Instruktion basieren auf der Implementierung von Ray Ontko\notiz{Verweis}, der einen Simulator für die \mic{} in Java entwickelt hat.
+
+\section{MPC-Berechnung}
+\seclbl{mic-mpc}
+Der \gls{mpc} bestimmt, welche Mikro-Instruktion im nächsten Zyklus ausgeführt werden soll. In der \mic{} sind mehrere Komponenten gemeinsam für die Berechnung des \gls{mpc} verantwortlich. Diese verschiedenen Komponenten habe ich in der Klasse \klasse{NextMPCCalculator} zusammengefügt; auch hier gibt es eine Methode \texttt{calculate()} zum Verarbeiten der Eingangssignale.
+
 \section{Hauptspeicher}
+\seclbl{mic-mem}
+Der Stack, der Assembler-Code und die Konstanten liegen im Hauptspeicher, mit diesem kommuniziert die \mic{} über die Register \reg{MAR}, \reg{MDR}, \reg{MBR} und \reg{PC}. Der Hauptspeicher ist in der Klasse \klasse{Memory} implementiert, der Speicher selbst ist in einem \emph{int}-Array abgebildet, weswegen der Hauptspeicher im \md{} wortweise adressiert wird.
+
+Die Assembler-Instruktionen im Hauptspeicher sind nicht so sauber implementiert wie die Mikro-Instruktionen: sie sind im \emph{int}-Array abgelegt. Lediglich für das disassemblieren werden die Zahlenwerte anhand der \texttt{ijvm.conf} durch den \klasse{IJVMConfigReader} in Instruktionsobjekte (\klasse{IJVMCommand} inklusive \klasse{IJVMCommandArgument}) gepackt.
+
 \section{Zusammensetzung der Komponenten}
+\seclbl{mic-zusammensetzung}
+Die einzelnen Komponenten werden in der Klasse \klasse{Mic1} zusammengeführt und von außen als ein Prozessor gesehen. Lediglich für gewisse Debug-Funktionen ist der Zugriff auf einzelne Komponenten, wie beispielsweise die Register, zugelassen.
+
+Die Klasse \klasse{Mic1} wird mit bekommt zwei Objekte der Klasse \klasse{InputStream} -- eines enthält den Mikro-Assembler- und das andere den Assembler-Bytecode. Mit diesen beiden Objekten wird dann der Mikro-Code-Speicher und der Hauptspeicher erzeugt, die jeweils selbst verantwortlich für das Lesen des Bytecodes sind. Stimmt eine \emph{magic number} nicht, oder sind die Eingabedateien aus anderen Gründen ungültig, wird eine \emph{Exception} geworfen.
+
+Auf die einzelnen Methoden möchte ich hier nicht eingehen, aber eine Methode sei hier erwähnt: In der Methode \texttt{doTick()} wird ein einzelner Zyklus der \mic{} ausgeführt. Diese Methode ist nur für Testzwecke sichtbar und wird von außen über die Methoden \texttt{run()}, \texttt{step()} und \texttt{microStep()} aufgerufen, die unterschiedlich viele Zyklen aufeinmal abarbeiten lassen.
+
+Aufgrund der gesammelten Funktionalität ist die Klasse \klasse{Mic1} eine der größten und damit komplexesten im \md{}.
