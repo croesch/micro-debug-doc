@@ -1,6 +1,6 @@
 \chapter{Implementierung der \mic}
 \chplbl{prozessor}
-Nachdem Dir nun die Werkzeuge vertraut sind, wollen wir uns dem Code widmen. Der erste Schritt für den \md{} ist die Simulation der \mic{}, erst wenn das zufriedenstellend funktioniert, kann man die Debug-Funktionen entwickeln. Wir werden uns daher in diesem Kapitel die Implementierung des Prozessors anschauen und welche Besonderheiten es gibt.
+Nachdem wir nun die Vorteile der automatisierten Tests kennen gelernt haben, wollen wir uns nun dem Code widmen. Der erste Schritt bei der Implementierung des \md{} ist die Simulation der \mic{}, erst wenn dies zufriedenstellend funktioniert, können wir die Debug-Funktionen entwickeln. Wir werden uns daher in diesem Kapitel die Implementierung des Prozessors anschauen und welche Besonderheiten es gibt.
 
 Für die Implementierung der \mic{} ist es nötig, sich ein Abstraktionsniveau auszusuchen, auf dem implementiert wird. Wir werden in den folgenden Abschnitten sehen, dass ich mich zu einer relativ hardwarenahen Implementierung entschieden habe. Daher habe ich zunächst folgende zu implementierende Komponenten identifiziert: die \gls{alu} inklusive Shifter, die Register, der Mikro-Code-Speicher inklusive der darin abgelegten Instruktionen und der Hauptspeicher.
 

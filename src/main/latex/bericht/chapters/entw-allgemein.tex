@@ -1,0 +1,27 @@
+\chapter{Automatisierte Tests}
+\chplbl{entw-allg}
+Nachdem Du nun mit den Werkzeugen vertraut bist, die für das Entwickeln am \md{} und der \mdg{} gebraucht werden, möchte ich einen wichtigen Aspekt ansprechen -- automatisierte Tests in dieser Arbeit.
+
+Bei der Implementierung dieser Arbeit sollte besonderen Wert auf die Erweiterbarkeit gelegt werden. Andere Studenten sollen sich in den Code einarbeiten, zusätzliche Funktionen implementieren und bestehende Funktionen abändern können.
+
+Obwohl ich in meinem Studium gelernt habe, wie man ein Softwareprojekt plant und dadurch die optimale Struktur erhält, ist es mir bei der Entwicklung dieser Arbeit nicht gelungen vorher die optimale Struktur zu entwerfen. Immer wieder bin ich auf Probleme gestoßen, die es erforderten, den vorhandenen Code zu refaktorieren -- die Struktur anzupassen:
+
+\begin{quote}
+  ``\textbf{Refactoring} (noun): a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior.'' --- \cite[S.~53]{Fowler1999}
+\end{quote}
+
+Ich gehe davon aus, dass Refaktorierung am \md{} und der \mdg{} auch in Zukunft eine wichtige Rolle spielen wird; besonders, wenn weitere Student mitentwickeln. Martin~Fowler schreibt an anderer Stelle nochmal deutlich, dass die Refaktorierung die Qualität des Codes nicht durch das Ändern des Verhaltens verbessert:
+
+\begin{quote}
+  ``So, we want programs that are easy to read, that have all logic specified in one and only one place, that do not allow changes to endanger existing behavior, and that allow conditional logic to be expressed as simply as possible.
+
+  Refactoring is the process of taking a running program and adding to its value, not by changing its behavior but by giving it more of these qualities that enable us to continue developing at speed.'' --- \cite[S.~60]{Fowler1999}
+\end{quote}
+
+Wie stellen wir sicher, dass wir durch Refaktorierung das Verhalten des Codes nicht manipulieren? Wir schreiben automatisierte Tests: Ausführlichen automatisierte Tests geben uns die nötige Sicherheit für die Refaktorierung, die wiederum die Lesbarkeit und Erweiterbarkeit des Codes steigert -- unsere zwei wichtigsten Ziele in dieser Arbeit.
+
+Für den \md{} und die \mdg{} habe ich für nahezu jede Klasse automatisierte Tests geschrieben, die Du im Verzeichnis \texttt{src/test/java/} findest. Jede Testklasse liegt im selben \package{} wie die zu testende Klasse und trägt den selben Namen, allerdings um das Suffix \emph{Test} erweitert.
+
+Die Tests sind nicht nur indirekt über die Refaktorierung eine gute Möglichkeit, den Code besser zu verstehen: Möchte man das Verhalten oder die Funktion einer Klasse verstehen, sind die automatisierten Tests der entsprechenden Testklasse ein guter Anlaufpunkt. Denn in jedem Test werden für verschiedene Eingaben die erwarteten Ausgaben beschrieben und dadurch gezeigt, wie sich die Klasse verhalten soll.
+
+Zusammenfassend lässt sich sagen, dass für mich die ausführlichen automatisierten Tests das Erreichen der beiden wichtigsten Ziele sichern: leichte Erweiterbarkeit und gute Lesbarkeit des Codes. Sicherlich habe ich in das Schreiben ausführlicher Tests viel Zeit investiert, wodurch ich weniger Zeit für die Entwicklung von Programmcode hatte. Ich denke aber, dass durch diese anfängliche Zeiteinbuße und bei kontinuierlicher Pflege der Tests dauerhaft viel Zeit gespart werden kann: in der Praxis habe ich schon oft erfahren, wie viel Zeit verloren gehen kann, wenn ungenügend getestet wird.
