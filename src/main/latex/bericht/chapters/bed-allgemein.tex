@@ -1,18 +1,18 @@
 \chapter{Allgemein}
-\label{allgemein}
+\chplbl{allgemein}
 Sowohl die Konsolenvariante als auch die grafische Oberfläche des \md{} benötigen keine Installation; sie werden beide als \texttt{.zip}-Archiv heruntergeladen und sind direkt nach dem Entpacken nutzbar. Die Datei heiß üblicherweise \texttt{micro-debug-version.zip} und enthält mehrere Dateien:
 
 \begin{description}
 \item[micro-debug-version.jar] enthält den Programmcode des Debuggers und kann mit dem Befehl \texttt{\$ java -jar} ausgeführt werden.\notiz{Debugger und \md{} synonym verwenden?}
 \item[micro-debug.sh und micro-debug.bat] sind die Startskripte des \md{} für Windows und Linux. Der \md{} kann durch Ausführen dieser Skripte gestartet werden -- der Benutzer muss sich dadurch nicht um die Konfiguration des Klassenpfades kümmern. Die Startskripte sind so geschrieben, dass sie von beliebigen Orten ausgeführt werden können. Der Benutzer kann den Debugger also von vielen Arbeitsverzeichnissen aus aufrufen und hat die Konfigurationsdateien nur an einer Stelle zu pflegen.
-\item[config/micro-debug.properties] ist die Konfigurationsdatei für den \md{}, hier kann beispielsweise die Größe des Hauptspeichers konfiguriert werden -- siehe Abschnitt \ref{konfiguration}.
-\item[config/logging.properties] ist die Konfigurationsdatei für das Logging des \md{} -- hier kann der Benutzer definieren, ob und welche Ausgaben auf der Konsole oder in einer Datei erscheinen sollen -- siehe Abschnitt \ref{logs}.
-\item[config/lang/] enthält die Textressourcen des \md{} -- siehe Abschnitt \ref{lokalisierung}.\notiz{Ressource/Resource?}
+\item[config/micro-debug.properties] ist die Konfigurationsdatei für den \md{}, hier kann beispielsweise die Größe des Hauptspeichers konfiguriert werden -- siehe \secref{konfiguration}.
+\item[config/logging.properties] ist die Konfigurationsdatei für das Logging des \md{} -- hier kann der Benutzer definieren, ob und welche Ausgaben auf der Konsole oder in einer Datei erscheinen sollen -- siehe \secref{logs}.
+\item[config/lang/] enthält die Textressourcen des \md{} -- siehe \secref{lokalisierung}.\notiz{Ressource/Resource?}
 \item[lib/] enthält die verwendeten Bibliotheken, zur Zeit nur in der \mdg{} verwendet.
 \end{description}
 
 \section{Systemvoraussetzungen}
-\label{systemvoraussetzungen}
+\seclbl{systemvoraussetzungen}
 Der \md{} ist in Java geschrieben und daher prinzipiell an keine spezielle Plattform gebunden. Voraussetzung für die Nutzung des \md{} ist lediglich Java~5.
 
 In der Praxis differenzieren sich die verschiedenen Plattformen, auf denen Java verfügbar ist, in einigen Feinheiten. Daher ist es prinzipiell möglich, dass sich der \md{} auf gewissen Plattformen nicht wie gewünscht verhält. Wie anhand der Startskripte zu erkennen ist, wurde der \md{} im Blick auf Linux und Windows entwickelt und darauf getestet; um den \md{} auf einer weiteren Plattform zu nutzen, muss zumindest das Startskript eigenständig geschrieben werden.
@@ -20,28 +20,28 @@ In der Praxis differenzieren sich die verschiedenen Plattformen, auf denen Java 
 Die Konsolenvariante nutzt bislang einen Thread, die Version des \md{} mit grafischer Oberfläche mindestens zwei (wie Kapitel/Abschnitt X beschrieben\notiz{Verweis auf Kapitel einfügen}), die allerdings selten parallel arbeiten. Für die Ausführungsgeschwindigkeit des \md{} ist die Anzahl der verfügbaren Prozessorkerne daher irrelevant.
 
 \section{Konfiguration}
-\label{konfiguration}
+\seclbl{konfiguration}
 Wie oben bereits angedeutet findet die Konfiguration des \md{} in \datei{properties}en statt. Die Konfigurationsdatei für den \md{} ist die Datei \texttt{config/micro-debug.properties} -- wie in \datei{properties}en üblich, werden hier Key/Value\notiz{Key/value!?}-Paare hinterlegt.
 
-\begin{lstlisting}[language=sh,caption={Eintrag in \texttt{conf/micro-debug.properties}},label=lst:md-props-entry]
+\begin{lstlisting}[language=sh,caption={Eintrag in \texttt{conf/micro-debug.properties}},label=\lstlbl{md-props-entry}]
 # default value for the register CPP
 mic1.register.cpp.defval = 0x4000
 \end{lstlisting}
 
-Listing \ref{lst:md-props-entry} zeigt einen beispielhaften Eintrag in der Konfigurationsdatei: Den Startwert für das Register CPP\notiz{Register Befehl erstellen?}. Diese Datei kann für jeden Schlüssel genau einen Wert enthalten, ist für einen Schlüssel kein Wert konfiguriert oder ist ein ungültiger Wert konfiguriert, nutzt der Debugger den Standardwert für den jeweiligen Schlüssel.\notiz{Prüfen und ggf. einfügen, dass fallback anständig geloggt wird und das dann hier auch erwähnen.}
+\lstref{md-props-entry} zeigt einen beispielhaften Eintrag in der Konfigurationsdatei: Den Startwert für das Register CPP\notiz{Register Befehl erstellen?}. Diese Datei kann für jeden Schlüssel genau einen Wert enthalten, ist für einen Schlüssel kein Wert konfiguriert oder ist ein ungültiger Wert konfiguriert, nutzt der Debugger den Standardwert für den jeweiligen Schlüssel.\notiz{Prüfen und ggf. einfügen, dass fallback anständig geloggt wird und das dann hier auch erwähnen.}
 
 Dadurch ist es möglich ein Update des \md{} durch die Ersetzung der \datei{jar} zu realisieren. Denn vom Benutzer geänderte Werte müsste er in der neuen Version wieder mühsam nachpflegen; das Nutzen von Standardwerten bei fehlenden Konfigurationseinträgen ermöglicht es dem Benutzer seine persönliche Konfigurationsdatei von Version zu Version des \md{} zu behalten.\notiz{Überlegen, ob nicht irgendwo ein Update-Abschnitt sinnvoll ist}
 
 \subsection{Zahlenformat}
-\label{zahlenformat}
+\seclbl{zahlenformat}
 \notiz{Wahrscheinlich ist es sinnvoll in den properties Dateien einzutragen, von welchem Typ ein Schlüssel sein soll und dies dann hier auch zu notieren}.
-In Listing \ref{lst:md-props-entry} ist zu sehen, wie dem Register CPP der Standardwert \texttt{0x4000} zugewiesen wird -- hier hexadezimal notiert. Andere Konfigurationseinträge sind dezimal eingetragen; welches Zahlenformat ist nun wo anzuwenden?
+In \lstref{md-props-entry} ist zu sehen, wie dem Register CPP der Standardwert \texttt{0x4000} zugewiesen wird -- hier hexadezimal notiert. Andere Konfigurationseinträge sind dezimal eingetragen; welches Zahlenformat ist nun wo anzuwenden?
 
 Für den \md{} ist es irrelevant, welches Zahlenformat bei welchem Eintrag verwendet wird. Er parst die gegebene Zahl und wandelt sie in ein Integer um, dadurch kann der Benutzer für jeden Eintrag das passende Zahlenformat wählen.
 
 Welche Zahlenformate gibt es außer dezimal und hexadezimal? Der \md{} unterstützt alle Zahlensysteme mit der Grundzahl von $b=2$ bis $b=36$. Generell werden die Zahlen in der Art \texttt{ZAHL\_BASIS} angegeben -- \texttt{ZAHL} wird in dem jeweiligen Zahlensystem und \texttt{BASIS} im Dezimalsystem angegeben.
 
-Für die wohl am häufigsten verwendeten Zahlensysteme gibt es die in Tabelle \ref{vereinfachungen-zahlenformate} dargestellten Vereinfachungen -- diese Vereinfachungen sind aber nicht verpflichtend, sowohl \texttt{A\_16} als auch \texttt{0xA} ist zulässig.
+Für die wohl am häufigsten verwendeten Zahlensysteme gibt es die in \tabref{vereinfachungen-zahlenformate} dargestellten Vereinfachungen -- diese Vereinfachungen sind aber nicht verpflichtend, sowohl \texttt{A\_16} als auch \texttt{0xA} ist zulässig.
 
 \begin{table}[h]
   \centering
@@ -56,11 +56,11 @@ Für die wohl am häufigsten verwendeten Zahlensysteme gibt es die in Tabelle \r
     \hline
   \end{tabular}
   \caption{Vereinfachungen typischer Zahlenformate im \md{}}
-  \label{vereinfachungen-zahlenformate}
+  \tablbl{vereinfachungen-zahlenformate}
 \end{table}
 
 \subsection{Logs}
-\label{logs}
+\seclbl{logs}
 Im Optimalfall ist sowohl der \md{} als auch der Benutzer fehlerfrei. Da dies in der Praxis selten beobachtet wird, ist oftmals Fehleranalysen nötig. Log-Ausgaben protokollieren vermeintlich wichtige Vorgänge für solche Analysen und sind daher ein guter Ansatzpunkt, um die Fehlerursache zu finden.
 
 Der \md{} wird im Startskript so gestartet, dass die Log-Konfiguration aus der Datei \texttt{conf/logging.properties} genutzt wird. Die genaue Syntax und Semantik der Konfigurationseinträge ist hier und hier \notiz{TODO} beschrieben.
@@ -70,7 +70,7 @@ Der \md{} wird im Startskript so gestartet, dass die Log-Konfiguration aus der D
 Standardmäßig werden von \md{} alle Log-Ausgaben mit der Wichtigkeit \texttt{INFO} oder höher in Dateien geschrieben, die im home-Verzeichnis des Benutzers liegen. Die verschiedenen Log-Level sind von wichtig absteigend \texttt{SEVERE}, \texttt{WARNING}, \texttt{INFO}, \texttt{CONFIG}, \texttt{FINE}, \texttt{FINER} und \texttt{FINEST}.
 
 \subsection{ijvm.conf}
-\label{ijvm-conf}
+\seclbl{ijvm-conf}
 Der \md{} ist so konstruiert, dass er theoretisch für beliebige Assembler als Debugger dienen kann. Allerdings wird der \md{} in der Praxis wohl vorwiegend mit IJVM-Assembler genutzt. Um diesen Assembler disassemblieren zu können, gibt es eine Konfigurationsdatei -- die \texttt{ijvm.conf}. Damit der \md{} einen gewissen Standardsatz an Befehlen versteht, wird diese Datei im \texttt{.jar}-Archiv ausgeliefert.
 
 Möchte der Benutzer diese Datei anpassen genügt es, die neue Version der Datei im Verzeichnis \texttt{conf/} abzulegen; durch das Startskript wird sie dann auf dem Klassenpfad vor der entsprechenden Datei im \texttt{.jar}-Archiv geladen und ersetzt diese somit.
@@ -100,7 +100,7 @@ Die Datei ist zeilenweise zu lesen, wobei eine Zeile nach folgendem Format aufge
 \end{grammar}
 
 \section{Lokalisierung}
-\label{lokalisierung}
+\seclbl{lokalisierung}
 Die Ausgaben des \md{} wurden in Englisch geschrieben -- weitere Sprachen können leicht über das Verzeichnis \texttt{conf/lang/} hinzugefügt werden.
 
 In diesem Verzeichnis liegen verschiedene \datei{xml}, die dazu dienen, dem Benutzer Ausgaben in seiner Landessprache anzuzeigen. Die Sprache, die der Benutzer angezeigt bekommt, hängt von der Locale-Einstellung des Computers ab.
@@ -115,11 +115,11 @@ Der \md{} sucht dann für diese Sprache folgende vier Dateien, die Key/Value-Paa
 
 Der Aufbau dieser vier Dateien ist hierarschich, ein Schlüssel, der in der spezifischsten Datei gefunden wurde, wird aus den anderen Dateien nicht mehr ausgewertet. Anhand eines Beispiels soll diese Funktionalität genauer erläutert werden:
 
-Gegeben seien die drei Dateien aus Listing \ref{lst:locale-file-de-de}, \ref{lst:locale-file-de} und \ref{lst:locale-file}. Listing \ref{lst:locale-result} zeigt das Ergebnis nach der Auswertung dieser drei Dateien. Es ist zu sehen, wie die Einträge sich überschreiben -- ein Benutzer mit englischem Locale würde in diesem Beispiel den Eintrag für \texttt{border2} nicht erhalten und hätte dafür keinen definierten Wert.
+Gegeben seien die drei Dateien aus \lstref{locale-file-de-de}, \lstref{locale-file-de} und \lstref{locale-file}. \lstref{locale-result} zeigt das Ergebnis nach der Auswertung dieser drei Dateien. Es ist zu sehen, wie die Einträge sich überschreiben -- ein Benutzer mit englischem Locale würde in diesem Beispiel den Eintrag für \texttt{border2} nicht erhalten und hätte dafür keinen definierten Wert.
 
 Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig verändert werden.
 
-\begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text_de_DE.xml}},label=lst:locale-file-de-de]
+\begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text_de_DE.xml}},label=\lstlbl{locale-file-de-de}]
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
@@ -128,7 +128,7 @@ Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig veränder
 </properties>
 \end{lstlisting}
 
-\begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text_de.xml}},label=lst:locale-file-de]
+\begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text_de.xml}},label=\lstlbl{locale-file-de}]
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
@@ -137,7 +137,7 @@ Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig veränder
 </properties>
 \end{lstlisting}
 
-\begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text.xml}},label=lst:locale-file]
+\begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text.xml}},label=\lstlbl{locale-file}]
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
@@ -147,7 +147,7 @@ Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig veränder
 </properties>
 \end{lstlisting}
 
-\begin{lstlisting}[language=XML,caption={Beispiel für Ergebnis nach Verarbeitung der Lokalisierungsdateien},label=lst:locale-result]
+\begin{lstlisting}[language=XML,caption={Beispiel für Ergebnis nach Verarbeitung der Lokalisierungsdateien},label=\lstlbl{locale-result}]
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>

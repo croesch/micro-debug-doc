@@ -1,5 +1,5 @@
 \chapter{Interaktion per GUI}
-\label{bed-gui}
+\chplbl{bed-gui}
 Der zweite Teil der Aufgabe war es, eine grafische Oberfläche für den \md{} zu entwickeln -- die \mdg{}. Wie diese bedient wird, worauf Du achten solltest und wie sich die \mdg{} vom \md{} unterscheidet werde ich in diesem Kapitel erläutern. Am Ende des Kapitels biete ich wie für den \md{} ein Tutorial an, welches Dir die Funktionsweise der \mdg{} an einem Beispiel nahebringen soll.
 
 Auch die \mdg{} erfordert keine Installation und besteht nur aus einer \datei{zip}, die Du entpacken musst. Die Schritte vom Herunterladen bis zum Starten der \mdg{} sind dabei analog zum \md{}:
@@ -11,14 +11,14 @@ Auch die \mdg{} erfordert keine Installation und besteht nur aus einer \datei{zi
 \item Die \mdg{} starten -- mit \texttt{\$ micro-debug-gui.sh -{}-help}
 \end{enumerate}
 
-Die grafische Oberfläche ist technisch eine eigenständige Anwendung, die die Konsolenvariante benutzt -- wie ich in Kapitel \ref{gui} erläutere. Demzufolge enthält die grafische Oberfläche auch den Code der Konsolenvariante des \md{} -- dadurch kannst Du mit ein wenig Anpassung auch die Konsolenvariante nutzen. Dies möchte ich nun kurz etwas vertiefen.
+Die grafische Oberfläche ist technisch eine eigenständige Anwendung, die die Konsolenvariante benutzt -- wie ich in \chpref{gui} erläutere. Demzufolge enthält die grafische Oberfläche auch den Code der Konsolenvariante des \md{} -- dadurch kannst Du mit ein wenig Anpassung auch die Konsolenvariante nutzen. Dies möchte ich nun kurz etwas vertiefen.
 
 \section{Nutzung der Konsolenvariante}
 Nach dem Entpacken der \datei{zip} entsteht eine ähnliche Verzeichnis-Struktur, wie beim \md{}. Allerdings existiert nun das Verzeichnis \texttt{lib/}, das unter anderem eine \datei{jar} beinhaltet, die den Code des \md{} enthält -- die Datei \texttt{micro-debug-version.jar}.
 
-Ich möchte nun zeigen, wie man die \mdg{} so ergänzt, dass sowohl die \mdg{} als auch der \md{} aufrufbar sind. Da dieses Verhalten für Windows und Linux analog ist, zeige ich es am Beispiel von Linux, wie in Listing \ref{lst:parallele-nutzung-md-mdg} vorbereitet.
+Ich möchte nun zeigen, wie man die \mdg{} so ergänzt, dass sowohl die \mdg{} als auch der \md{} aufrufbar sind. Da dieses Verhalten für Windows und Linux analog ist, zeige ich es am Beispiel von Linux, wie in \lstref{parallele-nutzung-md-mdg} vorbereitet.
 
-\begin{lstlisting}[language=sh,caption={Parallele Nutzung des \md{} und der \mdg{}},label=lst:parallele-nutzung-md-mdg]
+\begin{lstlisting}[language=sh,caption={Parallele Nutzung des \md{} und der \mdg{}},label=\lstlbl{parallele-nutzung-md-mdg}]
 cd micro-debug-gui-version/
 cp micro-debug-gui.sh micro-debug.sh
 \end{lstlisting}
@@ -35,7 +35,7 @@ Nach diesen Schritten hast Du zwei Startskripte: Eines zum Start der \mdg{} und 
 Wie Du bemerkt hast, ist die Struktur von \md{} und \mdg{} ähnlich, aber nicht gleich. Auch beim Aufruf und bei der Bedienung gibt es einige nennenswerte Unterschiede, die ich Dir nun zeigen möchte.
 
 \subsection{Parameter}
-\label{unterschied-parameter}
+\seclbl{unterschied-parameter}
 Schon der Aufruf der \mdg{} unterscheidet sich von dem des \md{}: Es gibt weniger Parameter und Du kannst die \mdg{} auch ohne Parameter aufrufen, alle der folgenden Parameter sind also optional.
 
 \begin{description}
@@ -48,7 +48,7 @@ Schon der Aufruf der \mdg{} unterscheidet sich von dem des \md{}: Es gibt wenige
 
 Wie beim \md{} startet der Debugger nicht, wenn Du dir die Hilfe oder Versionsnummern anzeigen lässt, sondern beendet sich nach Ausgabe der Informationen.
 
-Anders als der \md{} benötigt die \mdg{} die Pfade zu den Bytecode-Dateien nicht; diese werden direkt zu Beginn über die grafische Oberfläche eingegeben. Dies erkläre ich nochmal genauer im Abschnitt \ref{startfenster}.
+Anders als der \md{} benötigt die \mdg{} die Pfade zu den Bytecode-Dateien nicht; diese werden direkt zu Beginn über die grafische Oberfläche eingegeben. Dies erkläre ich nochmal genauer im \secref{startfenster}.
 
 \subsection{Verfügbare Funktionen}
 Die \mdg{} benutzt den \md{} und hat daher prinzipiell Zugriff auf alle Funktionen, die der \md{} dem Benutzer bereitstellt. Da die \mdg{} dem Benutzer aber fortlaufend die Werte der Register und des Hauptspeichers, den Mikro-Assembler- sowie den Assembler-Code anzeigt, ist es nicht nötig diese Werte beobachten zu können. Befehle wie \texttt{trace-reg} wirst Du daher in der \mdg{} nicht wiederfinden. Auch die Ausgabe des Stacks gibt es nicht mehr, denn dieser kann im Hauptspeicher angesehen werden.
@@ -80,54 +80,54 @@ Die \mdg{} bietet also nicht nur bei den angebotenen Funktionen Verbesserungsbed
 Nachdem ich nun einige Eigenschaften der \mdg{} beschrieben habe, möchte ich Dir jetzt einen detaillierteren Einblick in die \mdg{} geben. Dazu werde ich die verschiedenen Hauptkomponenten der \mdg{} zeigen und deren Funktionen erklären.
 
 \subsection{Startfenster}
-\label{startfenster}
-Da wir, wie in Abschnitt \ref{unterschied-parameter} beschrieben, bei der \mdg{} die Pfade der Bytecode-Dateien nicht als Argumente übergeben, gibt es ein extra Fenster dafür. Dieses erscheint direkt nach dem Start der \mdg{} und ist in Abbildung \ref{fig:start-frame-empty} zu sehen.
+\seclbl{startfenster}
+Da wir, wie in \secref{unterschied-parameter} beschrieben, bei der \mdg{} die Pfade der Bytecode-Dateien nicht als Argumente übergeben, gibt es ein extra Fenster dafür. Dieses erscheint direkt nach dem Start der \mdg{} und ist in \figref{start-frame-empty} zu sehen.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=6cm]{images/start-frame-empty}
 	\caption{Screenshot des Start-Fensters}
-	\label{fig:start-frame-empty}
+	\figlbl{start-frame-empty}
 \end{figure}
 
-Hast Du zwei Pfade eingegeben, wird der Debugger über den Start-Button gestartet. In diesem Moment werden die beiden Bytecode-Dateien auf ihre Gültigkeit geprüft; zuerst die Mikro-Assembler-Datei und dann die Assembler-Datei. Falls eine der Dateien ungültig ist, wird statt dem Debugger erneut das Start-Fenster gezeigt. In diesem Fall ist dann das Textfeld mit der falschen Datei leer, wie beispielsweise in Abbildung \ref{fig:start-frame-both-wrong} zu sehen.
+Hast Du zwei Pfade eingegeben, wird der Debugger über den Start-Button gestartet. In diesem Moment werden die beiden Bytecode-Dateien auf ihre Gültigkeit geprüft; zuerst die Mikro-Assembler-Datei und dann die Assembler-Datei. Falls eine der Dateien ungültig ist, wird statt dem Debugger erneut das Start-Fenster gezeigt. In diesem Fall ist dann das Textfeld mit der falschen Datei leer, wie beispielsweise in \figref{start-frame-both-wrong} zu sehen.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=6cm]{images/start-frame-both-wrong}
 	\caption{Screenshot des Start-Fensters -- die angegebenen Dateien waren \emph{beide} ungültig}
-	\label{fig:start-frame-both-wrong}
+	\figlbl{start-frame-both-wrong}
 \end{figure}
 
-In diesem Beispiel waren beide Dateien falsch, aber nur ein Textfeld ist leer. Die \mdg{} prüft die Dateien nacheinander, ist bereits die erste Datei ungültig, wird die zweite nicht geprüft und zunächst als gültig angenommen. Das Textfeld der zweiten Datei ist nun ausgegraut, Du kannst es aber mit einem Doppelklick wieder editierbar machen. In dem genannten Beispiel habe ich das getan und nun zwei korrekte Dateien eingetragen, wie Du in Abbildung \ref{fig:start-frame-both-filled} sehen kannst.
+In diesem Beispiel waren beide Dateien falsch, aber nur ein Textfeld ist leer. Die \mdg{} prüft die Dateien nacheinander, ist bereits die erste Datei ungültig, wird die zweite nicht geprüft und zunächst als gültig angenommen. Das Textfeld der zweiten Datei ist nun ausgegraut, Du kannst es aber mit einem Doppelklick wieder editierbar machen. In dem genannten Beispiel habe ich das getan und nun zwei korrekte Dateien eingetragen, wie Du in \figref{start-frame-both-filled} sehen kannst.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=6cm]{images/start-frame-both-filled}
 	\caption{Screenshot des Start-Fensters mit zwei eingetragenen Dateien}
-	\label{fig:start-frame-both-filled}
+	\figlbl{start-frame-both-filled}
 \end{figure}
 
-Hast Du dann zwei korrekte Dateien eingetragen, startet der Debugger und du siehst das Hauptfenster aus Abbildung \ref{fig:main-frame-onbegin}.
+Hast Du dann zwei korrekte Dateien eingetragen, startet der Debugger und du siehst das Hauptfenster aus \figref{main-frame-onbegin}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{images/main-frame-onbegin}
 	\caption{Hauptfenster der \mdg{} zu Beginn}
-	\label{fig:main-frame-onbegin}
+	\figlbl{main-frame-onbegin}
 \end{figure}
 
 \subsection{Register}
-In Abbildung \ref{fig:main-frame-onbegin} siehst Du links oben die Register mit ihren Werten, die gleiche Ansicht ist in Abbildung \ref{fig:main-frame-registers} nochmal größer dargestellt.
+In \figref{main-frame-onbegin} siehst Du links oben die Register mit ihren Werten, die gleiche Ansicht ist in \figref{main-frame-registers} nochmal größer dargestellt.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=4cm]{images/main-frame-registers}
 	\caption{Registeransicht im Hauptfenster der \mdg{}}
-	\label{fig:main-frame-registers}
+	\figlbl{main-frame-registers}
 \end{figure}
 
-Die Checkboxen visualisieren die Breakpoints für die Register, in Abbildung \ref{fig:main-frame-registers} hält der Debugger demnach an, wenn \reg{MBR} oder \reg{MDR} im nächsten Zyklus geschrieben wird. Über die Radiobuttons unten kannst Du die Darstellung der Werte ändern, auf binär, dezimal oder hexadezimal -- so kannst Du für jeden Zweck die optimale Darstellung wählen.
+Die Checkboxen visualisieren die Breakpoints für die Register, in \figref{main-frame-registers} hält der Debugger demnach an, wenn \reg{MBR} oder \reg{MDR} im nächsten Zyklus geschrieben wird. Über die Radiobuttons unten kannst Du die Darstellung der Werte ändern, auf binär, dezimal oder hexadezimal -- so kannst Du für jeden Zweck die optimale Darstellung wählen.
 
 \subsection{Hauptspeicher}
 Unter der Registeransicht befindet sich im Hauptfenster die Ansicht des Hauptspeichers. Hier kannst du wie bei der Registeransicht die Darstellung der Hauptspeicherwerte jederzeit ändern.
@@ -143,24 +143,24 @@ Rechts neben der Hauptspeicheransicht sind unten verschiedene Textareas zu sehen
 	\centering
 	\includegraphics[width=4cm]{images/main-frame-mic-ta}
 	\caption{Hauptspeicheransicht im Hauptfenster der \mdg{}}
-	\label{fig:main-frame-mic-ta}
+	\figlbl{main-frame-mic-ta}
 \end{figure}
 
-Abbildung \ref{fig:main-frame-mic-ta} zeigt, wie sich das Eingabefeld verhält, wenn die \mic{} per \texttt{IN} ein Zeichen liest, aber der Puffer des \md{} keine Zeichen mehr enthält: es färbt sich orange. In diesem Fall solltest Du die nächste Eingabe eingeben und mit \emph{ENTER} bestätigen. Dadurch werden die eingegebenen Zeichen inklusive Zeilenumbruch im \md{} gepuffert, bis die \mic{} sie einliest.
+\figref{main-frame-mic-ta} zeigt, wie sich das Eingabefeld verhält, wenn die \mic{} per \texttt{IN} ein Zeichen liest, aber der Puffer des \md{} keine Zeichen mehr enthält: es färbt sich orange. In diesem Fall solltest Du die nächste Eingabe eingeben und mit \emph{ENTER} bestätigen. Dadurch werden die eingegebenen Zeichen inklusive Zeilenumbruch im \md{} gepuffert, bis die \mic{} sie einliest.
 
 Du kannst auch Eingaben machen, wenn der Puffer noch nicht leer ist, in diesem Fall wird der Text den du eingibst einfach dem Puffer des \md{} angehängt. So kannst Du schon beim Start des Programms bequem alle nötigen Eingaben machen und die \mdg{} die Eingaben abarbeiten lassen.
 
 \subsection{Code}
-Die wichtigsten zwei Komponenten befinden sich in Abbildung \ref{fig:main-frame-onbegin} rechts oben: Der disassemblierte Assembler- und Mikro-Assembler-Code. Die beiden Ansichten sind von der Funktion identisch aufgebaut und zeigen den disassemblierten Code mit Syntaxhervorhebung, Zeilennummern und den dazugehörigen Breakpoints an. Zusätzlich wird die Zeile des Codes hervorgehoben, die als nächstes ausgeführt wird.
+Die wichtigsten zwei Komponenten befinden sich in \figref{main-frame-onbegin} rechts oben: Der disassemblierte Assembler- und Mikro-Assembler-Code. Die beiden Ansichten sind von der Funktion identisch aufgebaut und zeigen den disassemblierten Code mit Syntaxhervorhebung, Zeilennummern und den dazugehörigen Breakpoints an. Zusätzlich wird die Zeile des Codes hervorgehoben, die als nächstes ausgeführt wird.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=4cm]{images/main-frame-code-part}
 	\caption{Ausschnitt der Assembler-Code-Ansicht im Hauptfenster der \mdg{}}
-	\label{fig:main-frame-code-part}
+	\figlbl{main-frame-code-part}
 \end{figure}
 
-Abbildung \ref{fig:main-frame-code-part} zeigt einen Ausschnitt der Code-Ansicht. Hier kannst Du sehen, dass als nächstes die Zeile \texttt{0x4C} abgearbeitet wird und dass in den Zeilen \texttt{0x4C} und \texttt{0x53} Breakpoints gesetzt sind. Die Breakpoints setzt und entfernst Du durch einen Doppelklick an die Stelle, an der sie gezeichnet werden -- links neben den Zeilennummern.
+\figref{main-frame-code-part} zeigt einen Ausschnitt der Code-Ansicht. Hier kannst Du sehen, dass als nächstes die Zeile \texttt{0x4C} abgearbeitet wird und dass in den Zeilen \texttt{0x4C} und \texttt{0x53} Breakpoints gesetzt sind. Die Breakpoints setzt und entfernst Du durch einen Doppelklick an die Stelle, an der sie gezeichnet werden -- links neben den Zeilennummern.
 
 
 \section{Tutorial}

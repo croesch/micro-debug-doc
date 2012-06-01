@@ -1,6 +1,6 @@
 \chapter{Interaktion per Konsole}
-\label{bed-konsole}
-Wie in Kapitel \ref{allgemein} beschrieben, muss der \md{} nicht installiert werden: Vom Herunterladen bis zum Starten des \md{} genügen folgende Schritte.
+\chplbl{bed-konsole}
+Wie in \chpref{allgemein} beschrieben, muss der \md{} nicht installiert werden: Vom Herunterladen bis zum Starten des \md{} genügen folgende Schritte.
 
 \begin{enumerate}
 \item Die Datei \texttt{micro-debug-version.zip} von der Projektseite\notiz{Verweis auf Seite} herunterladen
@@ -12,9 +12,9 @@ Wie in Kapitel \ref{allgemein} beschrieben, muss der \md{} nicht installiert wer
 Der \md{} kann durch einige Parameter gesteuert werden und wird nach dem Start durch Befehle gesteuert. Sowohl die Parameter als auch die Befehle werden nun erklärt und anschließend wird ein beispielhafter Ablauf mit dem \md{} beschrieben.
 
 \section{Parameter}
-Der Standardaufruf für den \md{} ist in Listing \ref{lst:aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur Mikro-Assembler- und zur Assembler-Bytecode-Datei\notiz{Irgendwo den Aufbau der beiden Dateien erwähnen}. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur Mikro-Assembler- und dann der Pfad zur assembler-Datei gegeben wird. Werden die beiden Pfade vertauscht, so startet der \md{} nicht und bricht mit einer Fehlermeldung ab.
+Der Standardaufruf für den \md{} ist in \lstref{aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur Mikro-Assembler- und zur Assembler-Bytecode-Datei\notiz{Irgendwo den Aufbau der beiden Dateien erwähnen}. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur Mikro-Assembler- und dann der Pfad zur assembler-Datei gegeben wird. Werden die beiden Pfade vertauscht, so startet der \md{} nicht und bricht mit einer Fehlermeldung ab.
 
-\begin{lstlisting}[language=sh,caption={Aufruf des \md{} -- Konsolenversion},label=lst:aufruf-konsolenversion]
+\begin{lstlisting}[language=sh,caption={Aufruf des \md{} -- Konsolenversion},label=\lstlbl{aufruf-konsolenversion}]
   micro-debug.sh [PARAMETER]... MIC1 IJVM
 \end{lstlisting}
 
@@ -39,9 +39,9 @@ Neben den beiden Dateipfaden gibt es im folgende optionale Parameter. Jeder Para
   gibt die Version des \md{} aus.
 \end{description}
 
-Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben wurden, so startet der Debugger nicht. Dies kann genutzt werden, um ohne vorhandene Bytecode-Dateien Informationen über den \md{} anzeigen zu können. Listing \ref{lst:aufrufe-ohne-start} zeigt, dass der \md{} daher auch ohne Bytecode-Dateien aufgerufen werden kann.
+Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben wurden, so startet der Debugger nicht. Dies kann genutzt werden, um ohne vorhandene Bytecode-Dateien Informationen über den \md{} anzeigen zu können. \lstref{aufrufe-ohne-start} zeigt, dass der \md{} daher auch ohne Bytecode-Dateien aufgerufen werden kann.
 
-\begin{lstlisting}[language=sh,caption={Aufruf des \md{} ohne Start -- Konsolenversion},label=lst:aufrufe-ohne-start]
+\begin{lstlisting}[language=sh,caption={Aufruf des \md{} ohne Start -- Konsolenversion},label=\lstlbl{aufrufe-ohne-start}]
   micro-debug.sh --help
   micro-debug.sh --version
 \end{lstlisting}
@@ -56,7 +56,7 @@ Bei der Bedienung des \md{} gibt es die Möglichkeit, dass zwischen den verschie
 Die verschiedenen Befehle können ein oder mehrere Argumente benötigen. Die Argumente können einem der folgenden Datentypen gehören:
 \begin{description}
 \item[Register] ist der Name eines Registers, also \reg{CPP}, \reg{H}, \reg{LV}, \reg{MAR}, \reg{MBR}, \reg{MBRU}, \reg{MDR}, \reg{OPC}, \reg{PC}, \reg{SP} oder \reg{TOS}.
-\item[Zahl] ist eine Zahl im Wertebereich eines Integers\notiz{Verweis?}. Die Formate für die Eingabe der Zahl sind in Abschnitt \ref{zahlenformat} beschrieben.
+\item[Zahl] ist eine Zahl im Wertebereich eines Integers\notiz{Verweis?}. Die Formate für die Eingabe der Zahl sind in \secref{zahlenformat} beschrieben.
 \end{description}
 
 Je nach Befehl kann der zulässige Wertebereich jedoch noch weiter eingeschränkt sein -- eine solche Einschränkung ergibt sich aus der Beschreibung des jeweiligen Befehls.

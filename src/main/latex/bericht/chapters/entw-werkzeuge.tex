@@ -1,5 +1,5 @@
 \chapter{Werkzeuge}
-\label{werkzeuge}
+\chplbl{werkzeuge}
 Mit diesem Teil der Arbeit möchte ich besonders eine Frage beantworten: Wie sind die bisher vorgestellten Funktionen des Debuggers implementiert? Mein Ziel ist, die Implementierung und Struktur des Debuggers so nachvollziehbar zu beschreiben, dass Sie in der Lage sind den Debugger weiterzuentwickeln.
 
 Der Debugger soll auch nach Ende dieser Arbeit weiterentwickelt werden können. Daher stelle ich in diesem Kapitel vor, welche Werkzeuge ich zur Entwicklung des Debuggers nutze und wie Sie diese zur Mitarbeit nutzen können. Dies ist nicht als Bedienungsanleitung zu verstehen. Ich bin der Ansicht, dass es das Verständnis der Implementierung und meiner Arbeit steigert, wenn geklärt ist, welche Werkzeuge ich wie nutze.
@@ -27,7 +27,7 @@ gebildet werden können und das Projekt für andere Arbeiten weitergeführt werd
 Ich möchte nun kurz erläutern, wie man mit \gls{git} den Quelltext der Arbeit auscheckt. Zusätzlich möchte ich erläutern, wie Sie \gls{git} unterstützt, wenn Sie das Projekt weiterentwickeln möchten. Dadurch möchte ich keine umfassende Bedienungsanleitung für \gls{git} geben, sondern Ihnen die alltägliche Arbeit mit dem Werkzeug erklären.
 
 \subsection{Code auschecken}
-\label{sec:git-checkout}
+\seclbl{git-checkout}
 Die Adresse des öffentlichen Repositories %TODO genitiv repository
 lautet:
 \code{https://github.com/croesch/micro-debug.git}
@@ -220,8 +220,3 @@ Beispielsweise nutzt diese Arbeit \gls{fest} als Test-Werkzeug, in der \code{pom
 \end{verbatim}
 
 Dort können Sie nun die Version des Werkzeugs ändern, die genutzt werden soll; oder den Bereich von \emph{test} auf \emph{runtime} erweitern. Anschließend empfehle ich die Dateien zu entfernen, die mit \gls{mvn} zuvor generiert wurden und \gls{mvn} auszuführen.
-
-\section{Entwicklungsumgebung}
-\subsection{Integration von git und maven}
-\subsection{Navigation im Code}
-\subsection{Finden von Referenzen}
