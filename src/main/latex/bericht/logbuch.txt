@@ -284,3 +284,7 @@
 	- Kapitel Entwicklung allgemein geschrieben
 	- Kapitel Entwicklung Konsole geschrieben
 	- Kapitel Entwicklung GUI geschrieben
+02.06.2012 (6 h)
+	- GUI#47 Debugger ignores breakpoints
+	- GUI#35 Processor runs extremly slow
+	- GUI#37 Add possibility to interrupt currently running processor
