@@ -24,9 +24,11 @@ clean:
 	-rm ./*/*.aux
 	-mv $(FILENAME).tex _B.tex
 	-mv $(FILENAME).pdf _B.pdf
+	-mv $(FILENAME).bib _B.bib
 	-rm $(FILENAME).???
 	-mv _B.tex $(FILENAME).tex
 	-mv _B.pdf $(FILENAME).pdf
+	-mv _B.bib $(FILENAME).bib
 	-rm $(FILENAME).synctex
 mrproper: clean
 	-rm $(FILENAME).pdf
