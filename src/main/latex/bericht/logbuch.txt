@@ -288,3 +288,5 @@
 	- GUI#47 Debugger ignores breakpoints
 	- GUI#35 Processor runs extremly slow
 	- GUI#37 Add possibility to interrupt currently running processor
+03.06.2012 (4 h)
+	- Tutorial Konsole erster Teil geschrieben

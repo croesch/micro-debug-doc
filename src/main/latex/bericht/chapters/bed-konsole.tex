@@ -51,7 +51,7 @@ Bei der Abarbeitung der gegebenen Parameter hängt die Reihenfolge der Parameter
 \section{Befehle}
 Ist der \md{} gestartet lässt er sich durch verschiedene Befehle steuern, die am Ende dieses Abschnitt ausführlich beschrieben werden.
 
-Bei der Bedienung des \md{} gibt es die Möglichkeit, dass zwischen den verschiedenen Befehlen auch Eingaben für die \mic{} zu liefern sind. Damit der Benutzer sieht, ob die Eingabe vom \md{} oder der \mic{} erwartet wird, schreibt der \md{} '\texttt{micro-debug> }' und die \mic{} '\texttt{mic1> }' bevor eine Eingabe erwartet wird.
+Bei der Bedienung des \md{} gibt es die Möglichkeit, dass zwischen den verschiedenen Befehlen auch Eingaben für die \mic{} zu liefern sind. Damit der Benutzer sieht, ob die Eingabe vom \md{} oder der \mic{} erwartet wird, schreibt der \md{} '\texttt{micro-debug> }' und die \mic{} '\texttt{mic1> }' bevor eine Eingabe erwartet wird. Wenn die \mic{} eine Eingabe von Dir erwartet, kannst du mehrere Zeichen auf einmal eingeben -- an die \mic{} werden die von dir eingegebenen Zeichen plus ein Zeilenumbruch gesendet. Sollte dein Assembler-Code also in einer Schleife einzelne Zeichen einlesen, solltest du die gesamte Zeile direkt eingeben.
 
 Die verschiedenen Befehle können ein oder mehrere Argumente benötigen. Die Argumente können einem der folgenden Datentypen gehören:
 \begin{description}
@@ -192,3 +192,126 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 \end{description}
 
 \section{Tutorial}
+Du solltest den \md{}, wie zu Beginn dieses Kapitels beschrieben, nun entpackt haben und am besten schon der \texttt{PATH}-Variable hinzugefügt haben. Denn dann kannst du in einem Verzeichnis deiner Wahl die Dateien für dieses Tutorial anlegen.
+
+Wir möchten nun ein kleines Programm schreiben und dies testen: ein Programm zum Einlesen von Binärzahlen. \lstref{binary-read-c} zeigt den Code für das Programm in C\notiz{C referenz? erklärn?} und soll hier als Verständnis des Algorithmuses dienen.
+
+\begin{lstlisting}[language=c,caption={C-Programm zum Einlesen einer Binärzahl},label=\lstlbl{binary-read-c}]
+int main() {
+  int character = 0;
+  int result = 0;
+  while(1) {
+    character = getchar();
+    if( c == '\n' ) {
+      return result;
+    }
+    c = c - '0';
+    result = 2 * result + c;
+  }
+}
+\end{lstlisting}
+
+Das entsprechende Assembler-Programm findest Du in \lstref{binary-read-jas}. Dieses Programm solltest du nun kompilieren -- \emph{Ray Ontko} stellt dafür in \cite{Ontko1999} einige Programme bereit: \texttt{mic1asm} zum Kompilieren des Mikro-Assembler-Codes und \texttt{ijvmasm} zum Kompilieren des Assembler-Codes. In \cite{Ontko1999} findest du auch den Mikro-Assembler-Code und eine entsprechende \texttt{ijvm.conf}-Datei.
+
+\begin{lstlisting}[language=,caption={IJVM-Assembler zum Einlesen einer Binärzahl},label=\lstlbl{binary-read-jas}]
+.main
+.var
+    c
+    result
+.end-var
+    bipush      0
+    istore      result
+loop:
+    in
+    istore      c
+    iload       c
+    bipush      10
+    if_icmpeq   finish
+    iinc        c       -48
+    iload       result
+    dup
+    iadd
+    iload       c
+    iadd
+    goto        loop
+finish:
+    iload       result
+    halt
+.end-main
+\end{lstlisting}
+
+Zum Debuggen des Mikro-Assembler-Codes und Assembler-Codes solltest Du die \texttt{ijvm.conf}-Datei verwenden, die Du zum Kompilieren der \datei{mic1} genutzt hast. Diese \date{conf} kannst Du entweder in das \texttt{conf/} Verzeichnis des Debuggers legen, oder jeweils in dem Verzeichnis, in dem Du gerade arbeitest. Dass Du nicht die korrekte \texttt{ijvm.conf}-Datei verwendest, siehst Du beim Ausführen des Befehls \texttt{ls-macro-code} -- zeigt dieser unbekannte Assembler-Befehle, enthält der Assembler-Code Befehle, die in der \texttt{ijvm.conf} nicht oder nicht an dieser Adresse definiert sind.
+
+Bevor wir nun beginnen solltest Du auch die Konfigurationsoption \texttt{mic1.micro.address.ijvm} überprüfen. Diese Option enthält die Adresse der Mikro-Instruktion, die von allen Mikro-Code-Methoden angesprungen wird, um die nächste Mikro-Instruktion zu \emph{laden}. Ist diese Option falsch konfiguriert, funktioniert später der Befehl \texttt{step} nicht wie erwartet.
+
+Die in \lstref{binary-read-jas} aufgeführte Methode soll später eine eigene Methode werden und gibt daher keinen Wert aus, sondern legt das Ergebnis am Ende auf den Stack. \lstref{tutorial-start} zeigt in \srcref{tutorial-startbefehl} den Befehl, um den \md{} zu starten -- im aktuellen Verzeichnis liegen die Dateien \texttt{mic1ijvm.mic1}, \texttt{binary-read.ijvm} und \texttt{ijvm.conf}.
+
+\begin{lstlisting}[language=,caption={Start des \md{}},label=\lstlbl{tutorial-start}]
+micro-debug.sh mic1ijvm.mic1 binary-read.ijvm(*@\srclbl{tutorial-startbefehl}@*)
+MicroDebug - Copyright (C) 2011-2012 Christian Roesch AND 1999 Prentice-Hall, Inc. (*@\srclbl{tutorial-start-willkommen}@*)
+Welcome! Please type 'help' for a list of valid commands
+----------------------------------------
+micro-debug> (*@\srclbl{tutorial-start-mdread}@*)
+\end{lstlisting}
+
+Ab \srcref{tutorial-start-willkommen} steht die Willkommensnachricht des \md{} gefolgt von der \srcref{tutorial-start-mdread}, die anzeigt, dass der \md{} nun einen Befehl erwartet. Wir können uns nun eine ausführliche Beschreibung der verschiedenen Befehle anzeigen, mit dem Befehl \texttt{help}.
+
+Geben wir den Befehl \texttt{ls-macro-code} ein, erhalten wir den disassemblierten Assembler-Code, wie in \lstref{tutorial-macro-code} zu sehen. Die Ausgabe zeigt zunächst pro Zeile die Assembler-Code-Zeile, dann die Adresse des Befehls im Mikro-Assembler-Code und anschließend den Namen des Befehls mit seinen Argumenten. Die Ausgabe ist nicht identisch mit dem Code, den wir anfangs kompiliert haben -- in \lstref{binary-read-jas} -- in der disassemblierten Variante fehlen Informationen wie Kommentare, Variablennamen und Sprungmarkennamen. Beispielsweise zeigt \srcref{tutorial-macro-code-sprung} einen bedingten Sprung zur Zeile \texttt{0x1B}.
+
+\begin{lstlisting}[language=,caption={Disassemblierter Assembler-Code},label=\lstlbl{tutorial-macro-code}]
+     0x0: [ 0x10] BIPUSH  0x0
+     0x2: [ 0x36] ISTORE  1
+(*@\srclbl{tutorial-macro-code-in}@*)     0x4: [ 0xFC] IN 
+     0x5: [ 0x36] ISTORE  0
+     0x7: [ 0x15] ILOAD  0
+     0x9: [ 0x10] BIPUSH  0xA
+(*@\srclbl{tutorial-macro-code-sprung}@*)     0xB: [ 0x9F] IF_ICMPEQ  0x1B
+     0xE: [ 0x84] IINC  0 0x0
+    0x11: [ 0x15] ILOAD  1
+    0x13: [ 0x59] DUP 
+    0x14: [ 0x60] IADD 
+    0x15: [ 0x15] ILOAD  0
+    0x17: [ 0x60] IADD 
+    0x18: [ 0xA7] GOTO  0x4
+    0x1B: [ 0x15] ILOAD  1
+    0x1D: [ 0xFF] HALT 
+\end{lstlisting}
+
+Das erwartete Ergebnis eines Programmlaufs ist, dass wir die eingegebene Binärzahl am Ende auf dem Stack und damit im Register \reg{TOS} vorfinden -- geben wir $1010$ ein, soll \reg{TOS} nach einem Programmdurchlauf den Wert $10$ enthalten.
+
+Mit dem Befehl \texttt{run} lassen wir das Programm nun zunächst ohne Breakpoints laufen. Nachdem wir das Programm gestartet haben, wird die \mic{} in \srcref{tutorial-macro-code-in} aus \lstref{tutorial-macro-code} mit dem Befehl \texttt{IN} Zeichen einlesen. Das erkennst Du auf der Konsole an der \srcref{tutorial-mic-eingabe-txt} aus \lstref{tutorial-mic-eingabe} -- statt \texttt{micro-debug>} steht hier nun \texttt{mic1>}.
+
+\begin{lstlisting}[language=,caption={\mic{} erwartet Eingabe},label=\lstlbl{tutorial-mic-eingabe}]
+micro-debug> run
+mic1> (*@\srclbl{tutorial-mic-eingabe-txt}@*)
+\end{lstlisting}
+
+Wir geben nun \texttt{1010} ein und bestätigen die Eingabe mit \texttt{ENTER} -- dadurch werden fünf Zeichen im \md{} gepuffert: Die vier Zeichen, die wir eingegeben haben plus ein Zeilenumbruch. Jedes Mal, wenn die \mic{} nun ein Zeichen benötigt, wird aus diesem Puffer gelesen. Erst wenn dieser leer ist, erscheint erneut die Eingabeaufforderung für den Benutzer.
+
+\begin{lstlisting}[language=,caption={\md{} gibt Anzahl ausgeführter Zyklen aus},label=\lstlbl{tutorial-durchgelaufen}]
+Processor executed 441 ticks.
+micro-debug> 
+\end{lstlisting}
+
+Nachdem wir nun die Zahl eingegeben haben erscheint die Ausgabe aus \lstref{tutorial-durchgelaufen}, die uns anzeigt, dass die \mic{} insgesamt $441$ Zyklen ausgeführt hat. Da unser Programm keine Ausgabe macht, sondern das Ergebnis auf den Stack (und damit in dem Register \reg{TOS}) ablegt, überprüfen wir das nun wie folgt. Mit dem Befehl \texttt{ls-reg} lassen wir uns wie in \lstref{tutorial-tos-falscher-wert} zu sehen den Inhalt des Registers \reg{TOS} anzeigen.
+
+Das Register \reg{TOS} enthält den Wert $0$ und damit einen falschen Wert. Wir können nun noch den Stack anzeigen, um zu überprüfen, ob dort der erwartete Wert $10$ abgelegt ist. Den Stack zeigen wir mit dem Befehl \texttt{ls-stack} an, was die in \lstref{tutorial-stack} gezeigte Ausgabe liefert.
+
+\begin{lstlisting}[language=,caption={\md{} gibt Anzahl ausgeführter Zyklen aus},label=\lstlbl{tutorial-tos-falscher-wert}]
+micro-debug> ls-reg TOS
+Register TOS : 0x0
+micro-debug> 
+\end{lstlisting}
+
+Der erwartete Wert $10$ liegt auch nicht auf dem Stack. Wäre der Wert auf dem Stack, aber nicht im Register \reg{TOS} wäre das ein Hinweis auf einen Fehler im Mikro-Assembler-Code, da dieser für die Einhaltung der Regel zuständig ist, dass das Register \reg{TOS} stets den Wert des obersten Elements des Stacks enthält.
+
+\begin{lstlisting}[language=,caption={Inhalt des Stacks nach der Ausführung des Assembler-Programms},label=\lstlbl{tutorial-stack}]
+Stack value #1 [  0xC001]: 0x1
+Stack value #2 [  0xC002]: 0x0
+Stack value #3 [  0xC003]: 0x1
+Stack value #4 [  0xC004]: 0x0
+Stack value #5 [  0xC005]: 0x0
+micro-debug> 
+\end{lstlisting}
+
+Damit wir das Programm erneut ablaufen lassen können, müssen wir die \mic{} auf ihren Startzustand zurücksetzen; mit dem Befehl \texttt{reset}.
