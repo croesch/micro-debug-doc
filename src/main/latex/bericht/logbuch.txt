@@ -290,3 +290,5 @@
 	- GUI#37 Add possibility to interrupt currently running processor
 03.06.2012 (4 h)
 	- Tutorial Konsole erster Teil geschrieben
+05.06.2012 (2,5 h)
+	- Tutorial Konsole weiter geschrieben

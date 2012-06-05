@@ -227,7 +227,7 @@ loop:
     iload       c
     bipush      10
     if_icmpeq   finish
-    iinc        c       -48
+    iinc        c       -48(*@\srclbl{iinc-increment-value}@*)
     iload       result
     dup
     iadd
@@ -262,11 +262,11 @@ Geben wir den Befehl \texttt{ls-macro-code} ein, erhalten wir den disassembliert
      0x0: [ 0x10] BIPUSH  0x0
      0x2: [ 0x36] ISTORE  1
 (*@\srclbl{tutorial-macro-code-in}@*)     0x4: [ 0xFC] IN 
-     0x5: [ 0x36] ISTORE  0
+     0x5: [ 0x36] ISTORE  0(*@\srclbl{tutorial-macro-code-after-in}@*)
      0x7: [ 0x15] ILOAD  0
      0x9: [ 0x10] BIPUSH  0xA
 (*@\srclbl{tutorial-macro-code-sprung}@*)     0xB: [ 0x9F] IF_ICMPEQ  0x1B
-     0xE: [ 0x84] IINC  0 0x0
+     0xE: [ 0x84] IINC  0 0x0(*@\footnote{Der \md{} hat an dieser Stelle einen Bug: Wie in \srcref{iinc-increment-value} in \lstref{binary-read-jas} zu sehen, ist der Wert \texttt{0} falsch. Unter \url{https://github.com/croesch/micro-debug/issues/37} ist die entsprechende Dokumentation zu dem Bug. Dieser Bug hat allerdings keine Auswirkung auf die Funktionsweise der \mic{}, sondern nur auf das Disassemblen des Assembler-Codes -- also der Ausgabe des \md{}.}@*)
     0x11: [ 0x15] ILOAD  1
     0x13: [ 0x59] DUP 
     0x14: [ 0x60] IADD 
@@ -314,4 +314,137 @@ Stack value #5 [  0xC005]: 0x0
 micro-debug> 
 \end{lstlisting}
 
-Damit wir das Programm erneut ablaufen lassen können, müssen wir die \mic{} auf ihren Startzustand zurücksetzen; mit dem Befehl \texttt{reset}.
+Damit wir das Programm erneut ablaufen lassen können, müssen wir die \mic{} auf ihren Startzustand zurücksetzen; mit dem Befehl \texttt{reset}. Woran könnte das Problem liegen? Womöglich werden falsche Werte eingelesen; mit einem Breakpoint auf dem \texttt{IN}-Befehl überprüfen wir diese Vermutung. In \lstref{tutorial-breakpoint-mac} ist aufgeführt, wie wir einen Breakpoint in der Zeile \texttt{0x4} setzen können und überprüfen, welche Breakpoints gesetzt sind.
+
+\begin{lstlisting}[language=,caption={Setzen eines Breakpoints im Assembler-Code},label=\lstlbl{tutorial-breakpoint-mac}]
+micro-debug> macro-break 4
+micro-debug> ls-break
+Breakpoint #1: at macro code line 0x4
+micro-debug> 
+\end{lstlisting}
+
+Nachdem wir den Breakpoint nun gesetzt haben, können wir das Programm mit dem Befehl \texttt{run} ausführen. An der Ausgabe erkennen wir, dass die \mic{} nicht das gesamte Programm ausgeführt hat, sondern nur 16~Zyklen. Wir werden nun den \texttt{IN}-Befehl überprüfen und dazu einzeln die Mikro-Instruktionen des Befehls ausführen. Damit wir nicht jedes Mal den Mikro-Assembler-Code anzeigen lassen müssen, beobachten wir den Mikro-Assembler-Code mit dem Befehl \texttt{trace-mic}.
+
+Je nach Mikro-Assembler-Code kann es mehrere Mikro-Instruktionen dauern, bis wir zu dem \texttt{IN}-Befehl kommen. Wichtig ist die Zeile, die \texttt{goto (MBR)} ausführt -- daher führen wir nun so lange den Befehl \texttt{micro-step} aus, bis dieser Sprungbefehl ausgeführt wurde. Bei mir wurden von der Stelle, an der der Debugger gehalten hat, bis zu dem Sprungbefehl drei Mikro-Instruktionen ausgeführt, wie in \lstref{tutorial-steps-to-goto} zu sehen ist.
+
+\begin{lstlisting}[language=,caption={Ausgeführte Mikro-Instruktionen bis zum Sprungbefehl \texttt{goto (MBR)}},label=\lstlbl{tutorial-steps-to-goto}]
+micro-debug> micro-step
+Executed: fetch;goto 0x4
+Processor executed 1 ticks.
+micro-debug> micro-step
+Executed: PC=PC+1;goto 0x5
+Processor executed 1 ticks.
+micro-debug> micro-step
+Executed: goto (MBR)
+Processor executed 1 ticks.
+\end{lstlisting}
+
+Bei meiner Implementierung liegt der Befehl \texttt{IN} an der Stelle \texttt{0xFC}. In \lstref{tutorial-in-micro} siehst du den Mikro-Assembler-Code für den Befehl \texttt{IN} -- bis zur Zeile \texttt{0x6B} wird die Adresse für \emph{memory mapped IO} erzeugt, -3. In Zeile \texttt{0x6B} (\srcref{tutorial-in-micro-rd} in \lstref{tutorial-in-micro}) wird der \texttt{rd}-Befehl ausgeführt.
+
+\begin{lstlisting}[language=,caption={Mikro-Assembler-Code des Befehls \texttt{IN}},label=\lstlbl{tutorial-in-micro}]
+0xFC: H=OPC=-1;goto 0x6A
+0x6A: OPC=H+OPC;goto 0x6B
+0x6B: MAR=H+OPC;rd;goto 0x6C(*@\srclbl{tutorial-in-micro-rd}@*)
+0x6C: SP=MAR=SP+1;goto 0x6D
+0x6D: TOS=MDR;wr;goto 0x3
+\end{lstlisting}
+
+Wir können nun in \lstref{tutorial-check-rd-mdr} sehen, wie wir die drei Mikro-Instruktionen zum Aufbau der Speicheradresse und zum Einlesen des Zeichens ausführen. Während der Ausführung fragt der \md{} im Auftrag der \mic{} nach einer Eingabe, hier geben wir wieder \texttt{1010} ein und bestätigen mit \texttt{ENTER}.
+
+\begin{lstlisting}[language=,caption={Überprüfung des \texttt{rd}-Befehls durch den Inhalt des Registers \reg{MDR}},label=\lstlbl{tutorial-check-rd-mdr}]
+micro-debug> micro-step 3
+Executed: H=OPC=-1;goto 0x6A
+Executed: OPC=H+OPC;goto 0x6B
+mic1> 1010
+Executed: MAR=H+OPC;rd;goto 0x6C
+Processor executed 3 ticks.
+micro-debug> micro-step 1(*@\srclbl{tutorial-check-rd-mdr-step}@*)
+Executed: SP=MAR=SP+1;goto 0x6D
+Processor executed 1 ticks.
+micro-debug> ls-reg MDR(*@\srclbl{tutorial-check-rd-mdr-cont}@*)
+Register MDR : 0x31
+\end{lstlisting}
+
+Die \mic{} hat nun Zeile \texttt{0x6B} ausgeführt und das erste Zeichen gelesen. Dieses Zeichen wird allerdings erst im nächsten Zyklus in das Register \reg{MDR} geschrieben -- daher sehen wir ab \srcref{tutorial-check-rd-mdr-step} die Ausführung einer weiteren Mikro-Instruktion. Jetzt muss das gelesene Zeichen im Register \reg{MDR} angekommen sein, was wir mit dem Befehl \texttt{ls-reg MDR} überprüfen. Wie ab Zeile \srcref{tutorial-check-rd-mdr-cont} zu sehen, enthält das Register \reg{MDR} den Wert $0x31=49$ -- der \emph{ASCII}-Code für das Zeichen \texttt{1}.
+
+Der Fehler scheint nicht im Mikro-Assembler-Code zu liegen -- zumindest nicht, wo wir überprüft haben. Deswegen konzentrieren wir uns nun auf den Assembler-Code. Mit dem Befehl \texttt{step} führen wir die letzte Mikro-Instruktion des Befehls \texttt{IN} aus. Wir befinden uns nun in Zeile \texttt{0x5} des Assembler-Codes -- der \srcref{tutorial-macro-code-after-in} aus \lstref{tutorial-macro-code}.
+
+Damit wir die Veränderungen der lokalen Variablen direkt erkennen, beobachten wir sie. In \lstref{binary-read-jas} können wir überprüfen, wie viele lokale Variablen wir haben: zwei. Wir beobachten gleich beide, um zu sehen, ob der \emph{ASCII}-Code korrekt konvertiert wird und welche Werte das Ergebnis annimmt. In \lstref{tutorial-watch-vars} ist zu sehen, wie wir dazu den Befehl \texttt{trace-var} nutzen.
+
+\begin{lstlisting}[language=,caption={Beobachten beider lokaler Variablen},label=\lstlbl{tutorial-watch-vars}]
+micro-debug> trace-var 0
+micro-debug> trace-var 1
+\end{lstlisting}
+
+Wir werden das Programm nun schrittweise ausführen -- da wir auf die Korrektheit des Mikro-Assembler-Codes vertrauen, führen wir jeweils Assembler-Instruktionen aus. Wir überprüfen dann, ob das erwartete Verhalten eingetreten ist und suchen so schrittweise die Ursache für den Fehler. Zur Erinnerung, wir haben gerade eine \texttt{1} eingelesen.
+
+Mit dem Befehl \texttt{step} führen wir die nächste Assembler-Instruktion aus. In \lstref{tutorial-step-trace-mic} ist die Ausgabe dieses Befehls zu sehen -- da wir den Mikro-Assembler-Code noch beobachten ist diese Ausgabe unübersichtlich. Wir können aber in \lstref{tutorial-step-trace-mic-varwrite} sehen, dass die lokale Variable \texttt{0} den korrekten Wert erhalten hat.
+
+\begin{lstlisting}[language=,caption={Ausführen einer Assembler-Instruktion bei Beobachten des Mikro-Assembler-Codes},label=\lstlbl{tutorial-step-trace-mic}]
+micro-debug> step
+Executed: fetch;goto 0x4
+Executed: PC=PC+1;goto 0x5
+Executed: goto (MBR)
+Executed: H=LV;fetch;goto 0x1F
+Executed: MDR=TOS;goto 0x20
+Executed: MAR=H+MBRU;wr;goto 0x21
+Local variable 0: 49(*@\lstlbl{tutorial-step-trace-mic-varwrite}@*)
+Executed: SP=MAR=SP-1;rd;goto 0x22
+Executed: PC=PC+1;goto 0x23
+Executed: TOS=MDR;goto 0x3
+Processor executed 9 ticks.
+\end{lstlisting}
+
+Damit wir im Folgenden übersichtlichere Ausgaben erhalten, beenden wir das Beobachten des Mikro-Assembler-Codes durch den Befehl \texttt{untrace-mic}. Zusätzlich Beobachten wir nun den Assembler-Code, um bei jeder ausgeführten Instruktion überprüfen zu können, was gerade ausgeführt wurde. Nachdem wir den Befehl \texttt{trace-mac} können wir das Programm weiter schrittweise ausführen.
+
+\begin{lstlisting}[language=,caption={Ausführen der Assembler-Instruktionen zum Vergleich zweier lokaler Variablen},label=\lstlbl{tutorial-check-var}]
+micro-debug> step
+Executed:      0x7: [ 0x15] ILOAD  0
+Processor executed 8 ticks.
+micro-debug> ls-stack
+Stack value #1 [  0xC001]: 0x31
+micro-debug> step
+Executed:      0x9: [ 0x10] BIPUSH  0xA
+Processor executed 6 ticks.
+micro-debug> ls-stack
+Stack value #1 [  0xC001]: 0x31
+Stack value #2 [  0xC002]: 0xA
+micro-debug> step
+Executed:      0xB: [ 0x9F] IF_ICMPEQ  0x1B
+Processor executed 11 ticks.
+micro-debug> ls-stack
+Stack doesn't contain any elements, nothing to display.(*@\srclbl{tutorial-check-var-stack-empty}@*)
+\end{lstlisting}
+
+\lstref{tutorial-check-var} enthält die Konsolenausgabe nach der Ausführung der nächsten drei Assembler-Instruktionen. Da diese Instruktionen auf dem Stack operieren, habe ich zusätzlich nach jedem Befehl den Stack angezeigt. Das Programm prüft hier, ob die eingegebene Zahl ein Zeilenumbruch ist. Dafür legt es die eingegebene Zahl und einen Zeilenumbruch auf den Stack und ruft die Instruktion \texttt{IF_ICMPEQ} auf, die bei Gleichheit der beiden obersten Zahlen auf dem Stack an die angegebene Adresse springt.
+
+An den Konsolenausgaben können wir erkennen, dass zunächst beide Zahlen korrekt auf den Stack gelegt werden. Der Vergleich sollte die beiden Werte vom Stack entfernen und sie dann vergleichen; in \srcref{tutorial-check-var-stack-empty} in \lstref{tutorial-check-var} sehen wir, dass der Stack korrekterweise keine Elemente enthält. Wenn wir nun die nächste Instruktion ausführen, können wir an der Adresse der Instruktion erkennen, dass der bedingte Sprung nicht ausgeführt wurde.
+
+\begin{lstlisting}[language=,caption={Ausführen der Assembler-Instruktionen zur Berrechnung des temporären Ergebnisses},label=\lstlbl{tutorial-calc-temp-result}]
+micro-debug> step
+Executed:      0xE: [ 0x84] IINC  0 0x0
+Local variable 0: 1
+Processor executed 9 ticks.
+micro-debug> step
+Executed:     0x11: [ 0x15] ILOAD  1
+Processor executed 8 ticks.
+micro-debug> step
+Executed:     0x13: [ 0x59] DUP 
+Processor executed 5 ticks.
+micro-debug> step
+Executed:     0x14: [ 0x60] IADD 
+Processor executed 6 ticks.
+micro-debug> step
+Executed:     0x15: [ 0x15] ILOAD  0
+Processor executed 8 ticks.
+micro-debug> step
+Executed:     0x17: [ 0x60] IADD 
+Processor executed 6 ticks.
+micro-debug> ls-stack
+Stack value #1 [  0xC001]: 0x1(*@\srclbl{tutorial-calc-temp-result-result}@*)
+\end{lstlisting}
+
+Stattdessen wurde nun der \emph{ASCII}-Code dekodiert und die lokale Variable enthält den Wert \texttt{1}\footnote{Auch hier ist die Ausgabe des \texttt{IINC}-Befehl inkorrekt. Dies ist der selbe Fehler, wie oben und hat nur Auswirkungen auf die Ausgabe, wie Du am korrekten Wert der lokalen Variable erkennen kannst.}. Im Folgenden wird das Programm das aktuelle Ergebnis -- das derzeit \texttt{0} ist -- mit zwei multiplizieren und die gerade gelesene Zahl dazu addieren.
+
+\lstref{tutorial-calc-temp-result} zeigt die gerade beschriebenen Schritte. Zunächst wird das derzeitige Ergebnis geladen, auf dem Stack dupliziert und dann aufaddiert, was der Multiplikation mit zwei entspricht. Anschließend wird die gelesene Zahl auf den Stack gelegt und dazu addiert und sollte das aktuelle Ergebnis ergeben. Mit dem Befehl \texttt{ls-stack} können wir nun sehen, dass diese Annahme korrekt ist -- es liegt der Wert \texttt{1} auf dem Stack, wie in \srcref{tutorial-calc-temp-result-result} in \lstref{tutorial-calc-temp-result} zu sehen.
+
