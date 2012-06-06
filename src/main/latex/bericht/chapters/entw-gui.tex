@@ -20,7 +20,7 @@ Die Argumente werden dann auch ausgeführt und geben jeweils einen Wahrheitswert
 \subsection{Aufbau der grafischen Oberfläche}
 Darf der Debugger starten, so wird eine Instanz der Klasse \klasse{Mic1Starter} erzeugt, die den Debugger starten kann. Zunächst erzeugt die Klasse jedoch das Startfenster, welches in der Klasse \klasse{StartFrame} definiert ist, und zeigt dieses an. Das Startfenster enthält einige Aktionsmöglichkeiten -- hat der Benutzer nun die richtigen Dateien ausgewählt und den Button zum Start gedrückt, wird an der Klasse \klasse{Mic1Starter} die Methode \texttt{create(String,String)} mit den zwei angegebenen Dateipfaden ausgeführt.
 
-Wie in \secref{k-aufbau-debugger} wird nun anhand dieser Dateipfade versucht die \mic{} zu erzeugen. Gelingt dies nicht, wird das Startfenster erneut gezeigt. Hat der Benutzer zwei korrekte Dateien angegeben, wird das Hauptfenster aufgebaut und angezeigt, was in der Klasse \klasse{MainFrame} definiert ist.
+Wie in \secref{k-aufbau-debugger} wird nun anhand dieser Dateipfade versucht die \mic zu erzeugen. Gelingt dies nicht, wird das Startfenster erneut gezeigt. Hat der Benutzer zwei korrekte Dateien angegeben, wird das Hauptfenster aufgebaut und angezeigt, was in der Klasse \klasse{MainFrame} definiert ist.
 
 In der Klasse \klasse{MainFrame} werden drei erwähnenswerte Objekte erzeugt: die \emph{View}, der \emph{Controller} und die \emph{Actions}. Die \emph{View} bildet die Oberfläche und ist zunächst in der Klasse \klasse{MainView} definiert, die wiederum weitere Klassen zur Darstellung der einzelnen Bereiche nutzt. Ein ähnliches Konzept nutzt der \emph{Controller}, der in der Klasse \klasse{MainController} definiert ist: Für die einzelnen kleinen \emph{Views} werden entsprechende \emph{Controller} erzeugt, die dadurch jeweils nur einen kleinen Aufgabenbereich erhalten. Das dritte Objekt ist von der Klasse \klasse{ActionProvider} und erzeugt die \emph{Actions}, die der Benutzer über die Oberfläche erreichen kann. Dieser \emph{ActionProvider} hält die Referenzen auf die \emph{Actions}, so dass nur dieses eine Objekt weitergereicht werden muss anstatt dutzender \emph{Actions}.
 
@@ -31,7 +31,7 @@ Nachdem die Oberfläche aufgebaut ist, sind die \emph{Actions} der Ausgangspunkt
 
 In der Klasse \klasse{ActionProvider} werden die Referenzen auf die \emph{Actions} gehalten und unter den Schlüsseln abgelegt, die die Enumeration \klasse{Actions} bietet.
 
-Bis auf einige Ausnahmen werden die ganzen \emph{Actions} auf dem \gls{edt} ausgeführt. Bei einigen \emph{Actions} wäre dies von Nachteil: spätestens wenn die \mic{} eine Eingabe erwarten würde, käme es zu einem Deadlock\notiz{Deadlock erklärn!?}. Denn die Eingabe für die \mic{} wird in der \mdg über ein Textfeld ausgeführt. Liest die \mic{} nun auf dem \gls{edt} ein Zeichen aus diesem Textfeld, obwohl dort noch keines eingegeben wurde, dann blockiert der aktuelle Thread (in diesem Fall der \gls{edt}) bis der Benutzer eine Eingabe gemacht hat. Eine Eingabe kann aber nur über den \gls{edt} ausgeführt werden, der noch blockiert ist -- ein Deadlock.
+Bis auf einige Ausnahmen werden die ganzen \emph{Actions} auf dem \gls{edt} ausgeführt. Bei einigen \emph{Actions} wäre dies von Nachteil: spätestens wenn die \mic eine Eingabe erwarten würde, käme es zu einem Deadlock\notiz{Deadlock erklärn!?}. Denn die Eingabe für die \mic wird in der \mdg über ein Textfeld ausgeführt. Liest die \mic nun auf dem \gls{edt} ein Zeichen aus diesem Textfeld, obwohl dort noch keines eingegeben wurde, dann blockiert der aktuelle Thread (in diesem Fall der \gls{edt}) bis der Benutzer eine Eingabe gemacht hat. Eine Eingabe kann aber nur über den \gls{edt} ausgeführt werden, der noch blockiert ist -- ein Deadlock.
 
 Aus diesem Grund gibt es die Klasse \klasse{AbstractExecuteOnWorkerThreadAction}. Jede \emph{Action}, die davon ableitet, wird nicht auf dem \gls{edt} ausgeführt sondern auf einer Instanz der Klasse \klasse{WorkerThread}. Dieser Thread läuft und arbeitet kontinuierlich Objekte der Klasse \klasse{Runnable} ab und wird hier genutzt, um solche Deadlocks zu umgehen.
 
@@ -48,7 +48,7 @@ Für die Pflege des Projekts \mdg bedeutet dies aber, dass sowohl die \datei{xml
 \seclbl{g-bibliotheken}
 Wie gerade angemerkt, wird der \md von der \mdg benutzt. Der Code des \md muss also der \mdg vorliegen; derzeit wird der \md der \mdg als \datei{jar} übergeben und dem Klassenpfad hinzugefügt. Dies ermöglicht es dem Benutzer, die verwendete Version des \md auszutauschen.
 
-Die \mdg enthält nur die grafische Oberfläche, das komplette Wissen über die \mic{} ist in der Bibliothek -- dem \md -- enthalten. Diese Bibliothek ist also sehr wichtig und in der Regel nicht vorgesehen, um durch neuere Versionen ersetzt zu werden.
+Die \mdg enthält nur die grafische Oberfläche, das komplette Wissen über die \mic ist in der Bibliothek -- dem \md -- enthalten. Diese Bibliothek ist also sehr wichtig und in der Regel nicht vorgesehen, um durch neuere Versionen ersetzt zu werden.
 
 Eine weitere Bibliothek, die der Benutzer erhält, ist das miglayout\notiz{Referenz und Befehl}. Diese Bibliothek wird benötigt, um die Oberflächenelemente zu positionieren. Das miglayout bietet eine komfortable Schnittstelle, für das Layout von Komponenten.
 

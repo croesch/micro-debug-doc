@@ -67,7 +67,7 @@ Wie wir gerade gesehen haben, bietet die \mdg konstruktionsbedingt manche Funkti
 Diese Funktionen habe ich bisher aus Zeitgründen noch nicht implementiert, werde ich aber nach und nach ergänzen.
 
 \subsection{Geschwindigkeit}
-Die \mdg nutzt die Funktionen des \md, um die \mic{} simulieren und debuggen zu können. Daraus folgt, dass die \mdg prinzipiell nicht schneller sein kann als der \md, sondern eher langsamer.
+Die \mdg nutzt die Funktionen des \md, um die \mic simulieren und debuggen zu können. Daraus folgt, dass die \mdg prinzipiell nicht schneller sein kann als der \md, sondern eher langsamer.
 
 Diese Vermutung bestätigt sich, wenn man die \mdg benutzt. Bei einfachen Befehlen, wie eine (Mikro-)Instruktion auszuführen oder den Debugger zu resetten ist kein Geschwindigkeitsunterschied spürbar. Aber besonders bei dem \texttt{run}-Befehl ist deutlich zu beobachten, dass die \mdg langsamer ist.
 
@@ -138,7 +138,7 @@ In der Ansicht des Hauptspeichers sind nur eine feste Anzahl an Einträgen zu se
 Die Ansicht zeigt den gesamten Hauptspeicher -- neben den lokalen Variablen, dem Stack und den Konstanten kannst Du auch den disassemblierten Assembler-Code in Bit-Form betrachten.
 
 \subsection{Text-Ein- und -Ausgabe}
-Rechts neben der Hauptspeicheransicht sind unten verschiedene Textareas zu sehen. Deren Funktion sollte dir spätestens im laufenden Betrieb des Debuggers deutlich werden: Links unten ist das Textfeld, um der \mic{} Text bereitzustellen, darüber befindet sich die Ausgabe der \mic{} und im rechten Bereich tauchen Informationen des \md auf, die auf der Konsole sichtbar waren und bisher noch keinen Platz in der Oberfläche bekommen haben.
+Rechts neben der Hauptspeicheransicht sind unten verschiedene Textareas zu sehen. Deren Funktion sollte dir spätestens im laufenden Betrieb des Debuggers deutlich werden: Links unten ist das Textfeld, um der \mic Text bereitzustellen, darüber befindet sich die Ausgabe der \mic und im rechten Bereich tauchen Informationen des \md auf, die auf der Konsole sichtbar waren und bisher noch keinen Platz in der Oberfläche bekommen haben.
 
 \begin{figure}[h]
 	\centering
@@ -147,7 +147,7 @@ Rechts neben der Hauptspeicheransicht sind unten verschiedene Textareas zu sehen
 	\figlbl{main-frame-mic-ta}
 \end{figure}
 
-\figref{main-frame-mic-ta} zeigt, wie sich das Eingabefeld verhält, wenn die \mic{} per \texttt{IN} ein Zeichen liest, aber der Puffer des \md keine Zeichen mehr enthält: es färbt sich orange. In diesem Fall solltest Du die nächste Eingabe eingeben und mit \emph{ENTER} bestätigen. Dadurch werden die eingegebenen Zeichen inklusive Zeilenumbruch im \md gepuffert, bis die \mic{} sie einliest.
+\figref{main-frame-mic-ta} zeigt, wie sich das Eingabefeld verhält, wenn die \mic per \texttt{IN} ein Zeichen liest, aber der Puffer des \md keine Zeichen mehr enthält: es färbt sich orange. In diesem Fall solltest Du die nächste Eingabe eingeben und mit \emph{ENTER} bestätigen. Dadurch werden die eingegebenen Zeichen inklusive Zeilenumbruch im \md gepuffert, bis die \mic sie einliest.
 
 Du kannst auch Eingaben machen, wenn der Puffer noch nicht leer ist, in diesem Fall wird der Text den du eingibst einfach dem Puffer des \md angehängt. So kannst Du schon beim Start des Programms bequem alle nötigen Eingaben machen und die \mdg die Eingaben abarbeiten lassen.
 
