@@ -172,12 +172,12 @@ $ git push origin 100-themen-titel
 Sie haben nun die Möglichkeit den aktuellen Code lokal zu bearbeiten und Änderungen zum Projekt beizutragen. Im Folgenden möchte ich das Build-Management-Werkzeug erläutern, dass ich zum Entwickeln nutze: \gls{mvn}.
 
 \section{Build-Management}
-\gls{mvn} ist ein Werkzeug zum Bauen von Java-Anwendungen. Meines Erachtens gibt es keine signifikanten Gründe für oder gegen die Nutzung von \gls{mvn}; stattdessen hätte ich auch \gls{ant} oder \gls{make} nutzen können. In diesem Abschnitt möchte ich die grundlegenden Befehle für die Arbeit mit \gls{mvn} erläutern.
+\gls{mvn} ist ein Werkzeug zum Bauen von \gls{java}-Anwendungen. Meines Erachtens gibt es keine signifikanten Gründe für oder gegen die Nutzung von \gls{mvn}; stattdessen hätte ich auch \gls{ant} oder \gls{make} nutzen können. In diesem Abschnitt möchte ich die grundlegenden Befehle für die Arbeit mit \gls{mvn} erläutern.
 
 Ich verwende \gls{mvn}, da hier viel implizites Wissen eingesetzt wird; dadurch wird der Konfigurationsaufwand geringer -- solange man den Konventionen der \gls{mvn}-Entwickler folgt. Zu dem impliziten Wissen gehört unter anderem:
 \begin{itemize}
-\item Java-Klassen befinden sich in \code{src/main/java/}
-\item Java Test-Klassen befinden sich in \code{src/test/java/}
+\item \gls{java}-Klassen befinden sich in \code{src/main/java/}
+\item \gls[java} Test-Klassen befinden sich in \code{src/test/java/}
 \item Kompilate und von \gls{mvn} generierte Klassen befinden sich in \code{target/}
 \item Die explizite Konfiguration steht in der Datei \code{pom.xml}
 \end{itemize}

@@ -4,7 +4,7 @@ Nachdem wir nun die Vorteile der automatisierten Tests kennen gelernt haben, wol
 
 Für die Implementierung der \mic ist es nötig, sich ein Abstraktionsniveau auszusuchen, auf dem implementiert wird. Wir werden in den folgenden Abschnitten sehen, dass ich mich zu einer relativ hardwarenahen Implementierung entschieden habe. Daher habe ich zunächst folgende zu implementierende Komponenten identifiziert: die \gls{alu} inklusive Shifter, die Register, der Mikro-Code-Speicher inklusive der darin abgelegten Instruktionen und der Hauptspeicher.
 
-Aufgrund der \mvn\notiz{maven Referenz?}-Architektur liegt der Java\notiz{Java Referenz?}-Code in dem Verzeichnis \texttt{src/main/java/} und die entsprechenden Tests dazu in \texttt{src/test/java/}. In diesen Verzeichnissen findest du eine \package-Struktur, die unter dem \package \pck{com.github.croesch.micro_debug} beginnt, alle Klassen des \md sind in diesem \package oder in \subpackages zu finden.
+Aufgrund der \gls{mvn}-Architektur liegt der \gls{java}-Code in dem Verzeichnis \texttt{src/main/java/} und die entsprechenden Tests dazu in \texttt{src/test/java/}. In diesen Verzeichnissen findest du eine \package-Struktur, die unter dem \package \pck{com.github.croesch.micro_debug} beginnt, alle Klassen des \md sind in diesem \package oder in \subpackages zu finden.
 
 Auch der Code für die \mic befindet sich in einem solchen \subpackage: \pck{com.github.croesch.micro_debug.mic1}. In diesem Verzeichnis gibt es die Klasse \klasse{Mic1}, die wir uns in \secref{mic-zusammensetzung} genauer anschauen werden. Alle weiteren Klassen, die den \mic bilden sind in folgenden \subpackages zu finden:
 \begin{description}
@@ -44,7 +44,7 @@ Welche Berechnung mit welchen Registerwerten ausgeführt wird und in welches Reg
 
 Zur besseren Lesbarkeit des Codes nutzt die Implementierung der Mikro-Instruktion Unterklassen von \klasse{SignalSet}, um die verschiedenen Signale zu gruppieren. Die Darstellung der Mikro-Instruktion für den Benutzer ist in der Klasse \klasse{MicroInstructionDecoder} implementiert. Wie wird eine Mikro-Instruktion erzeugt? Der Mikro-Code-Speicher ist in der \datei{mic1} definiert; aus dieser Datei kann die Klasse \klasse{MicroInstructionReader} einzelne Mikro-Instruktionen erzeugen.
 
-Meine Implementierung der Mikro-Instruktion, der Darstellung einer Mikro-Instruktion und dem Einlesen einer Mikro-Instruktion basieren auf der Implementierung von Ray Ontko\notiz{Verweis}, der einen Simulator für die \mic in Java entwickelt hat.
+Meine Implementierung der Mikro-Instruktion, der Darstellung einer Mikro-Instruktion und dem Einlesen einer Mikro-Instruktion basieren auf der Implementierung von Ray Ontko\notiz{Verweis}, der einen Simulator für die \mic in \gls{java} entwickelt hat.
 
 \section{MPC-Berechnung}
 \seclbl{mic-mpc}
