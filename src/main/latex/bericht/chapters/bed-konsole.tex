@@ -1,20 +1,20 @@
 \chapter{Interaktion per Konsole}
 \chplbl{bed-konsole}
-Wie in \chpref{allgemein} beschrieben, muss der \md{} nicht installiert werden: Vom Herunterladen bis zum Starten des \md{} genügen folgende Schritte.
+Wie in \chpref{allgemein} beschrieben, muss der \md nicht installiert werden: Vom Herunterladen bis zum Starten des \md genügen folgende Schritte.
 
 \begin{enumerate}
 \item Die Datei \texttt{micro-debug-version.zip} von der Projektseite\notiz{Verweis auf Seite} herunterladen
 \item Die \datei{zip} in ein beliebiges Verzeichnis entpacken (bspw. \texttt{/opt/micro-debug/})
-\item Das Verzeichnis des \md{} dem \texttt{PATH} hinzufügen
-\item Den \md{} starten -- mit \texttt{\$ micro-debug.sh -{}-help}
+\item Das Verzeichnis des \md dem \texttt{PATH} hinzufügen
+\item Den \md starten -- mit \texttt{\$ micro-debug.sh -{}-help}
 \end{enumerate}
 
-Der \md{} kann durch einige Parameter gesteuert werden und wird nach dem Start durch Befehle gesteuert. Sowohl die Parameter als auch die Befehle werden nun erklärt und anschließend wird ein beispielhafter Ablauf mit dem \md{} beschrieben.
+Der \md kann durch einige Parameter gesteuert werden und wird nach dem Start durch Befehle gesteuert. Sowohl die Parameter als auch die Befehle werden nun erklärt und anschließend wird ein beispielhafter Ablauf mit dem \md beschrieben.
 
 \section{Parameter}
-Der Standardaufruf für den \md{} ist in \lstref{aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur Mikro-Assembler- und zur Assembler-Bytecode-Datei\notiz{Irgendwo den Aufbau der beiden Dateien erwähnen}. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur Mikro-Assembler- und dann der Pfad zur assembler-Datei gegeben wird. Werden die beiden Pfade vertauscht, so startet der \md{} nicht und bricht mit einer Fehlermeldung ab.
+Der Standardaufruf für den \md ist in \lstref{aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur Mikro-Assembler- und zur Assembler-Bytecode-Datei\notiz{Irgendwo den Aufbau der beiden Dateien erwähnen}. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur Mikro-Assembler- und dann der Pfad zur assembler-Datei gegeben wird. Werden die beiden Pfade vertauscht, so startet der \md nicht und bricht mit einer Fehlermeldung ab.
 
-\begin{lstlisting}[language=sh,caption={Aufruf des \md{} -- Konsolenversion},label=\lstlbl{aufruf-konsolenversion}]
+\begin{lstlisting}[language=sh,caption={Aufruf des \md -- Konsolenversion},label=\lstlbl{aufruf-konsolenversion}]
   micro-debug.sh [PARAMETER]... MIC1 IJVM
 \end{lstlisting}
 
@@ -25,33 +25,33 @@ Neben den beiden Dateipfaden gibt es im folgende optionale Parameter. Jeder Para
   ist dieser Parameter gegeben, so wird die Hilfe angezeigt, die neben den verschiedenen Aufrufmöglichkeiten die möglichen Parameter erklärt. Zusätzlich werden noch einige andere Informationen, wie Kontaktmöglichkeiten, angezeigt.
 
 \item[-o, -{}-output-file FILE]
-  ermöglicht die Umlenkung der Ausgabe der \mic{} (nicht des \md{}) in eine Datei. Normalerweise wird die Ausgabe der \mic{} auf der Konsole ausgegeben.
+  ermöglicht die Umlenkung der Ausgabe der \mic{} (nicht des \md) in eine Datei. Normalerweise wird die Ausgabe der \mic{} auf der Konsole ausgegeben.
 
   Mit dem Argument \texttt{FILE} wird hier der Pfad zur Datei gegeben, in die die Ausgabe geschrieben werden soll. Wenn die Datei bereits existiert, wird die Ausgabe an das Ende der Datei angehängt.
 
-  Unter Linux kann man dann in einer zweiten Konsole diese Datei beispielsweise mit \texttt{tail -f} anzeigen und die Ausgabe der \mic{} komfortabel von der Ausgabe des \md{} trennen. In diesem Szenario ist auch der Parameter \texttt{-{}-unbuffered-output} sinnvoll.
+  Unter Linux kann man dann in einer zweiten Konsole diese Datei beispielsweise mit \texttt{tail -f} anzeigen und die Ausgabe der \mic{} komfortabel von der Ausgabe des \md trennen. In diesem Szenario ist auch der Parameter \texttt{-{}-unbuffered-output} sinnvoll.
 \item[-u, -{}-unbuffered-output]
-  verhindert die Pufferung der Ausgabe der \mic{}. Normalerweise gibt der \md{} die Ausgabe der \mic{} zeilenweise aus, also erst bei der Ausgabe eines Zeilenumbruchs. Verwendet man den Parameter \texttt{-{}-output-file} oder möchte man aus sonstigen Gründen jedes ausgegebene Zeichen der \mic{} direkt auf der Konsole sehen, so ist dieser Parameter die Lösung.
+  verhindert die Pufferung der Ausgabe der \mic{}. Normalerweise gibt der \md die Ausgabe der \mic{} zeilenweise aus, also erst bei der Ausgabe eines Zeilenumbruchs. Verwendet man den Parameter \texttt{-{}-output-file} oder möchte man aus sonstigen Gründen jedes ausgegebene Zeichen der \mic{} direkt auf der Konsole sehen, so ist dieser Parameter die Lösung.
 
-  \emph{Vorsicht!} Wird dieser Parameter ohne \texttt{-{}-output-file} genutzt, so kann es sehr schwer werden, die ausgegebenen Zeichen der \mic{} ausfindig zu machen, da sie womöglich in der Menge der Ausgaben von \md{} untergehen.
+  \emph{Vorsicht!} Wird dieser Parameter ohne \texttt{-{}-output-file} genutzt, so kann es sehr schwer werden, die ausgegebenen Zeichen der \mic{} ausfindig zu machen, da sie womöglich in der Menge der Ausgaben von \md untergehen.
 
 \item[-v, -{}-version]
-  gibt die Version des \md{} aus.
+  gibt die Version des \md aus.
 \end{description}
 
-Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben wurden, so startet der Debugger nicht. Dies kann genutzt werden, um ohne vorhandene Bytecode-Dateien Informationen über den \md{} anzeigen zu können. \lstref{aufrufe-ohne-start} zeigt, dass der \md{} daher auch ohne Bytecode-Dateien aufgerufen werden kann.
+Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben wurden, so startet der Debugger nicht. Dies kann genutzt werden, um ohne vorhandene Bytecode-Dateien Informationen über den \md anzeigen zu können. \lstref{aufrufe-ohne-start} zeigt, dass der \md daher auch ohne Bytecode-Dateien aufgerufen werden kann.
 
-\begin{lstlisting}[language=sh,caption={Aufruf des \md{} ohne Start -- Konsolenversion},label=\lstlbl{aufrufe-ohne-start}]
+\begin{lstlisting}[language=sh,caption={Aufruf des \md ohne Start -- Konsolenversion},label=\lstlbl{aufrufe-ohne-start}]
   micro-debug.sh --help
   micro-debug.sh --version
 \end{lstlisting}
 
-Bei der Abarbeitung der gegebenen Parameter hängt die Reihenfolge der Parameter nicht von der Reihenfolge ab, in der sie dem \md{} als Parameter übergeben wurden. Wichtig ist nur, dass die beiden Bytecode-Dateien die letzten beiden Parameter und in der richtigen Reihenfolge aufgeführt sind.
+Bei der Abarbeitung der gegebenen Parameter hängt die Reihenfolge der Parameter nicht von der Reihenfolge ab, in der sie dem \md als Parameter übergeben wurden. Wichtig ist nur, dass die beiden Bytecode-Dateien die letzten beiden Parameter und in der richtigen Reihenfolge aufgeführt sind.
 
 \section{Befehle}
-Ist der \md{} gestartet lässt er sich durch verschiedene Befehle steuern, die am Ende dieses Abschnitt ausführlich beschrieben werden.
+Ist der \md gestartet lässt er sich durch verschiedene Befehle steuern, die am Ende dieses Abschnitt ausführlich beschrieben werden.
 
-Bei der Bedienung des \md{} gibt es die Möglichkeit, dass zwischen den verschiedenen Befehlen auch Eingaben für die \mic{} zu liefern sind. Damit der Benutzer sieht, ob die Eingabe vom \md{} oder der \mic{} erwartet wird, schreibt der \md{} '\texttt{micro-debug> }' und die \mic{} '\texttt{mic1> }' bevor eine Eingabe erwartet wird. Wenn die \mic{} eine Eingabe von Dir erwartet, kannst du mehrere Zeichen auf einmal eingeben -- an die \mic{} werden die von dir eingegebenen Zeichen plus ein Zeilenumbruch gesendet. Sollte dein Assembler-Code also in einer Schleife einzelne Zeichen einlesen, solltest du die gesamte Zeile direkt eingeben.
+Bei der Bedienung des \md gibt es die Möglichkeit, dass zwischen den verschiedenen Befehlen auch Eingaben für die \mic{} zu liefern sind. Damit der Benutzer sieht, ob die Eingabe vom \md oder der \mic{} erwartet wird, schreibt der \md '\texttt{micro-debug> }' und die \mic{} '\texttt{mic1> }' bevor eine Eingabe erwartet wird. Wenn die \mic{} eine Eingabe von Dir erwartet, kannst du mehrere Zeichen auf einmal eingeben -- an die \mic{} werden die von dir eingegebenen Zeichen plus ein Zeilenumbruch gesendet. Sollte dein Assembler-Code also in einer Schleife einzelne Zeichen einlesen, solltest du die gesamte Zeile direkt eingeben.
 
 Die verschiedenen Befehle können ein oder mehrere Argumente benötigen. Die Argumente können einem der folgenden Datentypen gehören:
 \begin{description}
@@ -64,11 +64,11 @@ Je nach Befehl kann der zulässige Wertebereich jedoch noch weiter eingeschränk
 \begin{description}
 \item[break] \emph{Register [Zahl]}
 
-  setzt einen Breakpoint für das gegebene \emph{Register}: Sobald das Register den Wert \emph{Zahl} erhält, hält der \md{}. Der \md{} hält erst, nachdem das Register den Wert erhalten hat -- da dies unter Umständen zu spät ist, gibt es die Möglichkeit, das Argument \emph{Zahl} wegzulassen. Wird nur ein Register angegeben, hält der \md{} bevor das Register einen neuen Wert zugewiesen bekommt.
+  setzt einen Breakpoint für das gegebene \emph{Register}: Sobald das Register den Wert \emph{Zahl} erhält, hält der \md. Der \md hält erst, nachdem das Register den Wert erhalten hat -- da dies unter Umständen zu spät ist, gibt es die Möglichkeit, das Argument \emph{Zahl} wegzulassen. Wird nur ein Register angegeben, hält der \md bevor das Register einen neuen Wert zugewiesen bekommt.
 
 \item[exit] \hspace*{\fill}\\
 
-  beendet den \md{} und gibt eventuell belegte Ressourcen wieder frei.
+  beendet den \md und gibt eventuell belegte Ressourcen wieder frei.
 
 \item[help] \hspace*{\fill}\\
 
@@ -87,7 +87,7 @@ Je nach Befehl kann der zulässige Wertebereich jedoch noch weiter eingeschränk
   \item werden beide Parameter gegeben, wird der Assembler-Code von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
   \end{itemize}
 
-  Da der \md{} nur den Bytecode kennt, gibt es eigentlich keine Zeilen. Der \md{} schreibt pro Zeile einen Befehl (inklusive Argumente), somit existieren Zeilennummern, die für den \md{} als Referenz dienen.
+  Da der \md nur den Bytecode kennt, gibt es eigentlich keine Zeilen. Der \md schreibt pro Zeile einen Befehl (inklusive Argumente), somit existieren Zeilennummern, die für den \md als Referenz dienen.
 
 \item[ls-micro-code] \emph{[Zahl1 [Zahl2]]}
 
@@ -98,7 +98,7 @@ Je nach Befehl kann der zulässige Wertebereich jedoch noch weiter eingeschränk
   \item werden beide Parameter gegeben, wird der Mikro-Assembler-Code von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
   \end{itemize}
 
-  Da der \md{} nur den Bytecode kennt, gibt es eigentlich keine Zeilen. Der \md{} schreibt pro Zeile eine Mikroinstruktion (die $36~Bit$, die die Instruktion spezifizieren), somit existieren Zeilennummern, die für den \md{} als Referenz dienen.
+  Da der \md nur den Bytecode kennt, gibt es eigentlich keine Zeilen. Der \md schreibt pro Zeile eine Mikroinstruktion (die $36~Bit$, die die Instruktion spezifizieren), somit existieren Zeilennummern, die für den \md als Referenz dienen.
 
 \item[ls-mem] \emph{Zahl1 Zahl2}
 
@@ -118,11 +118,11 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 
 \item[macro-break] \emph{Zahl}
 
-  fügt einen Breakpoint hinzu, der den \md{} anhält, sobald der Bytecode des Assemblers an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-macro-code} angezeigten Zeilennummern sein.
+  fügt einen Breakpoint hinzu, der den \md anhält, sobald der Bytecode des Assemblers an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-macro-code} angezeigten Zeilennummern sein.
 
 \item[micro-break] \emph{Zahl}
 
-  fügt einen Breakpoint hinzu, der den \md{} anhält, sobald der Bytecode des Mikro-Assemblers an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-micro-code} angezeigten Zeilennummern sein.
+  fügt einen Breakpoint hinzu, der den \md anhält, sobald der Bytecode des Mikro-Assemblers an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-micro-code} angezeigten Zeilennummern sein.
 
 \item[micro-step] \emph{[Zahl]}
 
@@ -130,7 +130,7 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 
 \item[reset] \hspace*{\fill}\\
 
-  die \mic{} wird in den Anfangszustand zurückgesetzt: Der Hauptspeicher und die Register werden auf die initialen Werte zurückgesetzt. Auch die Ein- und Ausgabe der \mic{} wird geleert. Die Informationen des \md{}, vor allem die Breakpoints, bleiben allerdings erhalten und müssen vom Benutzer nicht erneut gesetzt werden.
+  die \mic{} wird in den Anfangszustand zurückgesetzt: Der Hauptspeicher und die Register werden auf die initialen Werte zurückgesetzt. Auch die Ein- und Ausgabe der \mic{} wird geleert. Die Informationen des \md, vor allem die Breakpoints, bleiben allerdings erhalten und müssen vom Benutzer nicht erneut gesetzt werden.
 
 \item[rm-break] \emph{Zahl}
 
@@ -172,7 +172,7 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 
   die Variable \emph{Zahl} wird nun beobachtet. Dadurch wird der Inhalt der Variable angezeigt, wenn er sich ändert.
 
-  \emph{Zahl} ist die Nummer der lokalen Variable. Wird eine Methode im Assembler-Code aufgerufen, ändert sich der Zeiger \reg{LV} und damit auch die Identität der lokalen Variablen. Wird also Variable Nummer~1 in Methode X beobachtet und führt der \md{} gerade Methode Y aus, wird eine Änderung der jetzigen lokalen Variable~1 nicht ausgegeben (sofern diese nicht auch beobachtet wird).
+  \emph{Zahl} ist die Nummer der lokalen Variable. Wird eine Methode im Assembler-Code aufgerufen, ändert sich der Zeiger \reg{LV} und damit auch die Identität der lokalen Variablen. Wird also Variable Nummer~1 in Methode X beobachtet und führt der \md gerade Methode Y aus, wird eine Änderung der jetzigen lokalen Variable~1 nicht ausgegeben (sofern diese nicht auch beobachtet wird).
 
 \item[untrace-mac] \hspace*{\fill}\\
   
@@ -192,7 +192,7 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 \end{description}
 
 \section{Tutorial}
-Du solltest den \md{}, wie zu Beginn dieses Kapitels beschrieben, nun entpackt haben und am besten schon der \texttt{PATH}-Variable hinzugefügt haben. Denn dann kannst du in einem Verzeichnis deiner Wahl die Dateien für dieses Tutorial anlegen.
+Du solltest den \md, wie zu Beginn dieses Kapitels beschrieben, nun entpackt haben und am besten schon der \texttt{PATH}-Variable hinzugefügt haben. Denn dann kannst du in einem Verzeichnis deiner Wahl die Dateien für dieses Tutorial anlegen.
 
 Wir möchten nun ein kleines Programm schreiben und dies testen: ein Programm zum Einlesen von Binärzahlen. \lstref{binary-read-c} zeigt den Code für das Programm in C\notiz{C referenz? erklärn?} und soll hier als Verständnis des Algorithmuses dienen.
 
@@ -244,9 +244,9 @@ Zum Debuggen des Mikro-Assembler-Codes und Assembler-Codes solltest Du die \text
 
 Bevor wir nun beginnen solltest Du auch die Konfigurationsoption \texttt{mic1.micro.address.ijvm} überprüfen. Diese Option enthält die Adresse der Mikro-Instruktion, die von allen Mikro-Code-Methoden angesprungen wird, um die nächste Mikro-Instruktion zu \emph{laden}. Ist diese Option falsch konfiguriert, funktioniert später der Befehl \texttt{step} nicht wie erwartet.
 
-Die in \lstref{binary-read-jas} aufgeführte Methode soll später eine eigene Methode werden und gibt daher keinen Wert aus, sondern legt das Ergebnis am Ende auf den Stack. \lstref{tutorial-start} zeigt in \srcref{tutorial-startbefehl} den Befehl, um den \md{} zu starten -- im aktuellen Verzeichnis liegen die Dateien \texttt{mic1ijvm.mic1}, \texttt{binary-read.ijvm} und \texttt{ijvm.conf}.
+Die in \lstref{binary-read-jas} aufgeführte Methode soll später eine eigene Methode werden und gibt daher keinen Wert aus, sondern legt das Ergebnis am Ende auf den Stack. \lstref{tutorial-start} zeigt in \srcref{tutorial-startbefehl} den Befehl, um den \md zu starten -- im aktuellen Verzeichnis liegen die Dateien \texttt{mic1ijvm.mic1}, \texttt{binary-read.ijvm} und \texttt{ijvm.conf}.
 
-\begin{lstlisting}[language=,caption={Start des \md{}},label=\lstlbl{tutorial-start}]
+\begin{lstlisting}[language=,caption={Start des \md},label=\lstlbl{tutorial-start}]
 micro-debug.sh mic1ijvm.mic1 binary-read.ijvm(*@\srclbl{tutorial-startbefehl}@*)
 MicroDebug - Copyright (C) 2011-2012 Christian Roesch AND 1999 Prentice-Hall, Inc. (*@\srclbl{tutorial-start-willkommen}@*)
 Welcome! Please type 'help' for a list of valid commands
@@ -254,7 +254,7 @@ Welcome! Please type 'help' for a list of valid commands
 micro-debug> (*@\srclbl{tutorial-start-mdread}@*)
 \end{lstlisting}
 
-Ab \srcref{tutorial-start-willkommen} steht die Willkommensnachricht des \md{} gefolgt von der \srcref{tutorial-start-mdread}, die anzeigt, dass der \md{} nun einen Befehl erwartet. Wir können uns nun eine ausführliche Beschreibung der verschiedenen Befehle anzeigen, mit dem Befehl \texttt{help}.
+Ab \srcref{tutorial-start-willkommen} steht die Willkommensnachricht des \md gefolgt von der \srcref{tutorial-start-mdread}, die anzeigt, dass der \md nun einen Befehl erwartet. Wir können uns nun eine ausführliche Beschreibung der verschiedenen Befehle anzeigen, mit dem Befehl \texttt{help}.
 
 Geben wir den Befehl \texttt{ls-macro-code} ein, erhalten wir den disassemblierten Assembler-Code, wie in \lstref{tutorial-macro-code} zu sehen. Die Ausgabe zeigt zunächst pro Zeile die Assembler-Code-Zeile, dann die Adresse des Befehls im Mikro-Assembler-Code und anschließend den Namen des Befehls mit seinen Argumenten. Die Ausgabe ist nicht identisch mit dem Code, den wir anfangs kompiliert haben -- in \lstref{binary-read-jas} -- in der disassemblierten Variante fehlen Informationen wie Kommentare, Variablennamen und Sprungmarkennamen. Beispielsweise zeigt \srcref{tutorial-macro-code-sprung} einen bedingten Sprung zur Zeile \texttt{0x1B}.
 
@@ -266,7 +266,7 @@ Geben wir den Befehl \texttt{ls-macro-code} ein, erhalten wir den disassembliert
      0x7: [ 0x15] ILOAD  0
      0x9: [ 0x10] BIPUSH  0xA
 (*@\srclbl{tutorial-macro-code-sprung}@*)     0xB: [ 0x9F] IF_ICMPEQ  0x1B
-     0xE: [ 0x84] IINC  0 0x0(*@\footnote{Der \md{} hat an dieser Stelle einen Bug: Wie in \srcref{iinc-increment-value} in \lstref{binary-read-jas} zu sehen, ist der Wert \texttt{0} falsch. Unter \url{https://github.com/croesch/micro-debug/issues/37} ist die entsprechende Dokumentation zu dem Bug. Dieser Bug hat allerdings keine Auswirkung auf die Funktionsweise der \mic{}, sondern nur auf das Disassemblen des Assembler-Codes -- also der Ausgabe des \md{}.}@*)
+     0xE: [ 0x84] IINC  0 0x0(*@\footnote{Der \md hat an dieser Stelle einen Bug: Wie in \srcref{iinc-increment-value} in \lstref{binary-read-jas} zu sehen, ist der Wert \texttt{0} falsch. Unter \url{https://github.com/croesch/micro-debug/issues/37} ist die entsprechende Dokumentation zu dem Bug. Dieser Bug hat allerdings keine Auswirkung auf die Funktionsweise der \mic{}, sondern nur auf das Disassemblen des Assembler-Codes -- also der Ausgabe des \md.}@*)
     0x11: [ 0x15] ILOAD  1
     0x13: [ 0x59] DUP 
     0x14: [ 0x60] IADD 
@@ -286,9 +286,9 @@ micro-debug> run
 mic1> (*@\srclbl{tutorial-mic-eingabe-txt}@*)
 \end{lstlisting}
 
-Wir geben nun \texttt{1010} ein und bestätigen die Eingabe mit \texttt{ENTER} -- dadurch werden fünf Zeichen im \md{} gepuffert: Die vier Zeichen, die wir eingegeben haben plus ein Zeilenumbruch. Jedes Mal, wenn die \mic{} nun ein Zeichen benötigt, wird aus diesem Puffer gelesen. Erst wenn dieser leer ist, erscheint erneut die Eingabeaufforderung für den Benutzer.
+Wir geben nun \texttt{1010} ein und bestätigen die Eingabe mit \texttt{ENTER} -- dadurch werden fünf Zeichen im \md gepuffert: Die vier Zeichen, die wir eingegeben haben plus ein Zeilenumbruch. Jedes Mal, wenn die \mic{} nun ein Zeichen benötigt, wird aus diesem Puffer gelesen. Erst wenn dieser leer ist, erscheint erneut die Eingabeaufforderung für den Benutzer.
 
-\begin{lstlisting}[language=,caption={\md{} gibt Anzahl ausgeführter Zyklen aus},label=\lstlbl{tutorial-durchgelaufen}]
+\begin{lstlisting}[language=,caption={\md gibt Anzahl ausgeführter Zyklen aus},label=\lstlbl{tutorial-durchgelaufen}]
 Processor executed 441 ticks.
 micro-debug> 
 \end{lstlisting}
@@ -297,7 +297,7 @@ Nachdem wir nun die Zahl eingegeben haben erscheint die Ausgabe aus \lstref{tuto
 
 Das Register \reg{TOS} enthält den Wert $0$ und damit einen falschen Wert. Wir können nun noch den Stack anzeigen, um zu überprüfen, ob dort der erwartete Wert $10$ abgelegt ist. Den Stack zeigen wir mit dem Befehl \texttt{ls-stack} an, was die in \lstref{tutorial-stack} gezeigte Ausgabe liefert.
 
-\begin{lstlisting}[language=,caption={\md{} gibt Anzahl ausgeführter Zyklen aus},label=\lstlbl{tutorial-tos-falscher-wert}]
+\begin{lstlisting}[language=,caption={\md gibt Anzahl ausgeführter Zyklen aus},label=\lstlbl{tutorial-tos-falscher-wert}]
 micro-debug> ls-reg TOS
 Register TOS : 0x0
 micro-debug> 
@@ -349,7 +349,7 @@ Bei meiner Implementierung liegt der Befehl \texttt{IN} an der Stelle \texttt{0x
 0x6D: TOS=MDR;wr;goto 0x3
 \end{lstlisting}
 
-Wir können nun in \lstref{tutorial-check-rd-mdr} sehen, wie wir die drei Mikro-Instruktionen zum Aufbau der Speicheradresse und zum Einlesen des Zeichens ausführen. Während der Ausführung fragt der \md{} im Auftrag der \mic{} nach einer Eingabe, hier geben wir wieder \texttt{1010} ein und bestätigen mit \texttt{ENTER}.
+Wir können nun in \lstref{tutorial-check-rd-mdr} sehen, wie wir die drei Mikro-Instruktionen zum Aufbau der Speicheradresse und zum Einlesen des Zeichens ausführen. Während der Ausführung fragt der \md im Auftrag der \mic{} nach einer Eingabe, hier geben wir wieder \texttt{1010} ein und bestätigen mit \texttt{ENTER}.
 
 \begin{lstlisting}[language=,caption={Überprüfung des \texttt{rd}-Befehls durch den Inhalt des Registers \reg{MDR}},label=\lstlbl{tutorial-check-rd-mdr}]
 micro-debug> micro-step 3
@@ -536,7 +536,7 @@ finish:
 .end-main
 \end{lstlisting}
 
-Nachdem die korrigierte Version des Assembler-Codes kompiliert ist, können wir sie debuggen. Der \md{} kann den Mikro-Assembler-Code und Assembler-Code nicht automatisch aktualisieren und muss daher mit dem Befehl \texttt{EXIT} beendet werden. Anschließend kann er mit dem korrigierten Kompilat gestartet werden.
+Nachdem die korrigierte Version des Assembler-Codes kompiliert ist, können wir sie debuggen. Der \md kann den Mikro-Assembler-Code und Assembler-Code nicht automatisch aktualisieren und muss daher mit dem Befehl \texttt{EXIT} beendet werden. Anschließend kann er mit dem korrigierten Kompilat gestartet werden.
 
 Mit dem Befehl \texttt{ls-macro-code} kann nun überprüft werden, ob der Assembler-Code korrekt aktualisiert wurde. In \lstref{tutorial-macro-code-correct} ist die Ausgabe des Befehls zu sehen -- \srcref{tutorial-macro-code-corrected-line} zeigt die neu eingefügte Zeile.
 
@@ -561,7 +561,7 @@ micro-debug> ls-macro-code
     0x1F: [ 0xFF] HALT 
 \end{lstlisting}
 
-Du hast nun überprüft, dass der Assembler-Code korrekt aktualisiert wurde, daher kannst Du jetzt überprüfen, ob die Vermutung korrekt war und der Fehler im Assembler-Code nun behoben ist. Beim Beenden des \md{} werden Breakpoints sowie beobachtete Register, Variablen oder Assembler-Code verworfen -- zur leichteren Übersicht kannst Du diese daher nochmal aktivieren.
+Du hast nun überprüft, dass der Assembler-Code korrekt aktualisiert wurde, daher kannst Du jetzt überprüfen, ob die Vermutung korrekt war und der Fehler im Assembler-Code nun behoben ist. Beim Beenden des \md werden Breakpoints sowie beobachtete Register, Variablen oder Assembler-Code verworfen -- zur leichteren Übersicht kannst Du diese daher nochmal aktivieren.
 
 \begin{lstlisting}[language=,caption={Beobachten des Assembler-Codes und der lokalen Variablen},label=\lstlbl{tutorial-watch-code-vars}]
 micro-debug> trace-mac

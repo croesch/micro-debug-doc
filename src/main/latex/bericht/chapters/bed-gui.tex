@@ -1,8 +1,8 @@
 \chapter{Interaktion per GUI}
 \chplbl{bed-gui}
-Der zweite Teil der Aufgabe war es, eine grafische Oberfläche für den \md{} zu entwickeln -- die \mdg{}. Wie diese bedient wird, worauf Du achten solltest und wie sich die \mdg{} vom \md{} unterscheidet werde ich in diesem Kapitel erläutern. Am Ende des Kapitels biete ich wie für den \md{} ein Tutorial an, welches Dir die Funktionsweise der \mdg{} an einem Beispiel nahebringen soll.
+Der zweite Teil der Aufgabe war es, eine grafische Oberfläche für den \md zu entwickeln -- die \mdg{}. Wie diese bedient wird, worauf Du achten solltest und wie sich die \mdg{} vom \md unterscheidet werde ich in diesem Kapitel erläutern. Am Ende des Kapitels biete ich wie für den \md ein Tutorial an, welches Dir die Funktionsweise der \mdg{} an einem Beispiel nahebringen soll.
 
-Auch die \mdg{} erfordert keine Installation und besteht nur aus einer \datei{zip}, die Du entpacken musst. Die Schritte vom Herunterladen bis zum Starten der \mdg{} sind dabei analog zum \md{}:
+Auch die \mdg{} erfordert keine Installation und besteht nur aus einer \datei{zip}, die Du entpacken musst. Die Schritte vom Herunterladen bis zum Starten der \mdg{} sind dabei analog zum \md:
 
 \begin{enumerate}
 \item Die Datei \texttt{micro-debug-gui-version.zip} von der Projektseite\notiz{Verweis auf Seite} herunterladen
@@ -11,48 +11,48 @@ Auch die \mdg{} erfordert keine Installation und besteht nur aus einer \datei{zi
 \item Die \mdg{} starten -- mit \texttt{\$ micro-debug-gui.sh -{}-help}
 \end{enumerate}
 
-Die grafische Oberfläche ist technisch eine eigenständige Anwendung, die die Konsolenvariante benutzt -- wie ich in \chpref{gui} erläutere. Demzufolge enthält die grafische Oberfläche auch den Code der Konsolenvariante des \md{} -- dadurch kannst Du mit ein wenig Anpassung auch die Konsolenvariante nutzen. Dies möchte ich nun kurz etwas vertiefen.
+Die grafische Oberfläche ist technisch eine eigenständige Anwendung, die die Konsolenvariante benutzt -- wie ich in \chpref{gui} erläutere. Demzufolge enthält die grafische Oberfläche auch den Code der Konsolenvariante des \md -- dadurch kannst Du mit ein wenig Anpassung auch die Konsolenvariante nutzen. Dies möchte ich nun kurz etwas vertiefen.
 
 \section{Nutzung der Konsolenvariante}
 \seclbl{gui-nutzung-konsole}
-Nach dem Entpacken der \datei{zip} entsteht eine ähnliche Verzeichnis-Struktur, wie beim \md{}. Allerdings existiert nun das Verzeichnis \texttt{lib/}, das unter anderem eine \datei{jar} beinhaltet, die den Code des \md{} enthält -- die Datei \texttt{micro-debug-version.jar}.
+Nach dem Entpacken der \datei{zip} entsteht eine ähnliche Verzeichnis-Struktur, wie beim \md. Allerdings existiert nun das Verzeichnis \texttt{lib/}, das unter anderem eine \datei{jar} beinhaltet, die den Code des \md enthält -- die Datei \texttt{micro-debug-version.jar}.
 
-Ich möchte nun zeigen, wie man die \mdg{} so ergänzt, dass sowohl die \mdg{} als auch der \md{} aufrufbar sind. Da dieses Verhalten für Windows und Linux analog ist, zeige ich es am Beispiel von Linux, wie in \lstref{parallele-nutzung-md-mdg} vorbereitet.
+Ich möchte nun zeigen, wie man die \mdg{} so ergänzt, dass sowohl die \mdg{} als auch der \md aufrufbar sind. Da dieses Verhalten für Windows und Linux analog ist, zeige ich es am Beispiel von Linux, wie in \lstref{parallele-nutzung-md-mdg} vorbereitet.
 
-\begin{lstlisting}[language=sh,caption={Parallele Nutzung des \md{} und der \mdg{}},label=\lstlbl{parallele-nutzung-md-mdg}]
+\begin{lstlisting}[language=sh,caption={Parallele Nutzung des \md und der \mdg{}},label=\lstlbl{parallele-nutzung-md-mdg}]
 cd micro-debug-gui-version/
 cp micro-debug-gui.sh micro-debug.sh
 \end{lstlisting}
 
 Als Basis für die parallele Nutzung kopiere das Startskript der \mdg{}; diese Kopie (\texttt{micro-debug.sh}) musst Du nun noch anpassen:
 \begin{enumerate}
-\item Ersetze \texttt{"\$DIR/micro-debug-gui-versiong.jar":"\$DIR/lib/*"} durch \texttt{"\$DIR/lib/micro-debug-versionk.jar"}, wobei \emph{versiong} die Version der \mdg{} und \emph{versionk} die Version des \md{} ist.
+\item Ersetze \texttt{"\$DIR/micro-debug-gui-versiong.jar":"\$DIR/lib/*"} durch \texttt{"\$DIR/lib/micro-debug-versionk.jar"}, wobei \emph{versiong} die Version der \mdg{} und \emph{versionk} die Version des \md ist.
 \item Ersetze \texttt{com.github.croesch.micro_debug.gui.MicroDebug} durch \texttt{com.github.croesch.micro_debug.MicroDebug}
 \end{enumerate}
 
-Nach diesen Schritten hast Du zwei Startskripte: Eines zum Start der \mdg{} und eines zum Start des \md{}. Beide kannst Du nun unabhängig voneinander ausführen.
+Nach diesen Schritten hast Du zwei Startskripte: Eines zum Start der \mdg{} und eines zum Start des \md. Beide kannst Du nun unabhängig voneinander ausführen.
 
 \section{Unterschiede zur Konsolenvariante}
-Wie Du bemerkt hast, ist die Struktur von \md{} und \mdg{} ähnlich, aber nicht gleich. Auch beim Aufruf und bei der Bedienung gibt es einige nennenswerte Unterschiede, die ich Dir nun zeigen möchte.
+Wie Du bemerkt hast, ist die Struktur von \md und \mdg{} ähnlich, aber nicht gleich. Auch beim Aufruf und bei der Bedienung gibt es einige nennenswerte Unterschiede, die ich Dir nun zeigen möchte.
 
 \subsection{Parameter}
 \seclbl{unterschied-parameter}
-Schon der Aufruf der \mdg{} unterscheidet sich von dem des \md{}: Es gibt weniger Parameter und Du kannst die \mdg{} auch ohne Parameter aufrufen, alle der folgenden Parameter sind also optional.
+Schon der Aufruf der \mdg{} unterscheidet sich von dem des \md: Es gibt weniger Parameter und Du kannst die \mdg{} auch ohne Parameter aufrufen, alle der folgenden Parameter sind also optional.
 
 \begin{description}
 \item[-h, -{}-help]
-  mit diesem Parameter kannst Du dir wie beim \md{} die Hilfe anzeigen lassen, die neben den verschiedenen Aufrufmöglichkeiten die möglichen Parameter erklärt. Zusätzlich werden auch hier noch einige andere Informationen, wie Kontaktmöglichkeiten, angezeigt.
+  mit diesem Parameter kannst Du dir wie beim \md die Hilfe anzeigen lassen, die neben den verschiedenen Aufrufmöglichkeiten die möglichen Parameter erklärt. Zusätzlich werden auch hier noch einige andere Informationen, wie Kontaktmöglichkeiten, angezeigt.
 
 \item[-v, -{}-version]
-  gibt die Version der \mdg{} und des benutzten \md{} aus.
+  gibt die Version der \mdg{} und des benutzten \md aus.
 \end{description}
 
-Wie beim \md{} startet der Debugger nicht, wenn Du dir die Hilfe oder Versionsnummern anzeigen lässt, sondern beendet sich nach Ausgabe der Informationen.
+Wie beim \md startet der Debugger nicht, wenn Du dir die Hilfe oder Versionsnummern anzeigen lässt, sondern beendet sich nach Ausgabe der Informationen.
 
-Anders als der \md{} benötigt die \mdg{} die Pfade zu den Bytecode-Dateien nicht; diese werden direkt zu Beginn über die grafische Oberfläche eingegeben. Dies erkläre ich nochmal genauer im \secref{startfenster}.
+Anders als der \md benötigt die \mdg{} die Pfade zu den Bytecode-Dateien nicht; diese werden direkt zu Beginn über die grafische Oberfläche eingegeben. Dies erkläre ich nochmal genauer im \secref{startfenster}.
 
 \subsection{Verfügbare Funktionen}
-Die \mdg{} benutzt den \md{} und hat daher prinzipiell Zugriff auf alle Funktionen, die der \md{} dem Benutzer bereitstellt. Da die \mdg{} dem Benutzer aber fortlaufend die Werte der Register und des Hauptspeichers, den Mikro-Assembler- sowie den Assembler-Code anzeigt, ist es nicht nötig diese Werte beobachten zu können. Befehle wie \texttt{trace-reg} wirst Du daher in der \mdg{} nicht wiederfinden. Auch die Ausgabe des Stacks gibt es nicht mehr, denn dieser kann im Hauptspeicher angesehen werden.
+Die \mdg{} benutzt den \md und hat daher prinzipiell Zugriff auf alle Funktionen, die der \md dem Benutzer bereitstellt. Da die \mdg{} dem Benutzer aber fortlaufend die Werte der Register und des Hauptspeichers, den Mikro-Assembler- sowie den Assembler-Code anzeigt, ist es nicht nötig diese Werte beobachten zu können. Befehle wie \texttt{trace-reg} wirst Du daher in der \mdg{} nicht wiederfinden. Auch die Ausgabe des Stacks gibt es nicht mehr, denn dieser kann im Hauptspeicher angesehen werden.
 
 Auch die Breakpoints werden dem Benutzer fortlaufend angezeigt und können über Mausklicks aktiviert/deaktiviert werden, daher fallen Befehle wie \texttt{ls-break} auch weg.
 
@@ -67,7 +67,7 @@ Wie wir gerade gesehen haben, bietet die \mdg{} konstruktionsbedingt manche Funk
 Diese Funktionen habe ich bisher aus Zeitgründen noch nicht implementiert, werde ich aber nach und nach ergänzen.
 
 \subsection{Geschwindigkeit}
-Die \mdg{} nutzt die Funktionen des \md{}, um die \mic{} simulieren und debuggen zu können. Daraus folgt, dass die \mdg{} prinzipiell nicht schneller sein kann als der \md{}, sondern eher langsamer.
+Die \mdg{} nutzt die Funktionen des \md, um die \mic{} simulieren und debuggen zu können. Daraus folgt, dass die \mdg{} prinzipiell nicht schneller sein kann als der \md, sondern eher langsamer.
 
 Diese Vermutung bestätigt sich, wenn man die \mdg{} benutzt. Bei einfachen Befehlen, wie eine (Mikro-)Instruktion auszuführen oder den Debugger zu resetten ist kein Geschwindigkeitsunterschied spürbar. Aber besonders bei dem \texttt{run}-Befehl ist deutlich zu beobachten, dass die \mdg{} langsamer ist.
 
@@ -138,7 +138,7 @@ In der Ansicht des Hauptspeichers sind nur eine feste Anzahl an Einträgen zu se
 Die Ansicht zeigt den gesamten Hauptspeicher -- neben den lokalen Variablen, dem Stack und den Konstanten kannst Du auch den disassemblierten Assembler-Code in Bit-Form betrachten.
 
 \subsection{Text-Ein- und -Ausgabe}
-Rechts neben der Hauptspeicheransicht sind unten verschiedene Textareas zu sehen. Deren Funktion sollte dir spätestens im laufenden Betrieb des Debuggers deutlich werden: Links unten ist das Textfeld, um der \mic{} Text bereitzustellen, darüber befindet sich die Ausgabe der \mic{} und im rechten Bereich tauchen Informationen des \md{} auf, die auf der Konsole sichtbar waren und bisher noch keinen Platz in der Oberfläche bekommen haben.
+Rechts neben der Hauptspeicheransicht sind unten verschiedene Textareas zu sehen. Deren Funktion sollte dir spätestens im laufenden Betrieb des Debuggers deutlich werden: Links unten ist das Textfeld, um der \mic{} Text bereitzustellen, darüber befindet sich die Ausgabe der \mic{} und im rechten Bereich tauchen Informationen des \md auf, die auf der Konsole sichtbar waren und bisher noch keinen Platz in der Oberfläche bekommen haben.
 
 \begin{figure}[h]
 	\centering
@@ -147,9 +147,9 @@ Rechts neben der Hauptspeicheransicht sind unten verschiedene Textareas zu sehen
 	\figlbl{main-frame-mic-ta}
 \end{figure}
 
-\figref{main-frame-mic-ta} zeigt, wie sich das Eingabefeld verhält, wenn die \mic{} per \texttt{IN} ein Zeichen liest, aber der Puffer des \md{} keine Zeichen mehr enthält: es färbt sich orange. In diesem Fall solltest Du die nächste Eingabe eingeben und mit \emph{ENTER} bestätigen. Dadurch werden die eingegebenen Zeichen inklusive Zeilenumbruch im \md{} gepuffert, bis die \mic{} sie einliest.
+\figref{main-frame-mic-ta} zeigt, wie sich das Eingabefeld verhält, wenn die \mic{} per \texttt{IN} ein Zeichen liest, aber der Puffer des \md keine Zeichen mehr enthält: es färbt sich orange. In diesem Fall solltest Du die nächste Eingabe eingeben und mit \emph{ENTER} bestätigen. Dadurch werden die eingegebenen Zeichen inklusive Zeilenumbruch im \md gepuffert, bis die \mic{} sie einliest.
 
-Du kannst auch Eingaben machen, wenn der Puffer noch nicht leer ist, in diesem Fall wird der Text den du eingibst einfach dem Puffer des \md{} angehängt. So kannst Du schon beim Start des Programms bequem alle nötigen Eingaben machen und die \mdg{} die Eingaben abarbeiten lassen.
+Du kannst auch Eingaben machen, wenn der Puffer noch nicht leer ist, in diesem Fall wird der Text den du eingibst einfach dem Puffer des \md angehängt. So kannst Du schon beim Start des Programms bequem alle nötigen Eingaben machen und die \mdg{} die Eingaben abarbeiten lassen.
 
 \subsection{Code}
 Die wichtigsten zwei Komponenten befinden sich in \figref{main-frame-onbegin} rechts oben: Der disassemblierte Assembler- und Mikro-Assembler-Code. Die beiden Ansichten sind von der Funktion identisch aufgebaut und zeigen den disassemblierten Code mit Syntaxhervorhebung, Zeilennummern und den dazugehörigen Breakpoints an. Zusätzlich wird die Zeile des Codes hervorgehoben, die als nächstes ausgeführt wird.

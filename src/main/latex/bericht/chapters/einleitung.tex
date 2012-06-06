@@ -1,5 +1,5 @@
 \chapter*{Einleitung}
-Die vorliegende Arbeit stellt \md{} vor, den Debugger für den CISC-Prozessor, der in \cite{Tanenbaum1998} vorgestellt wird: \mic.
+Die vorliegende Arbeit stellt \md vor, den Debugger für den CISC-Prozessor, der in \cite{Tanenbaum1998} vorgestellt wird: \mic.
 
 Im Gegensatz zu einem RISC-Prozessor sind die Maschinenbefehle in der \mic{} nicht in Hardware implementiert, sondern werden durch einen Mikroprogramm-Speicher definiert. Dieser wird in Mikro-Assembler programmiert und ermöglicht es Maschinenbefehle auf einem hohen Abstraktionsniveau zu definieren und ohne Veränderung der Hardware anzupassen.
 
@@ -29,16 +29,16 @@ Die grafische Oberfläche soll dem Benutzer ermöglichen, Breakpoints über die 
 Da in dieser Arbeit ein allumfassender Debugger weder geschaffen werden kann noch soll, ist besonders darauf zu achten, die Wartung und Erweiterung des Debuggers Außenstehenden Personen zu ermöglichen. Besonders der zu schreibende Code soll daher gut dokumentiert werden; beispielsweise andere Studenten sollen sich in den Code einarbeiten können und neue Funktionalitäten implementieren oder bestehende Funktionalitäten anpassen können.
 
 \section*{Aufbau der Arbeit}
-Die Arbeit ist in zwei Teile geteilt: Im ersten Teil wird die Bedienung und im zweiten Teil wird die Entwicklung des \md{} erläutert.
+Die Arbeit ist in zwei Teile geteilt: Im ersten Teil wird die Bedienung und im zweiten Teil wird die Entwicklung des \md erläutert.
 
 \subsection*{Bedienung}
-Im \chpref{allgemein} wird der \md{} allgemein beschrieben: Welche Systemvoraussetzungen gelten, wie man den \md{} konfiguriert und wie er in andere Sprachen übersetzt werden kann. Außerdem wird beschrieben, wie man die Log-Ausgaben des \md{} nutzen und konfigurieren kann.
+Im \chpref{allgemein} wird der \md allgemein beschrieben: Welche Systemvoraussetzungen gelten, wie man den \md konfiguriert und wie er in andere Sprachen übersetzt werden kann. Außerdem wird beschrieben, wie man die Log-Ausgaben des \md nutzen und konfigurieren kann.
 
-Die Bedienung des \md{} in der Konsolenvariante wird im \chpref{bed-konsole} beschrieben; Es werden die Parameter des \md{} erklärt, die verschiedenen Befehle erläutert und ein Beispiel gezeigt, wie ein Fehler mit dem Debugger gefunden werden kann.
+Die Bedienung des \md in der Konsolenvariante wird im \chpref{bed-konsole} beschrieben; Es werden die Parameter des \md erklärt, die verschiedenen Befehle erläutert und ein Beispiel gezeigt, wie ein Fehler mit dem Debugger gefunden werden kann.
 
 Im \chpref{bed-gui} wird die grafische Oberfläche beschrieben; Es werden die Unterschiede zur Konsolenvariante genannt, die verschiedenen Oberflächenelemente erklärt und ein Beispiel gezeigt, wie ein Fehler mit dem Debugger mit grafischer Oberfläche gefunden werden kann.
 
 \subsection*{Entwicklung}
-Im \chpref{werkzeuge} werden einige Werkzeuge beschrieben, die zur Entwicklung des \md{} genutzt wurden und deren Verständnis nötig ist, um selbst Änderungen am Projekt vorzunehmen. In \chpref{entw-allg} gehe ich kurz auf die Notwendigkeit der automatisierten Tests ein.
+Im \chpref{werkzeuge} werden einige Werkzeuge beschrieben, die zur Entwicklung des \md genutzt wurden und deren Verständnis nötig ist, um selbst Änderungen am Projekt vorzunehmen. In \chpref{entw-allg} gehe ich kurz auf die Notwendigkeit der automatisierten Tests ein.
 
-Die nachfolgenden Kapitel beschreiben, welche Funktionalität des \md{} durch welche Klassen erledigt werden. \chpref{prozessor} gibt einen Überblick über die Simulation der \mic{} und zeigt welcher Code die jeweilige Hardwarekomponente repräsentiert. Im \chpref{konsole} wird der Coder für die Konsolenvariante und in \chpref{gui} der Code für die grafische Oberfläche erklärt.
+Die nachfolgenden Kapitel beschreiben, welche Funktionalität des \md durch welche Klassen erledigt werden. \chpref{prozessor} gibt einen Überblick über die Simulation der \mic{} und zeigt welcher Code die jeweilige Hardwarekomponente repräsentiert. Im \chpref{konsole} wird der Coder für die Konsolenvariante und in \chpref{gui} der Code für die grafische Oberfläche erklärt.
