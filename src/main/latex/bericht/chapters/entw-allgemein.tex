@@ -1,6 +1,6 @@
 \chapter{Automatisierte Tests}
 \chplbl{entw-allg}
-Nachdem Du nun mit den Werkzeugen vertraut bist, die für das Entwickeln am \md und der \mdg{} gebraucht werden, möchte ich einen wichtigen Aspekt ansprechen -- automatisierte Tests in dieser Arbeit.
+Nachdem Du nun mit den Werkzeugen vertraut bist, die für das Entwickeln am \md und der \mdg gebraucht werden, möchte ich einen wichtigen Aspekt ansprechen -- automatisierte Tests in dieser Arbeit.
 
 Bei der Implementierung dieser Arbeit sollte besonderen Wert auf die Erweiterbarkeit gelegt werden. Andere Studenten sollen sich in den Code einarbeiten, zusätzliche Funktionen implementieren und bestehende Funktionen abändern können.
 
@@ -10,7 +10,7 @@ Obwohl ich in meinem Studium gelernt habe, wie man ein Softwareprojekt plant und
   ``\textbf{Refactoring} (noun): a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior.'' --- \cite[S.~53]{Fowler1999}
 \end{quote}
 
-Ich gehe davon aus, dass Refaktorierung am \md und der \mdg{} auch in Zukunft eine wichtige Rolle spielen wird; besonders, wenn weitere Student mitentwickeln. Martin~Fowler schreibt an anderer Stelle nochmal deutlich, dass die Refaktorierung die Qualität des Codes nicht durch das Ändern des Verhaltens verbessert:
+Ich gehe davon aus, dass Refaktorierung am \md und der \mdg auch in Zukunft eine wichtige Rolle spielen wird; besonders, wenn weitere Student mitentwickeln. Martin~Fowler schreibt an anderer Stelle nochmal deutlich, dass die Refaktorierung die Qualität des Codes nicht durch das Ändern des Verhaltens verbessert:
 
 \begin{quote}
   ``So, we want programs that are easy to read, that have all logic specified in one and only one place, that do not allow changes to endanger existing behavior, and that allow conditional logic to be expressed as simply as possible.
@@ -20,7 +20,7 @@ Ich gehe davon aus, dass Refaktorierung am \md und der \mdg{} auch in Zukunft ei
 
 Wie stellen wir sicher, dass wir durch Refaktorierung das Verhalten des Codes nicht manipulieren? Wir schreiben automatisierte Tests: Ausführlichen automatisierte Tests geben uns die nötige Sicherheit für die Refaktorierung, die wiederum die Lesbarkeit und Erweiterbarkeit des Codes steigert -- unsere zwei wichtigsten Ziele in dieser Arbeit.
 
-Für den \md und die \mdg{} habe ich für nahezu jede Klasse automatisierte Tests geschrieben, die Du im Verzeichnis \texttt{src/test/java/} findest. Jede Testklasse liegt im selben \package{} wie die zu testende Klasse und trägt den selben Namen, allerdings um das Suffix \emph{Test} erweitert.
+Für den \md und die \mdg habe ich für nahezu jede Klasse automatisierte Tests geschrieben, die Du im Verzeichnis \texttt{src/test/java/} findest. Jede Testklasse liegt im selben \package{} wie die zu testende Klasse und trägt den selben Namen, allerdings um das Suffix \emph{Test} erweitert.
 
 Die Tests sind nicht nur indirekt über die Refaktorierung eine gute Möglichkeit, den Code besser zu verstehen: Möchte man das Verhalten oder die Funktion einer Klasse verstehen, sind die automatisierten Tests der entsprechenden Testklasse ein guter Anlaufpunkt. Denn in jedem Test werden für verschiedene Eingaben die erwarteten Ausgaben beschrieben und dadurch gezeigt, wie sich die Klasse verhalten soll.
 
