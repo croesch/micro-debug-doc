@@ -292,3 +292,6 @@
 	- Tutorial Konsole erster Teil geschrieben
 05.06.2012 (2,5 h)
 	- Tutorial Konsole weiter geschrieben
+06.06.2012 (2 h)
+	- Tutorial Konsole fertig geschrieben
+	- erste Korrekturen vorgenommen
