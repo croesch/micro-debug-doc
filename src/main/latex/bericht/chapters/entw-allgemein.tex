@@ -20,7 +20,7 @@ Ich gehe davon aus, dass Refaktorierung am \md und der \mdg auch in Zukunft eine
 
 Wie stellen wir sicher, dass wir durch Refaktorierung das Verhalten des Codes nicht manipulieren? Wir schreiben automatisierte Tests: Ausführlichen automatisierte Tests geben uns die nötige Sicherheit für die Refaktorierung, die wiederum die Lesbarkeit und Erweiterbarkeit des Codes steigert -- unsere zwei wichtigsten Ziele in dieser Arbeit.
 
-Für den \md und die \mdg habe ich für nahezu jede Klasse automatisierte Tests geschrieben, die Du im Verzeichnis \texttt{src/test/java/} findest. Jede Testklasse liegt im selben \package{} wie die zu testende Klasse und trägt den selben Namen, allerdings um das Suffix \emph{Test} erweitert.
+Für den \md und die \mdg habe ich für nahezu jede Klasse automatisierte Tests geschrieben, die Du im Verzeichnis \texttt{src/test/java/} findest. Jede Testklasse liegt im selben \package wie die zu testende Klasse und trägt den selben Namen, allerdings um das Suffix \emph{Test} erweitert.
 
 Die Tests sind nicht nur indirekt über die Refaktorierung eine gute Möglichkeit, den Code besser zu verstehen: Möchte man das Verhalten oder die Funktion einer Klasse verstehen, sind die automatisierten Tests der entsprechenden Testklasse ein guter Anlaufpunkt. Denn in jedem Test werden für verschiedene Eingaben die erwarteten Ausgaben beschrieben und dadurch gezeigt, wie sich die Klasse verhalten soll.
 

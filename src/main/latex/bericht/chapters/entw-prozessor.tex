@@ -4,9 +4,9 @@ Nachdem wir nun die Vorteile der automatisierten Tests kennen gelernt haben, wol
 
 Für die Implementierung der \mic ist es nötig, sich ein Abstraktionsniveau auszusuchen, auf dem implementiert wird. Wir werden in den folgenden Abschnitten sehen, dass ich mich zu einer relativ hardwarenahen Implementierung entschieden habe. Daher habe ich zunächst folgende zu implementierende Komponenten identifiziert: die \gls{alu} inklusive Shifter, die Register, der Mikro-Code-Speicher inklusive der darin abgelegten Instruktionen und der Hauptspeicher.
 
-Aufgrund der \mvn\notiz{maven Referenz?}-Architektur liegt der Java\notiz{Java Referenz?}-Code in dem Verzeichnis \texttt{src/main/java/} und die entsprechenden Tests dazu in \texttt{src/test/java/}. In diesen Verzeichnissen findest du eine \package-Struktur, die unter dem \package{} \pck{com.github.croesch.micro_debug} beginnt, alle Klassen des \md sind in diesem \package{} oder in \subpackages{} zu finden.
+Aufgrund der \mvn\notiz{maven Referenz?}-Architektur liegt der Java\notiz{Java Referenz?}-Code in dem Verzeichnis \texttt{src/main/java/} und die entsprechenden Tests dazu in \texttt{src/test/java/}. In diesen Verzeichnissen findest du eine \package-Struktur, die unter dem \package \pck{com.github.croesch.micro_debug} beginnt, alle Klassen des \md sind in diesem \package oder in \subpackages zu finden.
 
-Auch der Code für die \mic befindet sich in einem solchen \subpackage: \pck{com.github.croesch.micro_debug.mic1}. In diesem Verzeichnis gibt es die Klasse \klasse{Mic1}, die wir uns in \secref{mic-zusammensetzung} genauer anschauen werden. Alle weiteren Klassen, die den \mic bilden sind in folgenden \subpackages{} zu finden:
+Auch der Code für die \mic befindet sich in einem solchen \subpackage: \pck{com.github.croesch.micro_debug.mic1}. In diesem Verzeichnis gibt es die Klasse \klasse{Mic1}, die wir uns in \secref{mic-zusammensetzung} genauer anschauen werden. Alle weiteren Klassen, die den \mic bilden sind in folgenden \subpackages zu finden:
 \begin{description}
 \item[alu] bildet die \gls{alu} ab und ist in \secref{mic-alu} beschrieben.
 \item[api] enthält einige Interfaces, um die Implementierung der \mic unabhängig gestalten zu können.
@@ -26,13 +26,13 @@ Durch die \package-Struktur solltest Du schon einen groben Einblick haben, wo we
 \seclbl{mic-alu}
 Die \gls{alu} der \mic setzt sich aus 32~Ein-Bit-\gls{alu}s zusammen, so ist die \gls{alu} auch implementiert. Die Klasse \klasse{Alu} benutzt 32~Instanzen der Klasse \klasse{OneBitAlu}, zur Berechnung der Ausgabewerte -- damit ist die \gls{alu} die Komponente, die am hardwarenahesten implementiert ist.
 
-Die Klasse besitzt eine Methode \texttt{calculate()}, in der aus den Eingangssignalen das Ausgangssignal der \gls{alu} berechnet wird. Dieses Signal wird an den Shifter weitergeleitet, die Klasse \klasse{Shifter} im gleichnamigen \package{} bildet diese Funktionalität ab und besitzt ebenso eine Methode \texttt{calculate()}, um die Verarbeitung der Signale anzustoßen.
+Die Klasse besitzt eine Methode \texttt{calculate()}, in der aus den Eingangssignalen das Ausgangssignal der \gls{alu} berechnet wird. Dieses Signal wird an den Shifter weitergeleitet, die Klasse \klasse{Shifter} im gleichnamigen \package bildet diese Funktionalität ab und besitzt ebenso eine Methode \texttt{calculate()}, um die Verarbeitung der Signale anzustoßen.
 
 Die Berechnung der \gls{alu} und des Shifters werden bei jedem Zyklus der \mic angestoßen. Durch die sehr hardwarenahe Implementierung bilden sie daher vermutlich ein Performanzengpass zur Laufzeit des \md.
 
 \section{Register}
 \seclbl{mic-register}
-Die Dateneingänge der \gls{alu} wird mit den Inhalten zweier Register gefüllt und das Ergebnis des Shifters wird wiederum in verschiedene Register geschrieben. Die Register sind im \md als Enumeration \klasse{Register} im gleichnamigen \package{} implementiert. Sie erfüllen lediglich die Aufgabe einer 32~Bit Variable.
+Die Dateneingänge der \gls{alu} wird mit den Inhalten zweier Register gefüllt und das Ergebnis des Shifters wird wiederum in verschiedene Register geschrieben. Die Register sind im \md als Enumeration \klasse{Register} im gleichnamigen \package implementiert. Sie erfüllen lediglich die Aufgabe einer 32~Bit Variable.
 
 Das Register \reg{MBR} kann im \mic mit oder ohne Vorzeichenerweiterung gelesen werden. Dieses Verhalten ist im \md dadurch realisiert, dass es ein Register \reg{MBR} und ein Register \reg{MBRU} gibt. \reg{MBRU} enthält daher den Wert ohne Vorzeichenerweiterung und das Register \reg{MBR} enthält den Wert mit Vorzeichenerweiterung. Bei der Vorzeichenerweiterung wird wie bei der \mic davon ausgegangen, dass der ursprüngliche Wert in 8~Bit vorlag.
 

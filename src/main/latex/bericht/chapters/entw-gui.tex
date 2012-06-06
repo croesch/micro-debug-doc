@@ -1,10 +1,10 @@
 \chapter{Implementierung der GUI}
 \chplbl{gui}
-Nachdem wir nun ausführlich den \md betrachtet haben, möchte ich Dir nun vorstellen, wie die \mdg den \md nutzt und welche Klassen hier welche Rolle einnehmen. Ähnlich wie in \chpref{konsole} möchte ich im \secref{gui-ablauf} den Ablauf bei der Nutzung der \mdg vorstellen. In \secref{g-bibliotheken} möchte ich die verwendeten Bibliotheken vorstellen, die der Benutzer am Ende erhält und deren Bedeutung für die \mdg erläuetern. Am Ende dieses Kapitels möchte ich auch hier nochmal alle \packages{} aufführen und beschreiben, welche Funktionalität dahinter steckt und eventuell einzelne Klassen erwähnen.
+Nachdem wir nun ausführlich den \md betrachtet haben, möchte ich Dir nun vorstellen, wie die \mdg den \md nutzt und welche Klassen hier welche Rolle einnehmen. Ähnlich wie in \chpref{konsole} möchte ich im \secref{gui-ablauf} den Ablauf bei der Nutzung der \mdg vorstellen. In \secref{g-bibliotheken} möchte ich die verwendeten Bibliotheken vorstellen, die der Benutzer am Ende erhält und deren Bedeutung für die \mdg erläuetern. Am Ende dieses Kapitels möchte ich auch hier nochmal alle \packages aufführen und beschreiben, welche Funktionalität dahinter steckt und eventuell einzelne Klassen erwähnen.
 
 Die \mdg ist ein eigenständiges Projekt und vom her ein Benutzer des \md. Alle Implementierungen der \mdg haben also keinerlei Auswirkung auf den \md, umgekehrt allerdings schon. Wie in \secref{gui-nutzung-konsole} beschrieben ist es daher möglich, dass bei vorliegender \mdg auch der \md genutzt werden kann.
 
-Im Unterschied zur Implementierung des \md befinden sich in der \mdg alle Klassen im \package{} \pck{com.github.croesch.micro_debug.gui} oder in \subpackages{} davon. Das verhindert, dass gleichnamige \packages{} oder Klassen zu Problemen führen. Außerdem ist je nach Paketierung die Struktur der paketierten \mdg übersichtlicher.
+Im Unterschied zur Implementierung des \md befinden sich in der \mdg alle Klassen im \package \pck{com.github.croesch.micro_debug.gui} oder in \subpackages davon. Das verhindert, dass gleichnamige \packages oder Klassen zu Problemen führen. Außerdem ist je nach Paketierung die Struktur der paketierten \mdg übersichtlicher.
 
 \section{Programmablauf}
 \seclbl{gui-ablauf}
@@ -13,7 +13,7 @@ Wie in \secref{k-ablauf} sehen wir uns gleich den Start der \mdg an und ich zeig
 \subsection{Verarbeitung der Argumente}
 Analog zum \md gibt es auch in der \mdg eine Klasse \klasse{MicroDebug}, die die \texttt{main()}-Methode enthält. Allerdings ist es hier irrelevant, wie viele Argumente der Benutzer eingegeben hat, oder ob er überhaupt welche eingegeben hat.
 
-Die \mdg nutzt auch den Mechanismus der Klasse \klasse{AArgument}. Da die \mdg allerdings andere Argumente als der \md besitzt, müssen die neuen Argumente zunächste an der Klasse \klasse{AArgument} registriert werden. Die Argumente der \mdg findest Du im \package{} \pck{argument}; registriert werden diese in der Methode \texttt{createListOfPossibleArguments()} der Klasse \klasse{MicroDebug}.
+Die \mdg nutzt auch den Mechanismus der Klasse \klasse{AArgument}. Da die \mdg allerdings andere Argumente als der \md besitzt, müssen die neuen Argumente zunächste an der Klasse \klasse{AArgument} registriert werden. Die Argumente der \mdg findest Du im \package \pck{argument}; registriert werden diese in der Methode \texttt{createListOfPossibleArguments()} der Klasse \klasse{MicroDebug}.
 
 Die Argumente werden dann auch ausgeführt und geben jeweils einen Wahrheitswert zurück, ob der Debugger starten darf oder nicht.
 
@@ -38,7 +38,7 @@ Aus diesem Grund gibt es die Klasse \klasse{AbstractExecuteOnWorkerThreadAction}
 \subsection{Konfiguration und Lokalisierung}
 Das Lesen der Konfiguration und der Textkonstanten funktioniert analog zu den Ausführungen in \secref{k-konfiguration} und \secref{k-lokalisierung}.
 
-Allerdings nutzt die \mdg hier eigene Enumerations-Klassen: die Klasse \klasse{GuiText} für die Textkonstanten und die Klassen im \package{} \pck{settings} zum Verarbeiten der Konfiguration. Somit können Komponenten der \mdg sowohl auf die Konfiguration des \md als auch der \mdg zugreifen und auch auf Textkonstanten aus beiden Projekten.
+Allerdings nutzt die \mdg hier eigene Enumerations-Klassen: die Klasse \klasse{GuiText} für die Textkonstanten und die Klassen im \package \pck{settings} zum Verarbeiten der Konfiguration. Somit können Komponenten der \mdg sowohl auf die Konfiguration des \md als auch der \mdg zugreifen und auch auf Textkonstanten aus beiden Projekten.
 
 Wie in \secref{lokalisierung} bereits erwähnt, nutzt die \mdg zur Lokalisierung einen eigene Datei-Hierarchie: Alle \datei{xml}en, die mit \texttt{text-gui} beginnen, enthalten Textkonstanten für die \mdg. Bei der Konfiguration wird allerdings die selbe Datei verwendet, die der \md auch nutzt. Das hat für den Benutzer den Vorteil, dass er nur eine Datei zu pflegen hat.
 
@@ -59,16 +59,16 @@ An dieser Stelle möchte ich auch das Testframework \gls{fest} erwähnen: Die da
 Die \gls{gui}-Tests laufen in der Regel stabil, allerdings neigen sie häufiger zum Fehlschlagen, ohne tatsächlichen Fehler in der \gls{aut} oder dem Test selbst. Daher solltest Du beim Ausführen der Tests damit rechnen, dass gelegentlich der ein oder andere \gls{gui}-Test fehlschlägt. \gls{fest}-Tests\notiz{Oder hier Verweis auf Bericht?} die realen Resourcen deines Computers nutzen, kannst du diesen während die Tests laufen nicht benutzen, sonst schlagen die Tests fehl.
 
 \section{\packages}
-Nun hast Du die wichtigsten Klassen der \mdg kennen gelernt. Damit Du aber später weißt, wo etwas implementiert ist, möchte ich auch hier nochmal alle \packages{} erwähnen und erklären, welche Funktionalität die darin enthaltenen Klassen erfüllen. Die \packages{} sind im Einzelnen:
+Nun hast Du die wichtigsten Klassen der \mdg kennen gelernt. Damit Du aber später weißt, wo etwas implementiert ist, möchte ich auch hier nochmal alle \packages erwähnen und erklären, welche Funktionalität die darin enthaltenen Klassen erfüllen. Die \packages sind im Einzelnen:
 
 \begin{description}
-\item[actions] enthält alle \emph{Actions}, die in der \mdg ausgeführt werden können. Hier ist auch die Klasse \klasse{AbstractExecuteOnWorkerThreadAction} enthalten, deren Unterklassen nicht auf dem \gls{edt} ausgeführt werden. In diesem \package{} gibt es noch ein \subpackage: \pck{api}, das enthält einige Interfaces, um zyklische Abhängigkeiten zu verhindern.
+\item[actions] enthält alle \emph{Actions}, die in der \mdg ausgeführt werden können. Hier ist auch die Klasse \klasse{AbstractExecuteOnWorkerThreadAction} enthalten, deren Unterklassen nicht auf dem \gls{edt} ausgeführt werden. In diesem \package gibt es noch ein \subpackage: \pck{api}, das enthält einige Interfaces, um zyklische Abhängigkeiten zu verhindern.
 \item[argument] enthält die Unterklassen von \klasse{AArgument}, die die gültigen Argumente der \mdg darstellen. Diese müssen an der Klasse \klasse{AArgument} registriert werden, um dem Benutzer zur Verfügung zu stehen.
-\item[commons] enthält bisher nur die Klasse \klasse{WorkerThread}, also wie beim \md Klassen, die zu keinem anderen \package{} zugeordnet werden konnten.
-\item[components] enthält in den \subpackages{} alle Oberflächenelemente und das Hauptfenster -- die Klasse \klasse{MainFrame}.
+\item[commons] enthält bisher nur die Klasse \klasse{WorkerThread}, also wie beim \md Klassen, die zu keinem anderen \package zugeordnet werden konnten.
+\item[components] enthält in den \subpackages alle Oberflächenelemente und das Hauptfenster -- die Klasse \klasse{MainFrame}.
 \item[components.about] enthält die Klasse \klasse{AboutFrame} und damit alle Komponenten, um den \emph{Über}-Dialog anzuzeigen.
 \item[components.api] enthält einige Interfaces, um zyklische Abhängigkeiten zu verhindern.
-\item[components.basic] ist ein sehr großes \package{} mit vielen Klassen. Diese haben aber selten eigene Logik sondern bilden Unterklassen der bekannten Swing-Komponenten, von denen dann alle Komponenten in der \mdg ableiten können. Diese Klassen haben beispielsweise erweiterte Konstruktoren, so dass jedes Oberflächenelement standardmäßig das \texttt{name}-Attribut gesetzt hat. Das \texttt{name}-Attribut ist für die automatisierten \gls{gui}-Tests wichtig.\notiz{Referenz auf Bericht?}
+\item[components.basic] ist ein sehr großes \package mit vielen Klassen. Diese haben aber selten eigene Logik sondern bilden Unterklassen der bekannten Swing-Komponenten, von denen dann alle Komponenten in der \mdg ableiten können. Diese Klassen haben beispielsweise erweiterte Konstruktoren, so dass jedes Oberflächenelement standardmäßig das \texttt{name}-Attribut gesetzt hat. Das \texttt{name}-Attribut ist für die automatisierten \gls{gui}-Tests wichtig.\notiz{Referenz auf Bericht?}
 \item[components.code] enthält die Komponenten, die zur Darstellung des (Mikro-)Assembler-Codes benötigt werden:
   \begin{description}
   \item[ACodeArea.java] eine abstrakte Klasse der Textkomponente, die den Code enthält. Hiervon leiten \klasse{MicroCodeArea} und \klasse{MacroCodeArea} ab, die das sind, was ihr Name vermuten lässt.
