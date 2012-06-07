@@ -3,43 +3,44 @@
 Wie in \chpref{allgemein} beschrieben, muss der \md nicht installiert werden: Vom Herunterladen bis zum Starten des \md genügen folgende Schritte.
 
 \begin{enumerate}
-\item Die Datei \texttt{micro-debug-version.zip} von der Projektseite\notiz{Verweis auf Seite} herunterladen
+\item Die Datei \texttt{micro-debug-version.zip} von der Projektseite \cite{Roesch2012} herunterladen
 \item Die \datei{zip} in ein beliebiges Verzeichnis entpacken (bspw. \texttt{/opt/micro-debug/})
 \item Das Verzeichnis des \md dem \texttt{PATH} hinzufügen
-\item Den \md starten -- mit \texttt{\$ micro-debug.sh -{}-help}
+\item Den \md starten -- mit \texttt{micro-debug.sh~-{}-help}
 \end{enumerate}
 
-Der \md kann durch einige Parameter gesteuert werden und wird nach dem Start durch Befehle gesteuert. Sowohl die Parameter als auch die Befehle werden nun erklärt und anschließend wird ein beispielhafter Ablauf mit dem \md beschrieben.
+Der \md kann durch einige Parameter gesteuert werden und wird nach dem Start durch Befehle bedient. Ich werde daher zunächst die verschiedenen Parameter des \md und dann die Befehle zur Bedienung des \md erklären. Am Ende des Kapitels zeige ich in einem Tutorial, wie mit dem \md Fehler im \ac gefunden werden können.
 
 \section{Parameter}
-Der Standardaufruf für den \md ist in \lstref{aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur Mikro-Assembler- und zur Assembler-Bytecode-Datei\notiz{Irgendwo den Aufbau der beiden Dateien erwähnen}. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur Mikro-Assembler- und dann der Pfad zur assembler-Datei gegeben wird. Werden die beiden Pfade vertauscht, so startet der \md nicht und bricht mit einer Fehlermeldung ab.
+Der Standardaufruf für den \md ist in \lstref{aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur \ma und zur \ac -Datei\notiz{Irgendwo den Aufbau der beiden Dateien erwähnen}. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur \ma und dann der Pfad zur \ac -Datei angegeben wird. Werden die beiden Pfade vertauscht, so startet der \md nicht und bricht mit einer Fehlermeldung ab.
 
 \begin{lstlisting}[language=sh,caption={Aufruf des \md -- Konsolenversion},label=\lstlbl{aufruf-konsolenversion}]
   micro-debug.sh [PARAMETER]... MIC1 IJVM
 \end{lstlisting}
 
-Neben den beiden Dateipfaden gibt es im folgende optionale Parameter. Jeder Parameter kann sowohl in der langen (mit doppeltem Minus) als auch in der kurzen (einfaches Minus gefolgt von einem Zeichen) angegeben werden.
+Neben den beiden Dateipfaden gibt es im Folgenden erklärte optionale Parameter. Jeder Parameter kann sowohl in der langen (mit doppeltem Minus) als auch in der kurzen (einfaches Minus gefolgt von einem Zeichen) Variante angegeben werden.
 
 \begin{description}
 \item[-h, -{}-help]
-  ist dieser Parameter gegeben, so wird die Hilfe angezeigt, die neben den verschiedenen Aufrufmöglichkeiten die möglichen Parameter erklärt. Zusätzlich werden noch einige andere Informationen, wie Kontaktmöglichkeiten, angezeigt.
+  ist dieser Parameter gegeben, so wird die Hilfe angezeigt, die neben den verschiedenen Aufrufmöglichkeiten die möglichen Parameter erklärt. Zusätzlich werden noch einige andere Informationen angezeigt, wie beispielsweise Kontaktmöglichkeiten oder ein Hinweis, wo Fehler berichtet werden können.
 
 \item[-o, -{}-output-file FILE]
-  ermöglicht die Umlenkung der Ausgabe der \mic (nicht des \md) in eine Datei. Normalerweise wird die Ausgabe der \mic auf der Konsole ausgegeben.
+  wenn dieser Parameter angegeben ist, so wird die Ausgabe der \mic (nicht des \md) in eine Datei umgelenkt. Normalerweise wird die Ausgabe der \mic auf der Konsole ausgegeben.
 
-  Mit dem Argument \texttt{FILE} wird hier der Pfad zur Datei gegeben, in die die Ausgabe geschrieben werden soll. Wenn die Datei bereits existiert, wird die Ausgabe an das Ende der Datei angehängt.
+  Das Argument \texttt{FILE} ist der Pfad zur Datei, in die die Ausgabe geschrieben werden soll. Wenn die Datei bereits existiert, wird die Ausgabe an das Ende der Datei angehängt.
 
-  Unter Linux kann man dann in einer zweiten Konsole diese Datei beispielsweise mit \texttt{tail -f} anzeigen und die Ausgabe der \mic komfortabel von der Ausgabe des \md trennen. In diesem Szenario ist auch der Parameter \texttt{-{}-unbuffered-output} sinnvoll.
+  Unter Linux kann man dann in einer zweiten Konsole diese Datei beispielsweise mit \texttt{tail~-f} anzeigen und die Ausgabe der \mic komfortabel von der Ausgabe des \md trennen. In diesem Szenario ist auch der Parameter \texttt{-{}-unbuffered-output} sinnvoll.
+
 \item[-u, -{}-unbuffered-output]
   verhindert die Pufferung der Ausgabe der \mic. Normalerweise gibt der \md die Ausgabe der \mic zeilenweise aus, also erst bei der Ausgabe eines Zeilenumbruchs. Verwendet man den Parameter \texttt{-{}-output-file} oder möchte man aus sonstigen Gründen jedes ausgegebene Zeichen der \mic direkt auf der Konsole sehen, so ist dieser Parameter die Lösung.
 
-  \emph{Vorsicht!} Wird dieser Parameter ohne \texttt{-{}-output-file} genutzt, so kann es sehr schwer werden, die ausgegebenen Zeichen der \mic ausfindig zu machen, da sie womöglich in der Menge der Ausgaben von \md untergehen.
+  \emph{Vorsicht!} Wird dieser Parameter ohne \texttt{-{}-output-file} genutzt, so kann ist es schwer, die ausgegebenen Zeichen der \mic ausfindig zu machen, da sie in der Menge der Ausgaben des \md untergehen.
 
 \item[-v, -{}-version]
   gibt die Version des \md aus.
 \end{description}
 
-Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben wurden, so startet der Debugger nicht. Dies kann genutzt werden, um ohne vorhandene Bytecode-Dateien Informationen über den \md anzeigen zu können. \lstref{aufrufe-ohne-start} zeigt, dass der \md daher auch ohne Bytecode-Dateien aufgerufen werden kann.
+Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben wurde, startet der \md nicht. Dies kann genutzt werden, um ohne vorhandene Bytecode-Dateien Informationen über den \md anzeigen zu können. \lstref{aufrufe-ohne-start} zeigt, wie der \md daher ohne Bytecode-Dateien aufgerufen werden kann.
 
 \begin{lstlisting}[language=sh,caption={Aufruf des \md ohne Start -- Konsolenversion},label=\lstlbl{aufrufe-ohne-start}]
   micro-debug.sh --help
@@ -49,60 +50,60 @@ Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben w
 Bei der Abarbeitung der gegebenen Parameter hängt die Reihenfolge der Parameter nicht von der Reihenfolge ab, in der sie dem \md als Parameter übergeben wurden. Wichtig ist nur, dass die beiden Bytecode-Dateien die letzten beiden Parameter und in der richtigen Reihenfolge aufgeführt sind.
 
 \section{Befehle}
-Ist der \md gestartet lässt er sich durch verschiedene Befehle steuern, die am Ende dieses Abschnitt ausführlich beschrieben werden.
+Bei der Bedienung des \md muss der Benutzer zwischen den verschiedenen Befehlen auch Zeichen für die \mic eingeben. Damit der Benutzer sieht, ob die Eingabe für den \md oder die \mic sind, gibt der \md '\texttt{micro-debug> }' und die \mic '\texttt{mic1> }' aus, bevor eine Eingabe erwartet wird. Wenn die \mic eine Eingabe erwartet, kann der Benutzer mehrere Zeichen auf einmal eingeben -- an die \mic werden die eingegebenen Zeichen plus ein Zeilenumbruch gesendet. Sollte der \ac einzelne Zeichen in einer Schleife einlesen, sollte die gesamte Zeile daher auf einmal eingeben werden.
 
-Bei der Bedienung des \md gibt es die Möglichkeit, dass zwischen den verschiedenen Befehlen auch Eingaben für die \mic zu liefern sind. Damit der Benutzer sieht, ob die Eingabe vom \md oder der \mic erwartet wird, schreibt der \md '\texttt{micro-debug> }' und die \mic '\texttt{mic1> }' bevor eine Eingabe erwartet wird. Wenn die \mic eine Eingabe von Dir erwartet, kannst du mehrere Zeichen auf einmal eingeben -- an die \mic werden die von dir eingegebenen Zeichen plus ein Zeilenumbruch gesendet. Sollte dein Assembler-Code also in einer Schleife einzelne Zeichen einlesen, solltest du die gesamte Zeile direkt eingeben.
+Ist der \md gestartet lässt er sich durch verschiedene Befehle bedienen, die ich jetzt ausführlich beschreiben werde.
 
-Die verschiedenen Befehle können ein oder mehrere Argumente benötigen. Die Argumente können einem der folgenden Datentypen gehören:
+Die verschiedenen Befehle können ein oder mehrere Argumente benötigen. Die Argumente haben einen der folgenden Datentypen:
 \begin{description}
 \item[Register] ist der Name eines Registers, also \reg{CPP}, \reg{H}, \reg{LV}, \reg{MAR}, \reg{MBR}, \reg{MBRU}, \reg{MDR}, \reg{OPC}, \reg{PC}, \reg{SP} oder \reg{TOS}.
-\item[Zahl] ist eine Zahl im Wertebereich eines Integers\notiz{Verweis?}. Die Formate für die Eingabe der Zahl sind in \secref{zahlenformat} beschrieben.
+\item[Zahl] ist eine Zahl im Wertebereich eines \emph{Integers}\notiz{Verweis?}. Die Formate für die Eingabe der Zahl habe ich in \secref{zahlenformat} beschrieben.
 \end{description}
 
-Je nach Befehl kann der zulässige Wertebereich jedoch noch weiter eingeschränkt sein -- eine solche Einschränkung ergibt sich aus der Beschreibung des jeweiligen Befehls.
+Je nach Befehl kann der zulässige Wertebereich eingeschränkt sein -- eine solche Einschränkung ergibt sich aus der Beschreibung des jeweiligen Befehls.
 
 \begin{description}
 \item[break] \emph{Register [Zahl]}
 
-  setzt einen Breakpoint für das gegebene \emph{Register}: Sobald das Register den Wert \emph{Zahl} erhält, hält der \md. Der \md hält erst, nachdem das Register den Wert erhalten hat -- da dies unter Umständen zu spät ist, gibt es die Möglichkeit, das Argument \emph{Zahl} wegzulassen. Wird nur ein Register angegeben, hält der \md bevor das Register einen neuen Wert zugewiesen bekommt.
+  setzt einen Breakpoint für das gegebene \emph{Register}: Sobald das Register den Wert \emph{Zahl} erhält, hält der \md an. Der \md hält, \textbf{nachdem} das Register den Wert erhalten hat -- da dies unter Umständen zu spät ist, gibt es die Möglichkeit, das Argument \emph{Zahl} wegzulassen. Wird nur ein Register (ohne Wert) angegeben, hält der \md \textbf{bevor} das Register einen neuen Wert zugewiesen bekommt.
 
 \item[exit] \hspace*{\fill}\\
 
-  beendet den \md und gibt eventuell belegte Ressourcen wieder frei.
+  beendet den \md.
 
 \item[help] \hspace*{\fill}\\
 
-  zeigt die verfügbaren Befehle mit einer kurzen Beschreibung an. Auch hier sind noch einige weitere Informationen über das Projekt enthalten.
+  zeigt die verfügbaren Befehle mit einer kurzen Beschreibung an. Zeigt desweiteren einige Zusatzinformationen über den \md an.
 
 \item[ls-break] \hspace*{\fill}\\
 
-  zeigt alle Breakpoints mit deren jeweiligen Bedingung an. Jeder Breakpoint erhält eine Identifikationsnummer, die bei anderen Operationen, wie dem Entfernen, angegeben werden müssen.
+  zeigt alle Breakpoints mit der jeweiligen Bedingung an. Jeder Breakpoint erhält eine Identifikationsnummer, die bei anderen Operationen, wie dem Entfernen, angegeben werden muss.
 
 \item[ls-macro-code] \emph{[Zahl1 [Zahl2]]}
 
-  zeigt den disassemblierten Assembler-Code an. Dabei gibt es drei mögliche Konstellationen der Parameter:
+  zeigt den disassemblierten \ac an. Dabei gibt es drei mögliche Konstellationen der Parameter:
   \begin{itemize}
-  \item Wird kein Parameter gegeben, wird der vollständige Assembler-Code angezeigt.
-  \item Wird ein Parameter \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der nächsten auszuführenden Codezeile angezeigt.
-  \item werden beide Parameter gegeben, wird der Assembler-Code von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
+  \item Wird \textbf{kein Parameter} gegeben, wird der vollständige \ac angezeigt.
+  \item Wird \textbf{ein Parameter} \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der aktuellen Codezeile angezeigt.
+  \item Werden \textbf{zwei Parameter} gegeben, wird der \ac von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
   \end{itemize}
 
   Da der \md nur den Bytecode kennt, gibt es eigentlich keine Zeilen. Der \md schreibt pro Zeile einen Befehl (inklusive Argumente), somit existieren Zeilennummern, die für den \md als Referenz dienen.
 
 \item[ls-micro-code] \emph{[Zahl1 [Zahl2]]}
 
-  zeigt den disassemblierten Mikro-Assembler-Code an und arbeitet wie \texttt{ls-macro-code}. Es gibt drei mögliche Konstellationen der Parameter:
+  zeigt den disassemblierten \mac an und arbeitet wie \texttt{ls-macro-code}. Es gibt drei mögliche Konstellationen der Parameter:
   \begin{itemize}
-  \item Wird kein Parameter gegeben, wird der vollständige Mikro-Assembler-Code angezeigt.
-  \item Wird ein Parameter \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der nächsten auszuführenden Codezeile angezeigt.
-  \item werden beide Parameter gegeben, wird der Mikro-Assembler-Code von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
+  \item Wird \textbf{kein Parameter} gegeben, wird der vollständige \mac angezeigt.
+  \item Wird \textbf{ein Parameter} \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der aktuellen Codezeile angezeigt.
+  \item Werden \textbf{beide Parameter} gegeben, wird der Mikro-Assembler-Code von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
   \end{itemize}
 
-  Da der \md nur den Bytecode kennt, gibt es eigentlich keine Zeilen. Der \md schreibt pro Zeile eine Mikroinstruktion (die $36~Bit$, die die Instruktion spezifizieren), somit existieren Zeilennummern, die für den \md als Referenz dienen.
+  Wie bei \texttt{ls-macro-code} schreibt der \md pro Zeile eine \mai (die $36~Bit$, die die Instruktion spezifizieren), somit existieren Zeilennummern, die für den \md als Referenz dienen.
 
 \item[ls-mem] \emph{Zahl1 Zahl2}
 
-  zeigt den Inhalt des Hauptspeichers zwischen den Adressen (inklusive) \emph{Zahl1} und \emph{Zahl2} an. Die Adressen des Speichers sind Wortadressen -- jedes Wort enthält $32~Bit$.
+  zeigt den Inhalt des Hauptspeichers zwischen den Adressen \emph{Zahl1} und \emph{Zahl2} (inklusive) an. Die Adressen des Hauptspeichers sind Wortadressen -- jedes Wort hat eine Größe von $32~Bit$.
 
 \item[ls-reg] \emph{[Register]}
 
@@ -112,21 +113,21 @@ Je nach Befehl kann der zulässige Wertebereich jedoch noch weiter eingeschränk
 
   zeigt den aktuellen Stack an.
 
-  \emph{Hinweis:} Dieser Befehl wird durch die Konfigurationsoption \texttt{stack.elements.to.hide} beeinflusst. Normalerweise wird der Stack von dem initialen Stackpointer bis zum aktuellen Stackpointer ausgegeben. Da dies unter Umständen mehr Elemente liefert, als der Stack tatsächlich enthält, gibt es die Möglichkeit über die Konfiguration die ersten Elemente nicht auszugeben.
+  \emph{Hinweis:} Dieser Befehl wird durch die Konfigurationsoption \texttt{stack.elements.to.hide} beeinflusst. Normalerweise wird der Stack von dem initialen Stackpointer bis zum aktuellen Stackpointer ausgegeben. Da dies unter Umständen mehr Elemente liefert, als der Stack tatsächlich enthält, gibt es die Möglichkeit über die Konfiguration die Ausgabe der ersten Elemente zu unterdrücken.
 
 Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sicherstellen, dass \texttt{stack.elements.to.hide = 0} konfiguriert ist.
 
 \item[macro-break] \emph{Zahl}
 
-  fügt einen Breakpoint hinzu, der den \md anhält, sobald der Bytecode des Assemblers an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-macro-code} angezeigten Zeilennummern sein.
+  fügt einen Breakpoint hinzu, der den \md anhält, sobald der \ac an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-macro-code} angezeigten Zeilennummern sein.
 
 \item[micro-break] \emph{Zahl}
 
-  fügt einen Breakpoint hinzu, der den \md anhält, sobald der Bytecode des Mikro-Assemblers an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-micro-code} angezeigten Zeilennummern sein.
+  fügt einen Breakpoint hinzu, der den \md anhält, sobald der \mac an der Adresse \emph{Zahl} ausgeführt werden soll. \emph{Adresse} muss Element aus der Menge der von \texttt{ls-micro-code} angezeigten Zeilennummern sein.
 
 \item[micro-step] \emph{[Zahl]}
 
-  führt die nächsten \emph{Zahl} Mikro-Instruktionen aus; wird kein Argument gegeben, so wird eine Instruktion ausgeführt.
+  führt die nächsten \emph{Zahl} \mais aus; wird kein Argument gegeben, so wird eine \mai ausgeführt.
 
 \item[reset] \hspace*{\fill}\\
 
@@ -140,7 +141,7 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
   
   führt alle Instruktionen bis zum Programmende oder bis zum nächsten Breakpoint aus.
 
-  \emph{Hinweis:} Unter Umständen und ungünstigem Programmcode kann das zu debuggende Programm in eine Schleife geraten, welche ohne Breakpoints nur durch den Programmabbruch beendet werden kann.
+  \emph{Hinweis:} Unter Umständen und ungünstigem Programmcode kann das zu debuggende Programm in eine Schleife geraten, welche ohne Breakpoints nur durch den Programmabbruch verlassen werden kann.
 
 \item[set] \emph{Register Zahl}
 
@@ -150,19 +151,19 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 
   schreibt den Wert \emph{Zahl2} an die Wortadresse \emph{Zahl1} im Hauptspeicher.
 
-  \emph{Hinweis:} Auch wenn dieser Befehl offensichtlich dazu genutzt werden könnte den Assembler-Code zu manipulieren, ist er für diesen Zweck nicht vorgesehen.
+  \emph{Hinweis:} Auch wenn dieser Befehl offensichtlich dazu genutzt werden könnte den \ac zu manipulieren, ist er für diesen Zweck nicht vorgesehen.
 
 \item[step] \emph{[Zahl]}
 
-  führt die nächsten \emph{Zahl} Instruktionen aus; wird kein Argument gegeben, so wird eine Instruktion ausgeführt.
+  führt die nächsten \emph{Zahl} \ais aus; wird kein Argument gegeben, so wird eine \ai ausgeführt.
 
 \item[trace-mac] \hspace*{\fill}\\
   
-  der Assembler-Code wird nun beobachtet. Dadurch wird jede Assembler-Instruktion angezeigt, nachdem sie ausgeführt wurde.
+  der \ac wird nun beobachtet. Dadurch wird jede \ai angezeigt, nachdem sie ausgeführt wurde.
 
 \item[trace-mic] \hspace*{\fill}\\
 
-  der Mikro-Assembler-Code wird nun beobachtet. Dadurch wird jede Mikro-Assembler-Instruktion angezeigt, nachdem sie ausgeführt wurde.
+  der \mac wird nun beobachtet. Dadurch wird jede \mai angezeigt, nachdem sie ausgeführt wurde.
 
 \item[trace-reg] \emph{[Register]}
 
@@ -172,19 +173,19 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 
   die Variable \emph{Zahl} wird nun beobachtet. Dadurch wird der Inhalt der Variable angezeigt, wenn er sich ändert.
 
-  \emph{Zahl} ist die Nummer der lokalen Variable. Wird eine Methode im Assembler-Code aufgerufen, ändert sich der Zeiger \reg{LV} und damit auch die Identität der lokalen Variablen. Wird also Variable Nummer~1 in Methode X beobachtet und führt der \md gerade Methode Y aus, wird eine Änderung der jetzigen lokalen Variable~1 nicht ausgegeben (sofern diese nicht auch beobachtet wird).
+  \emph{Zahl} ist die Nummer der lokalen Variable. Wird eine Methode im \ac aufgerufen, ändert sich der Zeiger \reg{LV} und damit auch die Identität der lokalen Variablen. Wird also Variable Nummer~1 in Methode X beobachtet und führt der \md gerade Methode Y aus, wird eine Änderung der jetzigen lokalen Variable~1 nicht ausgegeben (sofern diese nicht auch beobachtet wird).
 
 \item[untrace-mac] \hspace*{\fill}\\
   
-  beendet das Beobachten des Assembler-Codes. Dadurch werden ausgeführte Assembler-Instruktionen nun nicht mehr ausgegeben.
+  beendet das Beobachten des \ac. Dadurch werden ausgeführte \ai nun nicht mehr ausgegeben.
 
 \item[untrace-mic] \hspace*{\fill}\\
 
-  beendet das Beobachten des Mikro-Assembler-Codes. Dadurch werden ausgeführte Mikro-Assembler-Instruktionen nun nicht mehr ausgegeben.
+  beendet das Beobachten des \mac. Dadurch werden ausgeführte \mai nun nicht mehr ausgegeben.
 
 \item[untrace-reg] \emph{[Register]}
 
-  beendet das Beobachten des gegebenen \emph{Register}s. Wird das optionale Argument weggelassen, wird nun kein Register mehr beobachtet.
+  beendet das Beobachten des angegebenen \emph{Register}s. Wird das optionale Argument weggelassen, wird nun kein Register mehr beobachtet.
 
 \item[untrace-var] \emph{Zahl}
 
@@ -192,9 +193,7 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 \end{description}
 
 \section{Tutorial}
-Du solltest den \md, wie zu Beginn dieses Kapitels beschrieben, nun entpackt haben und am besten schon der \texttt{PATH}-Variable hinzugefügt haben. Denn dann kannst du in einem Verzeichnis deiner Wahl die Dateien für dieses Tutorial anlegen.
-
-Wir möchten nun ein kleines Programm schreiben und dies testen: ein Programm zum Einlesen von Binärzahlen. \lstref{binary-read-c} zeigt den Code für das Programm in C\notiz{C referenz? erklärn?} und soll hier als Verständnis des Algorithmuses dienen.
+In diesem Abschnitt möchte ich ein Tutorial beschreiben, um in das Arbeiten mit dem \md einzuführen. Ich beschreibe das Debuggen eines Assembler-Programms: ein Programm zum Einlesen von Binärzahlen. \lstref{binary-read-c} zeigt den Code für das Programm in C\notiz{C referenz? erklärn?} und soll hier als Verständnis des Algorithmuses dienen.
 
 \begin{lstlisting}[language=c,caption={C-Programm zum Einlesen einer Binärzahl},label=\lstlbl{binary-read-c}]
 int main() {
@@ -211,7 +210,7 @@ int main() {
 }
 \end{lstlisting}
 
-Das entsprechende Assembler-Programm findest Du in \lstref{binary-read-jas}. Dieses Programm solltest du nun kompilieren -- \emph{Ray Ontko} stellt dafür in \cite{Ontko1999} einige Programme bereit: \texttt{mic1asm} zum Kompilieren des Mikro-Assembler-Codes und \texttt{ijvmasm} zum Kompilieren des Assembler-Codes. In \cite{Ontko1999} findest du auch den Mikro-Assembler-Code und eine entsprechende \texttt{ijvm.conf}-Datei.
+Der entsprechende \ac ist in \lstref{binary-read-jas} aufgeführt. Dieses Programm muss nun kompiliert werden -- \name{Ontko} stellt dafür in \cite{Ontko1999} einige Programme bereit: \texttt{mic1asm} zum Kompilieren des \mac und \texttt{ijvmasm} zum Kompilieren des \ac. In \cite{Ontko1999} ist auch ein \mac zu finden, der für dieses Tutorial ausreichend ist; außerdem gibt es dort die zum \mac passende \texttt{ijvm.conf}-Datei.
 
 \begin{lstlisting}[language=,caption={IJVM-Assembler zum Einlesen einer Binärzahl},label=\lstlbl{binary-read-jas}]
 .main
@@ -240,9 +239,9 @@ finish:
 .end-main
 \end{lstlisting}
 
-Zum Debuggen des Mikro-Assembler-Codes und Assembler-Codes solltest Du die \texttt{ijvm.conf}-Datei verwenden, die Du zum Kompilieren der \datei{mic1} genutzt hast. Diese \date{conf} kannst Du entweder in das \texttt{conf/} Verzeichnis des Debuggers legen, oder jeweils in dem Verzeichnis, in dem Du gerade arbeitest. Dass Du nicht die korrekte \texttt{ijvm.conf}-Datei verwendest, siehst Du beim Ausführen des Befehls \texttt{ls-macro-code} -- zeigt dieser unbekannte Assembler-Befehle, enthält der Assembler-Code Befehle, die in der \texttt{ijvm.conf} nicht oder nicht an dieser Adresse definiert sind.
+Zum Debuggen des \ma und \ac empfehle ich, die \texttt{ijvm.conf}-Datei zu verwenden, die zum Kompilieren der \datei{mic1} genutzt wurde. Diese \date{conf} kann entweder in das \texttt{conf/} Verzeichnis des \md gelegt werden, oder jeweils in das Verzeichnis, von dem aus der \md ausgeführt wird. Wie erkenne ich, ob ich die korrekte \texttt{ijvm.conf}-Datei verwende? Beim Ausführen des Befehls \texttt{ls-macro-code}: zeigt der \md unbekannte \ais, enthält der \ac Instruktionen, die in der \texttt{ijvm.conf} nicht oder mit abweichender Adresse definiert sind.
 
-Bevor wir nun beginnen solltest Du auch die Konfigurationsoption \texttt{mic1.micro.address.ijvm} überprüfen. Diese Option enthält die Adresse der Mikro-Instruktion, die von allen Mikro-Code-Methoden angesprungen wird, um die nächste Mikro-Instruktion zu \emph{laden}. Ist diese Option falsch konfiguriert, funktioniert später der Befehl \texttt{step} nicht wie erwartet.
+Vor dem Start des \md empfehle ich außerdem, die Konfigurationsoption \texttt{mic1.micro.address.ijvm} zu überprüfen. Diese Option enthält die Adresse der \mai, die von allen \mac -Methoden angesprungen wird, um die nächste Mikro-Instruktion zu \emph{laden}. Ist diese Option falsch konfiguriert, funktioniert später der Befehl \texttt{step} nicht wie erwartet -- der \md hält nicht oder an falscher Stelle.
 
 Die in \lstref{binary-read-jas} aufgeführte Methode soll später eine eigene Methode werden und gibt daher keinen Wert aus, sondern legt das Ergebnis am Ende auf den Stack. \lstref{tutorial-start} zeigt in \srcref{tutorial-startbefehl} den Befehl, um den \md zu starten -- im aktuellen Verzeichnis liegen die Dateien \texttt{mic1ijvm.mic1}, \texttt{binary-read.ijvm} und \texttt{ijvm.conf}.
 
@@ -254,11 +253,11 @@ Welcome! Please type 'help' for a list of valid commands
 micro-debug> (*@\srclbl{tutorial-start-mdread}@*)
 \end{lstlisting}
 
-Ab \srcref{tutorial-start-willkommen} steht die Willkommensnachricht des \md gefolgt von der \srcref{tutorial-start-mdread}, die anzeigt, dass der \md nun einen Befehl erwartet. Wir können uns nun eine ausführliche Beschreibung der verschiedenen Befehle anzeigen, mit dem Befehl \texttt{help}.
+Ab \srcref{tutorial-start-willkommen} steht die Willkommensnachricht des \md, gefolgt von der \srcref{tutorial-start-mdread}, die anzeigt, dass der \md nun einen Befehl erwartet. Mit dem Befehl \texttt{help} kann jederzeit eine ausführliche Beschreibung der verfügbaren Befehle anzeigt werden lassen.
 
-Geben wir den Befehl \texttt{ls-macro-code} ein, erhalten wir den disassemblierten Assembler-Code, wie in \lstref{tutorial-macro-code} zu sehen. Die Ausgabe zeigt zunächst pro Zeile die Assembler-Code-Zeile, dann die Adresse des Befehls im Mikro-Assembler-Code und anschließend den Namen des Befehls mit seinen Argumenten. Die Ausgabe ist nicht identisch mit dem Code, den wir anfangs kompiliert haben -- in \lstref{binary-read-jas} -- in der disassemblierten Variante fehlen Informationen wie Kommentare, Variablennamen und Sprungmarkennamen. Beispielsweise zeigt \srcref{tutorial-macro-code-sprung} einen bedingten Sprung zur Zeile \texttt{0x1B}.
+Mit dem Befehl \texttt{ls-macro-code} erhält man den disassemblierten \ac -- in \lstref{tutorial-macro-code} ist die Ausgabe des Befehls zu sehen. Die Ausgabe zeigt zunächst pro Zeile die \ac -Zeile, dann die Adresse Instruktion im \mac und anschließend den Namen des Befehls mit seinen Argumenten. Die Ausgabe ist nicht identisch mit dem Quellcode, der kompiliert wurde -- aus \lstref{binary-read-jas} -- in der disassemblierten Variante fehlen Informationen wie Kommentare, Variablennamen und Sprungmarkennamen. Beispielsweise zeigt \srcref{tutorial-macro-code-sprung} einen bedingten Sprung zur Zeile \texttt{0x1B}.
 
-\begin{lstlisting}[language=,caption={Disassemblierter Assembler-Code},label=\lstlbl{tutorial-macro-code}]
+\begin{lstlisting}[language=,caption={Disassemblierter \ac},label=\lstlbl{tutorial-macro-code}]
      0x0: [ 0x10] BIPUSH  0x0
      0x2: [ 0x36] ISTORE  1
 (*@\srclbl{tutorial-macro-code-in}@*)     0x4: [ 0xFC] IN 
@@ -266,7 +265,7 @@ Geben wir den Befehl \texttt{ls-macro-code} ein, erhalten wir den disassembliert
      0x7: [ 0x15] ILOAD  0
      0x9: [ 0x10] BIPUSH  0xA
 (*@\srclbl{tutorial-macro-code-sprung}@*)     0xB: [ 0x9F] IF_ICMPEQ  0x1B
-     0xE: [ 0x84] IINC  0 0x0(*@\footnote{Der \md hat an dieser Stelle einen Bug: Wie in \srcref{iinc-increment-value} in \lstref{binary-read-jas} zu sehen, ist der Wert \texttt{0} falsch. Unter \url{https://github.com/croesch/micro-debug/issues/37} ist die entsprechende Dokumentation zu dem Bug. Dieser Bug hat allerdings keine Auswirkung auf die Funktionsweise der \mic, sondern nur auf das Disassemblen des Assembler-Codes -- also der Ausgabe des \md.}@*)
+     0xE: [ 0x84] IINC  0 0xD0
     0x11: [ 0x15] ILOAD  1
     0x13: [ 0x59] DUP 
     0x14: [ 0x60] IADD 
@@ -277,25 +276,25 @@ Geben wir den Befehl \texttt{ls-macro-code} ein, erhalten wir den disassembliert
     0x1D: [ 0xFF] HALT 
 \end{lstlisting}
 
-Das erwartete Ergebnis eines Programmlaufs ist, dass wir die eingegebene Binärzahl am Ende auf dem Stack und damit im Register \reg{TOS} vorfinden -- geben wir $1010$ ein, soll \reg{TOS} nach einem Programmdurchlauf den Wert $10$ enthalten.
+Das erwartete Ergebnis eines Programmlaufs ist, dass die eingegebene Binärzahl am Ende auf dem Stack und damit im Register \reg{TOS} vorliegt -- wenn ich $1010$ eingebe, soll \reg{TOS} nach einem Programmdurchlauf den Wert $10$ enthalten.
 
-Mit dem Befehl \texttt{run} lassen wir das Programm nun zunächst ohne Breakpoints laufen. Nachdem wir das Programm gestartet haben, wird die \mic in \srcref{tutorial-macro-code-in} aus \lstref{tutorial-macro-code} mit dem Befehl \texttt{IN} Zeichen einlesen. Das erkennst Du auf der Konsole an der \srcref{tutorial-mic-eingabe-txt} aus \lstref{tutorial-mic-eingabe} -- statt \texttt{micro-debug>} steht hier nun \texttt{mic1>}.
+Mit dem Befehl \texttt{run} lasse ich das Programm nun zunächst ohne Breakpoints laufen. Nachdem das Programm gestartet ist, wird die \mic in \srcref{tutorial-macro-code-in} aus \lstref{tutorial-macro-code} mit dem Befehl \texttt{IN} Zeichen einlesen. Das erkennt man auf der Konsole an der \srcref{tutorial-mic-eingabe-txt} aus \lstref{tutorial-mic-eingabe} -- statt \texttt{micro-debug>} steht hier nun \texttt{mic1>}.
 
 \begin{lstlisting}[language=,caption={\mic erwartet Eingabe},label=\lstlbl{tutorial-mic-eingabe}]
 micro-debug> run
 mic1> (*@\srclbl{tutorial-mic-eingabe-txt}@*)
 \end{lstlisting}
 
-Wir geben nun \texttt{1010} ein und bestätigen die Eingabe mit \texttt{ENTER} -- dadurch werden fünf Zeichen im \md gepuffert: Die vier Zeichen, die wir eingegeben haben plus ein Zeilenumbruch. Jedes Mal, wenn die \mic nun ein Zeichen benötigt, wird aus diesem Puffer gelesen. Erst wenn dieser leer ist, erscheint erneut die Eingabeaufforderung für den Benutzer.
+Ich gebe nun \texttt{1010} ein und bestätige die Eingabe mit \texttt{ENTER} -- dadurch werden fünf Zeichen im \md gepuffert: Die vier Zeichen, die ich eingegeben habe plus ein Zeilenumbruch. Jedes Mal, wenn die \mic nun ein Zeichen benötigt, wird aus diesem Puffer gelesen. Erst wenn dieser leer ist, erscheint erneut die Eingabeaufforderung für den Benutzer.
 
 \begin{lstlisting}[language=,caption={\md gibt Anzahl ausgeführter Zyklen aus},label=\lstlbl{tutorial-durchgelaufen}]
 Processor executed 441 ticks.
 micro-debug> 
 \end{lstlisting}
 
-Nachdem wir nun die Zahl eingegeben haben erscheint die Ausgabe aus \lstref{tutorial-durchgelaufen}, die uns anzeigt, dass die \mic insgesamt $441$ Zyklen ausgeführt hat. Da unser Programm keine Ausgabe macht, sondern das Ergebnis auf den Stack (und damit in dem Register \reg{TOS}) ablegt, überprüfen wir das nun wie folgt. Mit dem Befehl \texttt{ls-reg} lassen wir uns wie in \lstref{tutorial-tos-falscher-wert} zu sehen den Inhalt des Registers \reg{TOS} anzeigen.
+Nachdem ich nun die Zahl eingegeben habe erscheint die Ausgabe aus \lstref{tutorial-durchgelaufen}, die anzeigt, dass die \mic insgesamt $441$ Zyklen ausgeführt hat. Da mein Programm keine Ausgabe macht, sondern das Ergebnis auf den Stack (und damit in dem Register \reg{TOS}) ablegt, überprüfe ich das nun wie folgt. Mit dem Befehl \texttt{ls-reg} lasse ich mir den Inhalt des Registers \reg{TOS} anzeigen, das ist in \lstref{tutorial-tos-falscher-wert} zu sehen.
 
-Das Register \reg{TOS} enthält den Wert $0$ und damit einen falschen Wert. Wir können nun noch den Stack anzeigen, um zu überprüfen, ob dort der erwartete Wert $10$ abgelegt ist. Den Stack zeigen wir mit dem Befehl \texttt{ls-stack} an, was die in \lstref{tutorial-stack} gezeigte Ausgabe liefert.
+Das Register \reg{TOS} enthält den Wert $0$ und damit einen falschen Wert. Ich kann nun noch den Stack ansehen, um zu überprüfen, ob dort der erwartete Wert $10$ abgelegt ist. Den Stack sehe ich mit dem Befehl \texttt{ls-stack} an, was die in \lstref{tutorial-stack} gezeigte Ausgabe liefert.
 
 \begin{lstlisting}[language=,caption={\md gibt Anzahl ausgeführter Zyklen aus},label=\lstlbl{tutorial-tos-falscher-wert}]
 micro-debug> ls-reg TOS
@@ -303,9 +302,9 @@ Register TOS : 0x0
 micro-debug> 
 \end{lstlisting}
 
-Der erwartete Wert $10$ liegt auch nicht auf dem Stack. Wäre der Wert auf dem Stack, aber nicht im Register \reg{TOS} wäre das ein Hinweis auf einen Fehler im Mikro-Assembler-Code, da dieser für die Einhaltung der Regel zuständig ist, dass das Register \reg{TOS} stets den Wert des obersten Elements des Stacks enthält.
+Der erwartete Wert $10$ liegt auch nicht auf dem Stack. Wäre der Wert auf dem Stack, aber nicht im Register \reg{TOS} wäre das ein Hinweis auf einen Fehler im \mac. Denn der \mac ist für die Einhaltung der Regel zuständig, dass das Register \reg{TOS} stets den Wert des obersten Elements des Stacks enthalten muss.
 
-\begin{lstlisting}[language=,caption={Inhalt des Stacks nach der Ausführung des Assembler-Programms},label=\lstlbl{tutorial-stack}]
+\begin{lstlisting}[language=,caption={Inhalt des Stacks nach der Ausführung des \ac},label=\lstlbl{tutorial-stack}]
 Stack value #1 [  0xC001]: 0x1
 Stack value #2 [  0xC002]: 0x0
 Stack value #3 [  0xC003]: 0x1
@@ -314,20 +313,18 @@ Stack value #5 [  0xC005]: 0x0
 micro-debug> 
 \end{lstlisting}
 
-Damit wir das Programm erneut ablaufen lassen können, müssen wir die \mic auf ihren Startzustand zurücksetzen; mit dem Befehl \texttt{reset}. Woran könnte das Problem liegen? Womöglich werden falsche Werte eingelesen; mit einem Breakpoint auf dem \texttt{IN}-Befehl überprüfen wir diese Vermutung. In \lstref{tutorial-breakpoint-mac} ist aufgeführt, wie wir einen Breakpoint in der Zeile \texttt{0x4} setzen können und überprüfen, welche Breakpoints gesetzt sind.
+Damit das Programm für weitere Analysen erneut ablaufen gelassen werden kann, muss die \mic auf ihren Startzustand zurückgesetzt werden; mit dem Befehl \texttt{reset}. Woran könnte das Problem liegen? Womöglich werden falsche Werte eingelesen -- mit einem Breakpoint auf dem \texttt{IN}-Befehl überprüfe ich diese Vermutung. In \lstref{tutorial-breakpoint-mac} ist aufgeführt, wie ich einen Breakpoint in der Zeile \texttt{0x4} setze und anschließend überprüfe, welche Breakpoints gesetzt sind.
 
-\begin{lstlisting}[language=,caption={Setzen eines Breakpoints im Assembler-Code},label=\lstlbl{tutorial-breakpoint-mac}]
+\begin{lstlisting}[language=,caption={Setzen eines Breakpoints im \ac},label=\lstlbl{tutorial-breakpoint-mac}]
 micro-debug> macro-break 4
 micro-debug> ls-break
 Breakpoint #1: at macro code line 0x4
 micro-debug> 
 \end{lstlisting}
 
-Nachdem wir den Breakpoint nun gesetzt haben, können wir das Programm mit dem Befehl \texttt{run} ausführen. An der Ausgabe erkennen wir, dass die \mic nicht das gesamte Programm ausgeführt hat, sondern nur 16~Zyklen. Wir werden nun den \texttt{IN}-Befehl überprüfen und dazu einzeln die Mikro-Instruktionen des Befehls ausführen. Damit wir nicht jedes Mal den Mikro-Assembler-Code anzeigen lassen müssen, beobachten wir den Mikro-Assembler-Code mit dem Befehl \texttt{trace-mic}.
+Nachdem der Breakpoint gesetzt ist, kann ich das Programm mit dem Befehl \texttt{run} ausführen. An der Ausgabe erkennt man, dass die \mic nicht das gesamte Programm ausgeführt hat, sondern nur 16~Zyklen. Ich werde nun den \texttt{IN}-Befehl überprüfen und dazu einzeln die \mai des Befehls ausführen. Damit ich nicht jedes Mal den \mac anzeigen lassen muss, beobachte ich den \mac mit dem Befehl \texttt{trace-mic}.
 
-Je nach Mikro-Assembler-Code kann es mehrere Mikro-Instruktionen dauern, bis wir zu dem \texttt{IN}-Befehl kommen. Wichtig ist die Zeile, die \texttt{goto (MBR)} ausführt -- daher führen wir nun so lange den Befehl \texttt{micro-step} aus, bis dieser Sprungbefehl ausgeführt wurde. Bei mir wurden von der Stelle, an der der Debugger gehalten hat, bis zu dem Sprungbefehl drei Mikro-Instruktionen ausgeführt, wie in \lstref{tutorial-steps-to-goto} zu sehen ist.
-
-\begin{lstlisting}[language=,caption={Ausgeführte Mikro-Instruktionen bis zum Sprungbefehl \texttt{goto (MBR)}},label=\lstlbl{tutorial-steps-to-goto}]
+\begin{lstlisting}[language=,caption={Ausgeführte \mais bis zum Sprungbefehl \texttt{goto (MBR)}},label=\lstlbl{tutorial-steps-to-goto}]
 micro-debug> micro-step
 Executed: fetch;goto 0x4
 Processor executed 1 ticks.
@@ -339,7 +336,7 @@ Executed: goto (MBR)
 Processor executed 1 ticks.
 \end{lstlisting}
 
-Bei meiner Implementierung liegt der Befehl \texttt{IN} an der Stelle \texttt{0xFC}. In \lstref{tutorial-in-micro} siehst du den Mikro-Assembler-Code für den Befehl \texttt{IN} -- bis zur Zeile \texttt{0x6B} wird die Adresse für \emph{memory mapped IO} erzeugt, -3. In Zeile \texttt{0x6B} (\srcref{tutorial-in-micro-rd} in \lstref{tutorial-in-micro}) wird der \texttt{rd}-Befehl ausgeführt.
+Je nach \mac kann es mehrere \mais dauern, bis man zur Ausführung des \texttt{IN}-Befehls gelangt. Wichtig ist die Zeile, die \texttt{goto~(MBR)} ausführt -- daher führe ich nun so lange den Befehl \texttt{micro-step} aus, bis dieser Sprungbefehl ausgeführt wird. Bei mir werden von der Stelle, an der der \md gehalten hat, bis zu dem Sprungbefehl drei \mais ausgeführt, wie in \lstref{tutorial-steps-to-goto} zu sehen ist.
 
 \begin{lstlisting}[language=,caption={Mikro-Assembler-Code des Befehls \texttt{IN}},label=\lstlbl{tutorial-in-micro}]
 0xFC: H=OPC=-1;goto 0x6A
@@ -349,7 +346,7 @@ Bei meiner Implementierung liegt der Befehl \texttt{IN} an der Stelle \texttt{0x
 0x6D: TOS=MDR;wr;goto 0x3
 \end{lstlisting}
 
-Wir können nun in \lstref{tutorial-check-rd-mdr} sehen, wie wir die drei Mikro-Instruktionen zum Aufbau der Speicheradresse und zum Einlesen des Zeichens ausführen. Während der Ausführung fragt der \md im Auftrag der \mic nach einer Eingabe, hier geben wir wieder \texttt{1010} ein und bestätigen mit \texttt{ENTER}.
+Bei meiner Implementierung des \mac liegt der Befehl \texttt{IN} an der Adresse \texttt{0xFC}. \lstref{tutorial-in-micro} enthält den \mac für den Befehl \texttt{IN}; bis zur Zeile \texttt{0x6B} wird die Adresse für \emph{memory mapped IO} erzeugt: $-3$. In Zeile \texttt{0x6B} (\srcref{tutorial-in-micro-rd} in \lstref{tutorial-in-micro}) wird der \texttt{rd}-Befehl ausgeführt, der letztendlich das Zeichen über den Hauptspeicher einliest.
 
 \begin{lstlisting}[language=,caption={Überprüfung des \texttt{rd}-Befehls durch den Inhalt des Registers \reg{MDR}},label=\lstlbl{tutorial-check-rd-mdr}]
 micro-debug> micro-step 3
@@ -365,22 +362,24 @@ micro-debug> ls-reg MDR(*@\srclbl{tutorial-check-rd-mdr-cont}@*)
 Register MDR : 0x31
 \end{lstlisting}
 
-Die \mic hat nun Zeile \texttt{0x6B} ausgeführt und das erste Zeichen gelesen. Dieses Zeichen wird allerdings erst im nächsten Zyklus in das Register \reg{MDR} geschrieben -- daher sehen wir ab \srcref{tutorial-check-rd-mdr-step} die Ausführung einer weiteren Mikro-Instruktion. Jetzt muss das gelesene Zeichen im Register \reg{MDR} angekommen sein, was wir mit dem Befehl \texttt{ls-reg MDR} überprüfen. Wie ab Zeile \srcref{tutorial-check-rd-mdr-cont} zu sehen, enthält das Register \reg{MDR} den Wert $0x31=49$ -- der \emph{ASCII}-Code für das Zeichen \texttt{1}.
+In \lstref{tutorial-check-rd-mdr} ist zu sehen, wie die \mic die drei \mais zum Aufbau der Hauptspeicheradresse und zum Einlesen des Zeichens ausführt. Während der Ausführung fragt der \md im Auftrag der \mic nach einer Eingabe, hier gebe ich wieder \texttt{1010} ein und bestätige mit \texttt{ENTER}.
 
-Der Fehler scheint nicht im Mikro-Assembler-Code zu liegen -- zumindest nicht, wo wir überprüft haben. Deswegen konzentrieren wir uns nun auf den Assembler-Code. Mit dem Befehl \texttt{step} führen wir die letzte Mikro-Instruktion des Befehls \texttt{IN} aus. Wir befinden uns nun in Zeile \texttt{0x5} des Assembler-Codes -- der \srcref{tutorial-macro-code-after-in} aus \lstref{tutorial-macro-code}.
+Die \mic hat nun Zeile \texttt{0x6B} ausgeführt und das erste Zeichen gelesen. Dieses Zeichen wird allerdings erst im nächsten Zyklus in das Register \reg{MDR} geschrieben -- daher habe ich wie in \srcref{tutorial-check-rd-mdr-step} zu sehen eine weiteren \mai ausgeführt. Jetzt muss das gelesene Zeichen im Register \reg{MDR} angekommen sein, was ich mit dem Befehl \texttt{ls-reg~MDR} überprüfe. Wie ab Zeile \srcref{tutorial-check-rd-mdr-cont} zu sehen, enthält das Register \reg{MDR} den Wert $0x31=49$ -- der \emph{ASCII}-Code für das Zeichen \texttt{1}.
 
-Damit wir die Veränderungen der lokalen Variablen direkt erkennen, beobachten wir sie. In \lstref{binary-read-jas} können wir überprüfen, wie viele lokale Variablen wir haben: zwei. Wir beobachten gleich beide, um zu sehen, ob der \emph{ASCII}-Code korrekt konvertiert wird und welche Werte das Ergebnis annimmt. In \lstref{tutorial-watch-vars} ist zu sehen, wie wir dazu den Befehl \texttt{trace-var} nutzen.
+Der Fehler scheint demnach nicht im \mac zu liegen -- zumindest nicht, im \texttt{IN}-Befehl. Deswegen konzentriere ich mich jetzt auf den \ac. Mit dem Befehl \texttt{step} führe ich die letzte \mai des Befehls \texttt{IN} aus. Die \mic befindet sich nun in Zeile \texttt{0x5} des \ac -- der \srcref{tutorial-macro-code-after-in} aus \lstref{tutorial-macro-code}.
+
+Damit ich die Veränderungen der lokalen Variablen direkt erkenne, beobachte ich sie. In \lstref{binary-read-jas} ist zu sehen, wie viele lokale Variablen vorhanden sind: zwei. Ich beobachte beide, um zu sehen, ob der \emph{ASCII}-Code korrekt konvertiert wird und welche Werte das Ergebnis annimmt. In \lstref{tutorial-watch-vars} ist zu sehen, wie ich dazu den Befehl \texttt{trace-var} nutze.
 
 \begin{lstlisting}[language=,caption={Beobachten beider lokaler Variablen},label=\lstlbl{tutorial-watch-vars}]
 micro-debug> trace-var 0
 micro-debug> trace-var 1
 \end{lstlisting}
 
-Wir werden das Programm nun schrittweise ausführen -- da wir auf die Korrektheit des Mikro-Assembler-Codes vertrauen, führen wir jeweils Assembler-Instruktionen aus. Wir überprüfen dann, ob das erwartete Verhalten eingetreten ist und suchen so schrittweise die Ursache für den Fehler. Zur Erinnerung, wir haben gerade eine \texttt{1} eingelesen.
+Ich werde das Programm nun schrittweise ausführen -- da ich auf die Korrektheit des \mac vertraue, führe ich jeweils \ais aus. Dann überprüfe ich, ob das erwartete Verhalten eingetreten ist und suche so schrittweise die Ursache für den Fehler. Zur Erinnerung, die \mic hat gerade eine \texttt{1} eingelesen.
 
-Mit dem Befehl \texttt{step} führen wir die nächste Assembler-Instruktion aus. In \lstref{tutorial-step-trace-mic} ist die Ausgabe dieses Befehls zu sehen -- da wir den Mikro-Assembler-Code noch beobachten ist diese Ausgabe unübersichtlich. Wir können aber in \srcref{tutorial-step-trace-mic-varwrite} sehen, dass die lokale Variable \texttt{0} den korrekten Wert erhalten hat.
+Mit dem Befehl \texttt{step} wird die nächste \ai ausgeführt. In \lstref{tutorial-step-trace-mic} ist die Ausgabe dieses Befehls zu sehen -- da ich den \mac noch beobachte, ist diese Ausgabe unübersichtlich. Ich kann aber in \srcref{tutorial-step-trace-mic-varwrite} sehen, dass die lokale Variable \texttt{0} den korrekten Wert erhalten hat.
 
-\begin{lstlisting}[language=,caption={Ausführen einer Assembler-Instruktion bei Beobachten des Mikro-Assembler-Codes},label=\lstlbl{tutorial-step-trace-mic}]
+\begin{lstlisting}[language=,caption={Ausführen einer \ai bei Beobachten des \mac},label=\lstlbl{tutorial-step-trace-mic}]
 micro-debug> step
 Executed: fetch;goto 0x4
 Executed: PC=PC+1;goto 0x5
@@ -395,9 +394,9 @@ Executed: TOS=MDR;goto 0x3
 Processor executed 9 ticks.
 \end{lstlisting}
 
-Damit wir im Folgenden übersichtlichere Ausgaben erhalten, beenden wir das Beobachten des Mikro-Assembler-Codes durch den Befehl \texttt{untrace-mic}. Zusätzlich Beobachten wir nun den Assembler-Code, um bei jeder ausgeführten Instruktion überprüfen zu können, was gerade ausgeführt wurde. Nachdem wir den Befehl \texttt{trace-mac} können wir das Programm weiter schrittweise ausführen.
+Damit ich im Folgenden übersichtlichere Ausgaben erhalte, beende ich das Beobachten des \mac durch den Befehl \texttt{untrace-mic}. Zusätzlich Beobachten ich nun den \ac, um bei jeder ausgeführten \ai überprüfen zu können, was gerade ausgeführt wurde. Nachdem ich den Befehl \texttt{trace-mac} eingegeben habe, kann ich das Programm weiter schrittweise ausführen.
 
-\begin{lstlisting}[language=,caption={Ausführen der Assembler-Instruktionen zum Vergleich zweier lokaler Variablen},label=\lstlbl{tutorial-check-var}]
+\begin{lstlisting}[language=,caption={Ausführen der \ais zum Vergleich zweier lokaler Variablen},label=\lstlbl{tutorial-check-var}]
 micro-debug> step
 Executed:      0x7: [ 0x15] ILOAD  0
 Processor executed 8 ticks.
@@ -416,13 +415,13 @@ micro-debug> ls-stack
 Stack doesn't contain any elements, nothing to display.(*@\srclbl{tutorial-check-var-stack-empty}@*)
 \end{lstlisting}
 
-\lstref{tutorial-check-var} enthält die Konsolenausgabe nach der Ausführung der nächsten drei Assembler-Instruktionen. Da diese Instruktionen auf dem Stack operieren, habe ich zusätzlich nach jedem Befehl den Stack angezeigt. Das Programm prüft hier, ob die eingegebene Zahl ein Zeilenumbruch ist. Dafür legt es die eingegebene Zahl und einen Zeilenumbruch auf den Stack und ruft die Instruktion \texttt{IF_ICMPEQ} auf, die bei Gleichheit der beiden obersten Zahlen auf dem Stack an die angegebene Adresse springt.
+\lstref{tutorial-check-var} enthält die Konsolenausgabe nach der Ausführung der nächsten drei \ais. Da diese \ais auf dem Stack operieren, habe ich zusätzlich nach jedem Befehl den Stack angesehen. Das Programm prüft hier, ob die eingegebene Zahl ein Zeilenumbruch ist. Dafür legt es die eingegebene Zahl und einen Zeilenumbruch auf den Stack und ruft die Instruktion \texttt{IF_ICMPEQ} auf, die bei Gleichheit der beiden obersten Zahlen auf dem Stack an die angegebene Adresse springt.
 
-An den Konsolenausgaben können wir erkennen, dass zunächst beide Zahlen korrekt auf den Stack gelegt werden. Der Vergleich sollte die beiden Werte vom Stack entfernen und sie dann vergleichen; in \srcref{tutorial-check-var-stack-empty} in \lstref{tutorial-check-var} sehen wir, dass der Stack korrekterweise keine Elemente enthält. Wenn wir nun die nächste Instruktion ausführen, können wir an der Adresse der Instruktion erkennen, dass der bedingte Sprung nicht ausgeführt wurde.
+An den Konsolenausgaben ist zu erkennen, dass zunächst beide Zahlen korrekt auf den Stack gelegt werden. Der Vergleich sollte die beiden Werte vom Stack entfernen und sie dann vergleichen; in \srcref{tutorial-check-var-stack-empty} in \lstref{tutorial-check-var} sieht man, dass der Stack korrekterweise keine Elemente enthält. Wenn ich nun die nächste \ai ausführe, kann ich an der Adresse der \ai erkennen, ob der bedingte Sprung ausgeführt wurde.
 
-\begin{lstlisting}[language=,caption={Ausführen der Assembler-Instruktionen zur Berrechnung des temporären Ergebnisses},label=\lstlbl{tutorial-calc-temp-result}]
+\begin{lstlisting}[language=,caption={Ausführen der \ais zur Berrechnung des temporären Ergebnisses},label=\lstlbl{tutorial-calc-temp-result}]
 micro-debug> step
-Executed:      0xE: [ 0x84] IINC  0 0x0
+Executed:      0xE: [ 0x84] IINC  0 0xD0
 Local variable 0: 1
 Processor executed 9 ticks.
 micro-debug> step
@@ -444,11 +443,11 @@ micro-debug> ls-stack
 Stack value #1 [  0xC001]: 0x1(*@\srclbl{tutorial-calc-temp-result-result}@*)
 \end{lstlisting}
 
-Stattdessen wurde nun der \emph{ASCII}-Code dekodiert und die lokale Variable enthält den Wert \texttt{1}\footnote{Auch hier ist die Ausgabe des \texttt{IINC}-Befehl inkorrekt. Dies ist der selbe Fehler, wie oben und hat nur Auswirkungen auf die Ausgabe, wie Du am korrekten Wert der lokalen Variable erkennen kannst.}. Im Folgenden wird das Programm das aktuelle Ergebnis -- das derzeit \texttt{0} ist -- mit zwei multiplizieren und die gerade gelesene Zahl dazu addieren.
+Der bedingte Sprung wurde nicht ausgeführt! Stattdessen wurde nun der \emph{ASCII}-Code dekodiert und die lokale Variable enthält den Wert \texttt{1}. Im Folgenden wird das Programm das aktuelle Ergebnis -- das derzeit \texttt{0} ist -- mit zwei multiplizieren und die gerade gelesene Zahl dazu addieren.
 
-\lstref{tutorial-calc-temp-result} zeigt die gerade beschriebenen Schritte. Zunächst wird das derzeitige Ergebnis geladen, auf dem Stack dupliziert und dann aufaddiert, was der Multiplikation mit zwei entspricht. Anschließend wird die gelesene Zahl auf den Stack gelegt und dazu addiert und sollte das aktuelle Ergebnis ergeben. Mit dem Befehl \texttt{ls-stack} können wir nun sehen, dass diese Annahme korrekt ist -- es liegt der Wert \texttt{1} auf dem Stack, wie in \srcref{tutorial-calc-temp-result-result} in \lstref{tutorial-calc-temp-result} zu sehen.
+\lstref{tutorial-calc-temp-result} zeigt die gerade beschriebenen Schritte: Zunächst wird das derzeitige Ergebnis geladen, auf dem Stack dupliziert und dann aufaddiert, was der Multiplikation mit zwei entspricht. Anschließend wird die gelesene Zahl auf den Stack gelegt und dazu addiert und sollte das aktuelle Ergebnis ergeben. Mit dem Befehl \texttt{ls-stack} kann ich nun sehen, dass diese Annahme korrekt ist: es liegt der Wert \texttt{1} auf dem Stack, wie in \srcref{tutorial-calc-temp-result-result} in \lstref{tutorial-calc-temp-result} zu sehen.
 
-Bisher ist der Assembler-Code also scheinbar auch korrekt. In \lstref{tutorial-error-reason} kannst Du die Konsolenausgabe nach der Ausführung der nächsten Assembler-Instruktion sehen. Hier führt die \mic den \texttt{GOTO}-Befehl aus und springt zu Adresse \texttt{0x4}, an der der \texttt{IN}-Befehl liegt.
+Bisher scheint der \ac auch korrekt zu sein. In \lstref{tutorial-error-reason} ist die Konsolenausgabe nach der Ausführung der nächsten \ais zu sehen. Hier führt die \mic den \texttt{GOTO}-Befehl aus und springt zu Adresse \texttt{0x4}, an der der \texttt{IN}-Befehl liegt.
 
 \begin{lstlisting}[language=,caption={Ausführen des fehlerhaften Schritts},label=\lstlbl{tutorial-error-reason}]
 micro-debug> step
@@ -458,7 +457,11 @@ Processor executed 8 ticks.
 
 Vermutlich liegt der Fehler des Programms darin, das berechnete Ergebnis nicht in der lokalen Variable zu speichern. Wenn diese Vermutung stimmt, sollte der Stack pro Schleifendurchlauf wachsen, da das Ergebnis am Ende der Schleife auf dem Stack liegt, aber nicht mehr gelesen wird. Dies lässt sich durch die Beobachtung aus \lstref{tutorial-stack} zumindest nicht widerlegen: der Stack enthielt am Ende des Programmlaufs viele Elemente.
 
-Diese Vermutung soll nun näher überprüft werden. Dazu setzen wir noch einen Breakpoint auf Zeile \texttt{0x18} des Assembler-Codes, dem Schleifenende. Da die Zeile \texttt{0x4} unmittelbar nach der Zeile \texttt{0x18} ausgeführt wird, können wir den Breakpoint in Zeile \texttt{0x4} entfernen.
+Diese Vermutung soll nun näher überprüft werden. Dazu setze ich noch einen Breakpoint auf Zeile \texttt{0x18} des \ac, dem Schleifenende. Da die Zeile \texttt{0x4} unmittelbar nach der Zeile \texttt{0x18} ausgeführt wird, kann ich den Breakpoint in Zeile \texttt{0x4} entfernen.
+
+\lstref{tutorial-trace-vars} zeigt das Setzen des Breakpoints in Zeile \texttt{0x18}; anschließend ist die Anzeige aller Breakpoints zu sehen. In \srcref{tutorial-trace-vars-v0} wird die lokale Variable \texttt{0} beobachtet, die das gelesene Zeichen enthält. Der Vermutung nach wird die lokale Variable \texttt{1}, die das Ergebnis enthalten sollte, nie beschrieben; um meine Vermutung eventuell verwerfen zu können, beobachte ich auch diese in Zeile \srcref{tutorial-trace-vars-v1}.
+
+Anschließend entferne ich den alten Breakpoint aus Zeile \texttt{0x4} -- die Nummer, die ich dabei angegebe, ist die Nummer des Breakpoints, die der Befehl \texttt{ls-break} liefert. Nachdem nun die verschiedenen Werte beobachtet werden und ein neuer Breakpoint gesetzt ist, kann mit dem \texttt{RUN}-Befehl jeweils ein Schleifendurchlauf bis zum Ende des Programms ausgeführt werden.
 
 \begin{lstlisting}[language=,caption={Setzen eines Breakpoints und Beobachten der lokalen Variablen},label=\lstlbl{tutorial-trace-vars}]
 micro-debug> macro-break 0x18
@@ -472,10 +475,6 @@ micro-debug> ls-break
 Breakpoint #2: at macro code line 0x18
 \end{lstlisting}
 
-\lstref{tutorial-trace-vars} zeigt das Setzen des Breakpoints in Zeile \texttt{0x18} mit anschließender Anzeige aller Breakpoints. In \srcref{tutorial-trace-vars-v0} wird zusätzlich die lokale Variable \texttt{0} beobachtet, die das gelesene Zeichen enthält. Der Vermutung nach wird die lokale Variable \texttt{1}, die das Ergebnis enthalten sollte, nie beschrieben; Daher Beobachten wir auch diese in Zeile \srcref{tutorial-trace-vars-v1}.
-
-Anschließend wird der alte Breakpoint aus Zeile \texttt{0x4} entfernt -- die Nummer, die dabei angegeben wird, ist die Nummer des Breakpoints den der Befehl \texttt{ls-break} liefert. Nachdem nun die verschiedenen Ausgaben gesetzt sind und ein neuer Breakpoint gesetzt ist, kann mit dem \texttt{RUN}-Befehl jeweils ein Schleifendurchlauf bis zum Ende des Programms ausgeführt werden.
-
 \begin{lstlisting}[language=,caption={Schleifendurchlauf Nummer~2},label=\lstlbl{tutorial-loop-2}]
 micro-debug> run
 Executed:      0x4: [ 0xFC] IN 
@@ -484,7 +483,7 @@ Local variable 0: 48(*@\srclbl{tutorial-loop-2-48-in-0}@*)
 Executed:      0x7: [ 0x15] ILOAD  0(*@\srclbl{tutorial-loop-2-check-if-lf}@*)
 Executed:      0x9: [ 0x10] BIPUSH  0xA
 Executed:      0xB: [ 0x9F] IF_ICMPEQ  0x1B
-Executed:      0xE: [ 0x84] IINC  0 0x0(*@\footnote{Bug \#37}@*)(*@\srclbl{tutorial-loop-2-48-to-0}@*)
+Executed:      0xE: [ 0x84] IINC  0 0xD0(*@\srclbl{tutorial-loop-2-48-to-0}@*)
 Local variable 0: 0
 Executed:     0x11: [ 0x15] ILOAD  1(*@\srclbl{tutorial-loop-2-calc-result}@*)
 Executed:     0x13: [ 0x59] DUP 
@@ -494,7 +493,7 @@ Executed:     0x17: [ 0x60] IADD
 Processor executed 84 ticks.
 \end{lstlisting}
 
-In \lstref{tutorial-loop-2} kannst Du die Konsolenausgabe beim nächsten -- dem zweiten -- Schleifendurchlauf sehen. In \srcref{tutorial-loop-2-48-in-0} kannst Du sehen, dass der Wert \texttt{48} korrekt der lokalen Variable \texttt{0} zugewiesen wird. Die \texttt{48} ist der \emph{ASCII}-Code für \texttt{0}, was das zweite Zeichen unserer Eingabe \texttt{1010} war.
+\lstref{tutorial-loop-2} enthält die Konsolenausgabe des nächsten -- dem zweiten -- Schleifendurchlauf. In \srcref{tutorial-loop-2-48-in-0} gibt der \md aus, dass der Wert \texttt{48} korrekt der lokalen Variable \texttt{0} zugewiesen wurde. Die \texttt{48} ist der \emph{ASCII}-Code für \texttt{0}, was das zweite Zeichen meiner Eingabe \texttt{1010} war.
 
 Ab \srcref{tutorial-loop-2-check-if-lf} wird überprüft, ob das gelesene Zeichen ein Zeilenumbruch ist. Auch hier ist korrekt, dass ab \srclbl{tutorial-loop-2-48-to-0} das gelesene Zeichen in den Zahlenwert konvertiert wird und ab \srcref{tutorial-loop-2-calc-result} das Ergebnis berechnet wird.
 
@@ -506,7 +505,11 @@ Stack value #2 [  0xC002]: 0x0
 
 In \lstref{tutorial-stack-after-loop-2} ist der aktuelle Stack nach dem jetzigen zweiten Schleifendurchlauf zu sehen. Wie erwartet ist er um ein Element angewachsen, dass nun \texttt{0} ist. Da das Ergebnis nie in der lokalen Variable abgelegt wird, ist in der Schleife das alte Ergebnis \texttt{0}, welches zur Berechnung des aktuellen Ergebnisses verwendet wird. Wenn das bisherige Ergebnis \texttt{0} ist, dann entspricht das aktuelle Ergebnis gerade der gelesenen Zahl.
 
-Aus der Vermutung über die Fehlerursache kann also geschlussfolgert werden, dass am Ende gerade die eingelesenen Ziffern auf dem Stack liegen müssten. Auch diese Schlussfolgerung konnte bereits in \lstref{tutorial-stack} beobachtet werden. Daher akzeptieren wir nun unsere Vermutung und korrigieren das Assembler-Programm; \lstref{binary-read-jas-correct} zeigt die korrigierte Version. Die Korrektur ist die eingefügte \srcref{binary-read-jas-corrected-line} -- das Speichern des aktuellen Ergebnisses in der lokalen Variable.
+Aus der Vermutung über die Fehlerursache kann man den Schluss ziehen, dass am Ende der Stack exakt die eingelesenen Ziffern enthalten sollte. Auch diese Schlussfolgerung konnte bereits in \lstref{tutorial-stack} beobachtet werden. Daher akzeptiere ich nun meine Vermutung und versuche den \ac zu korrigieren; \lstref{binary-read-jas-correct} zeigt die korrigierte Version des \ac.
+
+Die Korrektur besteht darin die Zeile \srcref{binary-read-jas-corrected-line} einzufügen -- das Speichern des aktuellen Ergebnisses in der lokalen Variable.
+
+Nachdem die korrigierte Version des \ac kompiliert ist, kann ich sie debuggen und überprüfen, ob die Korrektur erfolgreich war. Der \md kann den \ma und \ac nicht automatisch aktualisieren und muss daher mit dem Befehl \texttt{EXIT} beendet werden. Anschließend kann er mit dem korrigierten Kompilat gestartet werden.
 
 \begin{lstlisting}[language=,caption={IJVM-Assembler zum Einlesen einer Binärzahl (korrigiert)},label=\lstlbl{binary-read-jas-correct}]
 .main
@@ -536,9 +539,7 @@ finish:
 .end-main
 \end{lstlisting}
 
-Nachdem die korrigierte Version des Assembler-Codes kompiliert ist, können wir sie debuggen. Der \md kann den Mikro-Assembler-Code und Assembler-Code nicht automatisch aktualisieren und muss daher mit dem Befehl \texttt{EXIT} beendet werden. Anschließend kann er mit dem korrigierten Kompilat gestartet werden.
-
-Mit dem Befehl \texttt{ls-macro-code} kann nun überprüft werden, ob der Assembler-Code korrekt aktualisiert wurde. In \lstref{tutorial-macro-code-correct} ist die Ausgabe des Befehls zu sehen -- \srcref{tutorial-macro-code-corrected-line} zeigt die neu eingefügte Zeile.
+Mit dem Befehl \texttt{ls-macro-code} kann nun überprüft werden, ob der \ac korrekt aktualisiert wurde. In \lstref{tutorial-macro-code-correct} ist die Ausgabe des Befehls zu sehen -- \srcref{tutorial-macro-code-corrected-line} zeigt die neu eingefügte Zeile.
 
 \begin{lstlisting}[language=,caption={Disassemblierter Assembler-Code (korrigiert)},label=\lstlbl{tutorial-macro-code-correct}]
 micro-debug> ls-macro-code
@@ -549,7 +550,7 @@ micro-debug> ls-macro-code
      0x7: [ 0x15] ILOAD  0
      0x9: [ 0x10] BIPUSH  0xA
      0xB: [ 0x9F] IF_ICMPEQ  0x1D
-     0xE: [ 0x84] IINC  0 0x0(*@\footnote{Bug \#37}@*)
+     0xE: [ 0x84] IINC  0 0xD0
     0x11: [ 0x15] ILOAD  1
     0x13: [ 0x59] DUP 
     0x14: [ 0x60] IADD 
@@ -561,15 +562,15 @@ micro-debug> ls-macro-code
     0x1F: [ 0xFF] HALT 
 \end{lstlisting}
 
-Du hast nun überprüft, dass der Assembler-Code korrekt aktualisiert wurde, daher kannst Du jetzt überprüfen, ob die Vermutung korrekt war und der Fehler im Assembler-Code nun behoben ist. Beim Beenden des \md werden Breakpoints sowie beobachtete Register, Variablen oder Assembler-Code verworfen -- zur leichteren Übersicht kannst Du diese daher nochmal aktivieren.
+Ich habe nun überprüft, dass der \ac korrekt aktualisiert wurde, daher kann ich jetzt überprüfen, ob die Vermutung korrekt war und der Fehler im \ac nun behoben ist.
 
-\begin{lstlisting}[language=,caption={Beobachten des Assembler-Codes und der lokalen Variablen},label=\lstlbl{tutorial-watch-code-vars}]
+\begin{lstlisting}[language=,caption={Beobachten des \ac und der lokalen Variablen},label=\lstlbl{tutorial-watch-code-vars}]
 micro-debug> trace-mac
 micro-debug> trace-var 0
 micro-debug> trace-var 1
 \end{lstlisting}
 
-Diese Befehle, um das Beobachten wieder zu aktivieren sind in \lstref{tutorial-watch-code-vars} aufgeführt. Ein Breakpoint wirst Du jetzt nicht mehr benötigen; führe das Programm aus und analysiere die Ausgaben. \lstref{tutorial-output-of-correct-1} und \lstref{tutorial-output-of-correct-2} enthalten die Konsolenausgaben bei der Ausführung des Assembler-Codes; wieder wurde \texttt{1010} eingegeben.
+Beim Beenden des \md werden Breakpoints sowie beobachtete Register, Variablen oder \ac verworfen -- zur leichteren Übersicht habe ich diese daher nochmal aktiviert. Die Befehle dazu  sind in \lstref{tutorial-watch-code-vars} aufgeführt. Ein Breakpoint werde ich jetzt nicht mehr benötigen; ich werde das Programm ausführen und die Ausgaben analysieren. \lstref{tutorial-output-of-correct-1} und \lstref{tutorial-output-of-correct-2} enthalten die Konsolenausgaben bei der Ausführung des \ac; wieder habe ich \texttt{1010} eingegeben.
 
 \begin{lstlisting}[language=,caption={Konsolenausgabe der Ausführung des korrekten Assembler-Codes -- Teil~1},label=\lstlbl{tutorial-output-of-correct-1}]
 micro-debug> run
@@ -582,7 +583,7 @@ Local variable 0: 49
 Executed:      0x7: [ 0x15] ILOAD  0
 Executed:      0x9: [ 0x10] BIPUSH  0xA
 Executed:      0xB: [ 0x9F] IF_ICMPEQ  0x1D
-Executed:      0xE: [ 0x84] IINC  0 0x0
+Executed:      0xE: [ 0x84] IINC  0 0xD0
 Local variable 0: 1
 Executed:     0x11: [ 0x15] ILOAD  1
 Executed:     0x13: [ 0x59] DUP 
@@ -598,7 +599,7 @@ Local variable 0: 48
 Executed:      0x7: [ 0x15] ILOAD  0
 Executed:      0x9: [ 0x10] BIPUSH  0xA
 Executed:      0xB: [ 0x9F] IF_ICMPEQ  0x1D
-Executed:      0xE: [ 0x84] IINC  0 0x0
+Executed:      0xE: [ 0x84] IINC  0 0xD0
 Local variable 0: 0
 Executed:     0x11: [ 0x15] ILOAD  1
 Executed:     0x13: [ 0x59] DUP 
@@ -614,7 +615,7 @@ Local variable 0: 49
 Executed:      0x7: [ 0x15] ILOAD  0
 Executed:      0x9: [ 0x10] BIPUSH  0xA
 Executed:      0xB: [ 0x9F] IF_ICMPEQ  0x1D
-Executed:      0xE: [ 0x84] IINC  0 0x0
+Executed:      0xE: [ 0x84] IINC  0 0xD0
 Local variable 0: 1
 Executed:     0x11: [ 0x15] ILOAD  1
 Executed:     0x13: [ 0x59] DUP 
@@ -624,18 +625,13 @@ Executed:     0x17: [ 0x60] IADD
 Executed:     0x18: [ 0x36] ISTORE  1
 Local variable 1: 5
 Executed:     0x1A: [ 0xA7] GOTO  0x4
-\end{lstlisting}
-
-Wie Du sicherlich bemerkt hast, ist das Assembler-Programm nun korrekt: Der Stack und das Register \reg{TOS} enthalten am Ende das Ergebnis -- \texttt{0xA}.
-
-\begin{lstlisting}[language=,caption={Konsolenausgabe der Ausführung des korrekten Assembler-Codes -- Teil~2},label=\lstlbl{tutorial-output-of-correct-2}]
 Executed:      0x4: [ 0xFC] IN 
 Executed:      0x5: [ 0x36] ISTORE  0
 Local variable 0: 48
 Executed:      0x7: [ 0x15] ILOAD  0
 Executed:      0x9: [ 0x10] BIPUSH  0xA
 Executed:      0xB: [ 0x9F] IF_ICMPEQ  0x1D
-Executed:      0xE: [ 0x84] IINC  0 0x0
+Executed:      0xE: [ 0x84] IINC  0 0xD0
 Local variable 0: 0
 Executed:     0x11: [ 0x15] ILOAD  1
 Executed:     0x13: [ 0x59] DUP 
@@ -644,6 +640,11 @@ Executed:     0x15: [ 0x15] ILOAD  0
 Executed:     0x17: [ 0x60] IADD 
 Executed:     0x18: [ 0x36] ISTORE  1
 Local variable 1: 10
+\end{lstlisting}
+
+Der \ac ist nun korrekt: Der Stack und das Register \reg{TOS} enthalten am Ende das Ergebnis -- \texttt{0xA}.
+
+\begin{lstlisting}[language=,caption={Konsolenausgabe der Ausführung des korrekten Assembler-Codes -- Teil~2},label=\lstlbl{tutorial-output-of-correct-2}]
 Executed:     0x1A: [ 0xA7] GOTO  0x4
 Executed:      0x4: [ 0xFC] IN 
 Executed:      0x5: [ 0x36] ISTORE  0
