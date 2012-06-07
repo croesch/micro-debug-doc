@@ -1,44 +1,44 @@
 \chapter*{Einleitung}
-Die vorliegende Arbeit stellt \md vor, den Debugger für den CISC-Prozessor, der in \cite{Tanenbaum1998} vorgestellt wird: \mic.
+Mit dieser Arbeit stelle ich \md vor, einen Debugger für die \mic. Die \mic ist ein Prozessor und wird von \name{Tanenbaum} in \cite{Tanenbaum1998} vorgestellt -- sie ist ein Prozessor der \gls{cisc} Architektur.
 
-Im Gegensatz zu einem RISC-Prozessor sind die Maschinenbefehle in der \mic nicht in Hardware implementiert, sondern werden durch einen Mikroprogramm-Speicher definiert. Dieser wird in Mikro-Assembler programmiert und ermöglicht es Maschinenbefehle auf einem hohen Abstraktionsniveau zu definieren und ohne Veränderung der Hardware anzupassen.
+Im Gegensatz zur \gls{risc} Architektur haben \gls{cisc}-Prozessoren einen komplexeren Befehlssatz. Bei der \mic wird dies durch einen \mac realisiert, der für die begrenzte Hardware einen komplexen Befehlssatz bereitstellt. Dieser \mac ermöglicht, Maschinenbefehle auf einem hohen Abstraktionsniveau zu definieren und ohne Veränderung der Hardware anzupassen.
 
 \section*{Aufgabenstellung}
-Im Skript der Vorlesung Rechnertechnik \notiz{Verweis auf Skript der VL Rechnertechnik einfügen} wurde ein Mikro-Assembler für die \mic vorgestellt. Ziel dieser Arbeit ist der Entwurf und die Implementierung eines Debuggers für diesen Mikro-Assembler. Der Debugger soll die Entwicklung von Mikro-Assembler- und Assembler-Programmen für die \mic erleichtern.
+Im Skript der Vorlesung Rechnertechnik \cite[Kapitel 8]{Stroetmann2009} wird von \name{Stroetmann} ein Mikro-Assembler für die \mic vorgestellt. Ziel dieser Arbeit ist der Entwurf und die Implementierung eines Debuggers für diesen Mikro-Assembler. Der Debugger soll die Entwicklung von \ma und \ac für die \mic erleichtern.
 
-Um entsprechenden Mikro-Assembler- und Assembler-Bytecode debuggen zu können, ist es nötig die \mic zu simulieren. Im Jahr 2004 wurde von Thomas Kutzer eine Studienarbeit zum Thema ``Mic-1 Simulator'' verfasst.\notiz{Verweis einfügen!?} Der Debugger soll den darin entwickelten Simulator ersetzen und um einige Funktionen ergänzen.
+Um entsprechenden \ma und \ac debuggen zu können, muss der Debugger die \mic simulieren können. In seiner Studienarbeit \cite{Kutzer2004} beschreibt \name{Kutzer} einen Simulator für die \mic. Der hier entwickelte Debugger soll diesen Simulator ersetzen und um Debug-Funktionen erweitern.
 
-In der Arbeit sollen dabei hauptsächlich zwei Teilaufgaben bearbeitet werden.
+In dieser Arbeit sollen dabei hauptsächlich zwei Teilaufgaben bearbeitet werden.
 
 \subsection*{Debugger für die Konsole}
-Zunächst soll eine Version des Debuggers entwickelt werden, der über die Konsole bedient wird. Das Ziel dabei ist eine Implementierung des Debuggers unabhängig von der Darstellung der Ein- und Ausgabe.
+Zunächst soll eine Version des Debuggers entwickelt werden, die über die Konsole bedient wird. Das Ziel ist die Implementierung des Debuggers unabhängig von der Darstellung der Ein- und Ausgabe.
 
-Der Debugger soll in der Lage sein zwei Binärdateien einzulesen: eine Datei, die den Mikro-Assembler enthält und eine, die den Assembler-Code enthält. Der Assembler-Code soll grundsätzlich frei wählbar sein, als Referenz für diese Arbeit soll aber der IJVM-Assembler dienen.
+Der Debugger soll in der Lage sein zwei Binärdateien einzulesen: eine Datei, die den \ma und eine, die den \ac enthält. Der \ac soll grundsätzlich nur vom \mac abhängig und durch den Benutzer frei definierbar sein; als Referenz für diese Arbeit soll aber der \gls{ijvm}-Assembler dienen.
 
-Der Benutzer soll Breakpoints (Haltepunkte) definieren können, die die Simulation des Mikro-Assembler-Programms unterbrechen. Hierbei soll der Benutzer die Möglichkeit bekommen, Breakpoints für bestimmte Mikro-Assembler-Instruktionen aber auch für bestimmte Assembler-Instruktionen zu definieren.
+Der Benutzer soll Breakpoints (Haltepunkte) definieren können, die die Simulation des \mac unterbrechen. Der Debugger soll dem Benutzer ermöglichen, Breakpoints für bestimmte \mais aber auch für bestimmte \ais zu definieren.
 
-Die Werte ausgewählter Register sollen vom Benutzer sowohl angezeigt, als auch überwacht werden können -- ebenso der Inhalt des Stacks.
+Neben den Werten der Register sollen dem Benutzer auch der Inhalt des Stacks, die gesetzten Breakpoints, der \ma und der \ac angezeigt werden können. Dem Benutzer soll es möglich sein, lokale Variablen, Register, den ausgeführten \ma sowie \ac zu beobachten.
 
 \subsection*{GUI für den Debugger}
-Im zweite Teil der Aufgabe soll für den entwickelten Debugger eine grafische \notiz{graphisch/grafisch} Oberfläche entwickelt werden.
+Im zweiten Teil der Aufgabe soll für den Debugger eine \gls{gui} entwickelt werden. Die \gls{gui} soll sowohl den \ma als auch den \ac anzeigen; Auch die Register mit ihren Werten und der Stack sollen sichtbar sein.
 
-Die grafische Oberfläche soll sowohl den Mikro-Assembler als auch den Assembler anzeigen. Auch die Register mit ihren Werten und der Stack soll sichtbar sein.
+Die \gls{gui} soll dem Benutzer ermöglichen, Breakpoints zu setzen und soll anzeigen, welche \ma und \ai gerade abgearbeitet wird.
 
-Die grafische Oberfläche soll dem Benutzer ermöglichen, Breakpoints über die Oberfläche zu setzen. Außerdem soll dem Benutzer angezeigt werden, welcher Mikro-Assembler- und Assembler-Befehl gerade abgearbeitet wird.
-
-Da in dieser Arbeit ein allumfassender Debugger weder geschaffen werden kann noch soll, ist besonders darauf zu achten, die Wartung und Erweiterung des Debuggers Außenstehenden Personen zu ermöglichen. Besonders der zu schreibende Code soll daher gut dokumentiert werden; beispielsweise andere Studenten sollen sich in den Code einarbeiten können und neue Funktionalitäten implementieren oder bestehende Funktionalitäten anpassen können.
+Da in dieser Arbeit ein allumfassender Debugger weder geschaffen werden kann noch soll, ist besonders darauf zu achten, die Wartung und Erweiterung des Debuggers außenstehenden Personen zu ermöglichen. Besonders der Code des Debuggers soll daher gut dokumentiert werden; es sollen sich andere Studenten in den Code einarbeiten und neue Funktionalitäten implementieren oder bestehende Funktionalitäten anpassen können.
 
 \section*{Aufbau der Arbeit}
-Die Arbeit ist in zwei Teile geteilt: Im ersten Teil wird die Bedienung und im zweiten Teil wird die Entwicklung des \md erläutert.
+Die Arbeit ist in zwei Teile geteilt: Im ersten Teil erläutere ich die Bedienung und im zweiten Teil die Entwicklung des \md. Ich beschreibe also eher den derzeitigen Zustand des \md, als den Weg der Entstehung des \md. Denn diese Arbeit soll vor allem dazu dienen, dass Außenstehende sich in den \md einarbeiten können und den jetzigen Zustand nachvollziehen können.
+
+Ich werde im Folgenden \md für die Konsolenvariante des Debuggers verwenden und \mdg für die \gls{gui}. Diese beiden Bezeichnungen sind gleichzeitig die Namen der Code-Projekte -- so möchte ich eine saubere Trennung zwischen den Projekten erreichen. Die Bezeichnung \emph{Debugger} werde ich verwenden, um allgemein über den \md und die \mdg zu sprechen; oder für Erklärungen, die beide Projekte betreffen.
 
 \subsection*{Bedienung}
-Im \chpref{allgemein} wird der \md allgemein beschrieben: Welche Systemvoraussetzungen gelten, wie man den \md konfiguriert und wie er in andere Sprachen übersetzt werden kann. Außerdem wird beschrieben, wie man die Log-Ausgaben des \md nutzen und konfigurieren kann.
+Im \chpref{allgemein} beantworte ich einige allgemeine Fragen über den Debugger: Welche Systemvoraussetzungen gibt es? Wie konfiguriert man den Debugger? Wie kann man den Debugger in andere Sprachen übersetzen? Produziert der Debugger Log-Ausgaben? Wenn ja, kann man diese konfigurieren?
 
-Die Bedienung des \md in der Konsolenvariante wird im \chpref{bed-konsole} beschrieben; Es werden die Parameter des \md erklärt, die verschiedenen Befehle erläutert und ein Beispiel gezeigt, wie ein Fehler mit dem Debugger gefunden werden kann.
+Die Bedienung des \md beschreibe ich im \chpref{bed-konsole}; dort erkläre ich auch die Parameter des \md. Außerdem erläutere ich die verschiedenen Befehle und zeige ein Beispiel, wie mit dem \md ein Fehler im \ac gefunden werden kann.
 
-Im \chpref{bed-gui} wird die grafische Oberfläche beschrieben; Es werden die Unterschiede zur Konsolenvariante genannt, die verschiedenen Oberflächenelemente erklärt und ein Beispiel gezeigt, wie ein Fehler mit dem Debugger mit grafischer Oberfläche gefunden werden kann.
+Im \chpref{bed-gui} beschreibe ich die Bedienung der \mdg; dort nenne ich die Unterschiede zum \md und erkläre die verschiedenen Oberflächenelemente.% und zeige ein Beispiel, wie mit der \mdg ein Fehler gefunden werden kann.
 
 \subsection*{Entwicklung}
-Im \chpref{werkzeuge} werden einige Werkzeuge beschrieben, die zur Entwicklung des \md genutzt wurden und deren Verständnis nötig ist, um selbst Änderungen am Projekt vorzunehmen. In \chpref{entw-allg} gehe ich kurz auf die Notwendigkeit der automatisierten Tests ein.
+In \chpref{werkzeuge} beschreibe ich einige Werkzeuge, die ich zur Entwicklung des Debuggers genutzt habe und deren Verständnis nötig ist, um selbst Änderungen am Projekt vorzunehmen. In \chpref{entw-allg} gehe ich kurz auf die Notwendigkeit der automatisierten Tests ein.
 
-Die nachfolgenden Kapitel beschreiben, welche Funktionalität des \md durch welche Klassen erledigt werden. \chpref{prozessor} gibt einen Überblick über die Simulation der \mic und zeigt welcher Code die jeweilige Hardwarekomponente repräsentiert. Im \chpref{konsole} wird der Code für die Konsolenvariante und in \chpref{gui} der Code für die grafische Oberfläche erklärt.
+In den nachfolgenden Kapiteln beschreibe ich, welche Funktionalität des Debuggers sich in welchen Klassen befinedt. \chpref{prozessor} nutze ich, um zu beschreiben, wie die \mic simuliert wird und wie ich die verschiedenen Hardwarekomponten implementiert habe. Im \chpref{konsole} erkläre ich den Code des \md und in \chpref{gui} den Code der \mdg.
