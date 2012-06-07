@@ -4,7 +4,7 @@ Die vorliegende Arbeit stellt \md vor, den Debugger für den CISC-Prozessor, der
 Im Gegensatz zu einem RISC-Prozessor sind die Maschinenbefehle in der \mic nicht in Hardware implementiert, sondern werden durch einen Mikroprogramm-Speicher definiert. Dieser wird in Mikro-Assembler programmiert und ermöglicht es Maschinenbefehle auf einem hohen Abstraktionsniveau zu definieren und ohne Veränderung der Hardware anzupassen.
 
 \section*{Aufgabenstellung}
-Im Skript der Vorlesung Rechnertechnik \notiz{Verweis auf Skript der VL Rechnertechnik einfügen} wurde ein Mikro-Assembler für die \mic vorgestellt. Ziel dieser Arbeit istder Entwurf und die Implementierung eines Debuggers für diesen Mikro-Assembler. Der Debugger soll die Entwicklung von Mikro-Assembler- und Assembler-Programmen für die \mic erleichtern.
+Im Skript der Vorlesung Rechnertechnik \notiz{Verweis auf Skript der VL Rechnertechnik einfügen} wurde ein Mikro-Assembler für die \mic vorgestellt. Ziel dieser Arbeit ist der Entwurf und die Implementierung eines Debuggers für diesen Mikro-Assembler. Der Debugger soll die Entwicklung von Mikro-Assembler- und Assembler-Programmen für die \mic erleichtern.
 
 Um entsprechenden Mikro-Assembler- und Assembler-Bytecode debuggen zu können, ist es nötig die \mic zu simulieren. Im Jahr 2004 wurde von Thomas Kutzer eine Studienarbeit zum Thema ``Mic-1 Simulator'' verfasst.\notiz{Verweis einfügen!?} Der Debugger soll den darin entwickelten Simulator ersetzen und um einige Funktionen ergänzen.
 
@@ -41,4 +41,4 @@ Im \chpref{bed-gui} wird die grafische Oberfläche beschrieben; Es werden die Un
 \subsection*{Entwicklung}
 Im \chpref{werkzeuge} werden einige Werkzeuge beschrieben, die zur Entwicklung des \md genutzt wurden und deren Verständnis nötig ist, um selbst Änderungen am Projekt vorzunehmen. In \chpref{entw-allg} gehe ich kurz auf die Notwendigkeit der automatisierten Tests ein.
 
-Die nachfolgenden Kapitel beschreiben, welche Funktionalität des \md durch welche Klassen erledigt werden. \chpref{prozessor} gibt einen Überblick über die Simulation der \mic und zeigt welcher Code die jeweilige Hardwarekomponente repräsentiert. Im \chpref{konsole} wird der Coder für die Konsolenvariante und in \chpref{gui} der Code für die grafische Oberfläche erklärt.
+Die nachfolgenden Kapitel beschreiben, welche Funktionalität des \md durch welche Klassen erledigt werden. \chpref{prozessor} gibt einen Überblick über die Simulation der \mic und zeigt welcher Code die jeweilige Hardwarekomponente repräsentiert. Im \chpref{konsole} wird der Code für die Konsolenvariante und in \chpref{gui} der Code für die grafische Oberfläche erklärt.
