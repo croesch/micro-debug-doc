@@ -13,16 +13,16 @@ In dieser Arbeit sollen dabei hauptsächlich zwei Teilaufgaben bearbeitet werden
 \subsection*{Debugger für die Konsole}
 Zunächst soll eine Version des Debuggers entwickelt werden, die über die Konsole bedient wird. Das Ziel ist die Implementierung des Debuggers unabhängig von der Darstellung der Ein- und Ausgabe.
 
-Der Debugger soll in der Lage sein zwei Binärdateien einzulesen: eine Datei, die den \ma und eine, die den \ac enthält. Der \ac soll grundsätzlich nur vom \mac abhängig und durch den Benutzer frei definierbar sein; als Referenz für diese Arbeit soll aber der \gls{ijvm}-Assembler dienen.
+Der Debugger soll in der Lage sein zwei Binärdateien einzulesen: eine Datei, die den \ma und eine, die den \ac enthält. Der \ac sollte grundsätzlich nur vom \mac abhängig und durch den Benutzer frei definierbar sein; als Referenz für diese Arbeit kann aber der \gls{ijvm}-Assembler dienen.
 
-Der Benutzer soll Breakpoints (Haltepunkte) definieren können, die die Simulation des \mac unterbrechen. Der Debugger soll dem Benutzer ermöglichen, Breakpoints für bestimmte \mais aber auch für bestimmte \ais zu definieren.
+Der Benutzer muss Breakpoints (Haltepunkte) definieren können, die die Simulation des \mac unterbrechen. Der Debugger ermöglicht dem Benutzer dabei, Breakpoints für bestimmte \mais aber auch für bestimmte \ais zu definieren.
 
-Neben den Werten der Register sollen dem Benutzer auch der Inhalt des Stacks, die gesetzten Breakpoints, der \ma und der \ac angezeigt werden können. Dem Benutzer soll es möglich sein, lokale Variablen, Register, den ausgeführten \ma sowie \ac zu beobachten.
+Neben den Werten der Register kann der Benutzer sich auch den Inhalt des Stacks, die gesetzten Breakpoints, den \ma und den \ac anzeigen lassen. Dem Benutzer soll es möglich sein, lokale Variablen, Register, den ausgeführten \ma sowie \ac zu beobachten.
 
 \subsection*{GUI für den Debugger}
-Im zweiten Teil der Aufgabe soll für den Debugger eine \gls{gui} entwickelt werden. Die \gls{gui} soll sowohl den \ma als auch den \ac anzeigen; Auch die Register mit ihren Werten und der Stack sollen sichtbar sein.
+Im zweiten Teil der Aufgabe wird für den Debugger eine \gls{gui} entwickelt werden. Die \gls{gui} soll sowohl den \ma als auch den \ac anzeigen; Auch die Register mit ihren Werten und der Stack sollen sichtbar sein.
 
-Die \gls{gui} soll dem Benutzer ermöglichen, Breakpoints zu setzen und soll anzeigen, welche \ma und \ai gerade abgearbeitet wird.
+Die \gls{gui} ermöglicht dem Benutzer, Breakpoints zu setzen und zeigt an, welche \ma und \ai gerade abgearbeitet wird.
 
 Da in dieser Arbeit ein allumfassender Debugger weder geschaffen werden kann noch soll, ist besonders darauf zu achten, die Wartung und Erweiterung des Debuggers außenstehenden Personen zu ermöglichen. Besonders der Code des Debuggers soll daher gut dokumentiert werden; es sollen sich andere Studenten in den Code einarbeiten und neue Funktionalitäten implementieren oder bestehende Funktionalitäten anpassen können.
 

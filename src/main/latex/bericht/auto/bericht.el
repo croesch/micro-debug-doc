@@ -18,6 +18,8 @@
      "Ontko1999"
      "Oracle2011"
      "Oracle2010"
+     "Oracle2010Loc"
+     "Oracle2004"
      "Pekar2002"
      "Roesch2011"
      "Roesch2010"
@@ -26,5 +28,6 @@
      "Stroetmann2007"
      "Stroetmann2009"
      "Tanenbaum1998"
-     "Xie2006")))
+     "Xie2006"
+     "Vogel2012")))
 

@@ -1,53 +1,72 @@
 \chapter{Allgemein}
 \chplbl{allgemein}
-Sowohl die Konsolenvariante als auch die grafische Oberfläche des \md benötigen keine Installation; sie werden beide als \texttt{.zip}-Archiv heruntergeladen und sind direkt nach dem Entpacken nutzbar. Die Datei heiß üblicherweise \texttt{micro-debug-version.zip} und enthält mehrere Dateien:
+Der Debugger -- sowohl der \md als auch die \mdg{} -- benötigt keine Installation; er kann als \texttt{.zip}-Archiv heruntergeladen werden und ist direkt nach dem Entpacken nutzbar. Die Datei heißt üblicherweise \texttt{micro-debug-version.zip}\footnote{Die Datei der \mdg heißt üblicherweise \texttt{micro-debug-gui-version.zip}.} und enthält mehrere Dateien:
 
 \begin{description}
-\item[micro-debug-version.jar] enthält den Programmcode des Debuggers und kann mit dem Befehl \texttt{\$ java -jar} ausgeführt werden.\notiz{Debugger und \md synonym verwenden?}
-\item[micro-debug.sh und micro-debug.bat] sind die Startskripte des \md für Windows und Linux. Der \md kann durch Ausführen dieser Skripte gestartet werden -- der Benutzer muss sich dadurch nicht um die Konfiguration des Klassenpfades kümmern. Die Startskripte sind so geschrieben, dass sie von beliebigen Orten ausgeführt werden können. Der Benutzer kann den Debugger also von vielen Arbeitsverzeichnissen aus aufrufen und hat die Konfigurationsdateien nur an einer Stelle zu pflegen.
-\item[config/micro-debug.properties] ist die Konfigurationsdatei für den \md, hier kann beispielsweise die Größe des Hauptspeichers konfiguriert werden -- siehe \secref{konfiguration}.
-\item[config/logging.properties] ist die Konfigurationsdatei für das Logging des \md -- hier kann der Benutzer definieren, ob und welche Ausgaben auf der Konsole oder in einer Datei erscheinen sollen -- siehe \secref{logs}.
-\item[config/lang/] enthält die Textressourcen des \md -- siehe \secref{lokalisierung}.\notiz{Ressource/Resource?}
-\item[lib/] enthält die verwendeten Bibliotheken, zur Zeit nur in der \mdg verwendet.
+\item[micro-debug-version.jar] enthält den Code des \md und kann mit dem Befehl \texttt{java~-jar} ausgeführt werden. Diese Datei ist auch in der \mdg enthalten, dort gibt es aber zusätzlich noch die Datei \texttt{micro-debug-gui-version.jar}, die den Code der \mdg enthält.
+\item[micro-debug.sh und micro-debug.bat] sind die Startskripte des \md für Windows und Linux\footnote{Auch hier ist die Namensgebung für die Startskripte der \mdg entsprechend: \texttt{micro-debug-gui.sh} und \texttt{micro-debug-gui.bat}}. Der Debugger kann durch Ausführen dieser Skripte gestartet werden -- der Benutzer muss sich dadurch nicht um die Konfiguration des Klassenpfades kümmern. Ich habe die Startskripte so geschrieben, dass sie von beliebigen Orten ausgeführt werden können: Der Benutzer kann den Debugger von vielen Arbeitsverzeichnissen aus aufrufen und hat die Konfigurationsdateien nur an einer Stelle zu pflegen.
+\item[config/micro-debug.properties] ist die Konfigurationsdatei für den \md und die \mdg, hier kann beispielsweise die Größe des Hauptspeichers oder Tastenkombinationen konfiguriert werden -- siehe \secref{konfiguration}.
+\item[config/logging.properties] ist die Konfigurationsdatei für das Logging des Debuggers -- hier kann der Benutzer definieren, ob und welche Ausgaben auf der Konsole oder in einer Datei erscheinen sollen -- siehe \secref{logs}.
+\item[config/lang/] enthält die Textressourcen des Debuggers -- siehe \secref{lokalisierung}.
+\item[lib/] enthält die verwendeten Bibliotheken des Debuggers; zur Zeit nur in der \mdg verwendet.
 \end{description}
 
 \section{Systemvoraussetzungen}
 \seclbl{systemvoraussetzungen}
-Der \md ist in \gls{java} geschrieben und daher prinzipiell an keine spezielle Plattform gebunden. Voraussetzung für die Nutzung des \md ist lediglich Java~5\notiz{Referenz?}.
+Der Debugger ist in \gls{java} geschrieben und daher prinzipiell an keine spezielle Plattform gebunden. Voraussetzung für die Nutzung des \md ist lediglich \gls{java}~5\notiz{Referenz?}.
 
-In der Praxis differenzieren sich die verschiedenen Plattformen, auf denen \gls{java} verfügbar ist, in einigen Feinheiten. Daher ist es prinzipiell möglich, dass sich der \md auf gewissen Plattformen nicht wie gewünscht verhält. Wie anhand der Startskripte zu erkennen ist, wurde der \md im Blick auf Linux und Windows entwickelt und darauf getestet; um den \md auf einer weiteren Plattform zu nutzen, muss zumindest das Startskript eigenständig geschrieben werden.
+In der Praxis differenzieren sich die verschiedenen Plattformen, auf denen \gls{java} verfügbar ist, in einigen Feinheiten. Daher ist es prinzipiell möglich, dass sich der Debugger auf gewissen Plattformen unerwünscht verhält. Wie anhand der Startskripte zu erkennen ist, habe ich den Debugger im Blick auf \emph{Linux} und \emph{Windows} entwickelt und auf diesen Plattformen\footnote{Ausführlich habe ich mit \emph{Windows~7} (in der 64-Bit-Variante) und \emph{Ubuntu~12.04} (auch 64-Bit) getestet.} getestet. Um den Debugger auf einer weiteren Plattform zu nutzen, muss zumindest das Startskript eigenständig geschrieben werden.
 
-Die Konsolenvariante nutzt bislang einen Thread, die Version des \md mit grafischer Oberfläche mindestens zwei (wie Kapitel/Abschnitt X beschrieben\notiz{Verweis auf Kapitel einfügen}), die allerdings selten parallel arbeiten. Für die Ausführungsgeschwindigkeit des \md ist die Anzahl der verfügbaren Prozessorkerne daher irrelevant.
+Der \md nutzt bislang einen Thread, die \mdg hingegen mindestens zwei (wie ich in \secref{verarbeitung-benutzeraktionen-threads} näher beschreibe), die allerdings selten parallel arbeiten. Für die Ausführungsgeschwindigkeit des Debuggers ist die Anzahl der verfügbaren Prozessorkerne daher irrelevant.
 
 \section{Konfiguration}
 \seclbl{konfiguration}
-Wie oben bereits angedeutet findet die Konfiguration des \md in \datei{properties}en statt. Die Konfigurationsdatei für den \md ist die Datei \texttt{config/micro-debug.properties} -- wie in \datei{properties}en üblich, werden hier Key/Value\notiz{Key/value!?}-Paare hinterlegt.
+Die Konfiguration des Debuggers findet in \datei{properties}en statt. Die Konfigurationsdatei \texttt{config/micro-debug.properties} enthält die Konfigurationen sowohl für den \md als auch die \mdg. Wie in \datei{properties}en üblich, werden dort Schlüsselwert-Paare hinterlegt.
 
 \begin{lstlisting}[language=sh,caption={Eintrag in \texttt{conf/micro-debug.properties}},label=\lstlbl{md-props-entry}]
 # default value for the register CPP
 mic1.register.cpp.defval = 0x4000
 \end{lstlisting}
 
-\lstref{md-props-entry} zeigt einen beispielhaften Eintrag in der Konfigurationsdatei: Den Startwert für das Register CPP\notiz{Register Befehl erstellen?}. Diese Datei kann für jeden Schlüssel genau einen Wert enthalten, ist für einen Schlüssel kein Wert konfiguriert oder ist ein ungültiger Wert konfiguriert, nutzt der Debugger den Standardwert für den jeweiligen Schlüssel.\notiz{Prüfen und ggf. einfügen, dass fallback anständig geloggt wird und das dann hier auch erwähnen.}
+\lstref{md-props-entry} zeigt einen Eintrag aus der Konfigurationsdatei: Den Startwert für das Register \reg{CPP}. Diese Datei kann für jeden Schlüssel genau einen Wert enthalten. Ist für einen Schlüssel kein Wert konfiguriert oder ist ein ungültiger Wert konfiguriert, nutzt der Debugger den internen Standardwert für den jeweiligen Schlüssel.\notiz{Prüfen und ggf. einfügen, dass fallback anständig geloggt wird und das dann hier auch erwähnen.}
 
-Dadurch ist es möglich ein Update des \md durch die Ersetzung der \datei{jar} zu realisieren. Denn vom Benutzer geänderte Werte müsste er in der neuen Version wieder mühsam nachpflegen; das Nutzen von Standardwerten bei fehlenden Konfigurationseinträgen ermöglicht es dem Benutzer seine persönliche Konfigurationsdatei von Version zu Version des \md zu behalten.\notiz{Überlegen, ob nicht irgendwo ein Update-Abschnitt sinnvoll ist}
+Dadurch ist es möglich ein Update des Debuggers durchzuführen, und weiterhin die alte Konfiguration zu nutzen. Ersetzt der Benutzer die \datei{jar} durch eine neuere Version, die zusätzliche Konfigurationsoptionen benötigt, nutzt der Debugger die Standardwerte dieser Konfigurationsoptionen.
+
+Der Benutzer kann seine eigene Konfiguration dadurch von Version zu Version des Debuggers behalten; er muss geänderte Konfigurationsoptionen nicht mühsam nachpflegen.\notiz{Überlegen, ob nicht irgendwo ein Update-Abschnitt sinnvoll ist}
 
 \subsection{Zahlenformat}
 \seclbl{zahlenformat}
-\notiz{Wahrscheinlich ist es sinnvoll in den properties Dateien einzutragen, von welchem Typ ein Schlüssel sein soll und dies dann hier auch zu notieren}.
-In \lstref{md-props-entry} ist zu sehen, wie dem Register CPP der Standardwert \texttt{0x4000} zugewiesen wird -- hier hexadezimal notiert. Andere Konfigurationseinträge sind dezimal eingetragen; welches Zahlenformat ist nun wo anzuwenden?
+\notiz{Wahrscheinlich ist es sinnvoll in den properties Dateien einzutragen, von welchem Typ ein Schlüssel sein soll und dies dann hier auch zu notieren.}
+In \lstref{md-props-entry} ist zu sehen, wie dem Register \reg{CPP} der Standardwert \texttt{0x4000} zugewiesen wird -- hier hexadezimal notiert. Andere Konfigurationseinträge sind dezimal eingetragen; welches Zahlenformat ist nun wo anzuwenden?
 
-Für den \md ist es irrelevant, welches Zahlenformat bei welchem Eintrag verwendet wird. Er parst die gegebene Zahl und wandelt sie in ein Integer um, dadurch kann der Benutzer für jeden Eintrag das passende Zahlenformat wählen.
+Für den Debugger ist es irrelevant, welches Zahlenformat bei welcher Konfigurationsoption verwendet wird. Er liest die gegebene Zahl und wandelt sie in einen \emph{Integer} um; dadurch kann der Benutzer für jeden Eintrag das passende Zahlenformat wählen. Nicht nur bei Konfigurationsoptionen, sondern bei allen eingegebenen Zahlen des Benutzers ist das Format variabel.
 
-Welche Zahlenformate gibt es außer dezimal und hexadezimal? Der \md unterstützt alle Zahlensysteme mit der Grundzahl von $b=2$ bis $b=36$. Generell werden die Zahlen in der Art \texttt{ZAHL\_BASIS} angegeben -- \texttt{ZAHL} wird in dem jeweiligen Zahlensystem und \texttt{BASIS} im Dezimalsystem angegeben.
-
-Für die wohl am häufigsten verwendeten Zahlensysteme gibt es die in \tabref{vereinfachungen-zahlenformate} dargestellten Vereinfachungen -- diese Vereinfachungen sind aber nicht verpflichtend, sowohl \texttt{A\_16} als auch \texttt{0xA} ist zulässig.
+Welche Zahlenformate gibt es außer dezimal und hexadezimal? Der Debugger unterstützt alle Zahlensysteme mit der Grundzahl von $b=2$ bis $b=36$. Generell werden die Zahlen in der Art \texttt{ZAHL\_BASIS} angegeben -- \texttt{ZAHL} wird in dem jeweiligen Zahlensystem und \texttt{BASIS} im Dezimalsystem angegeben. In \tabref{verschiedene-zahlenformate} sind verschiedene Eingabemöglichkeiten für die Zahl $10$ gegeben.
 
 \begin{table}[h]
   \centering
-  \begin{tabular}[h]{|lll|}
+  \begin{tabular}[h]{|rl|}
     \hline
-    Zahlensystem      & ausführlich      & vereinfacht     \\
+    \textbf{Zahlensystem} & \textbf{Darstellung}\\
+    \hline
+    Dualsystem        & \texttt{1010\_2}\\
+    Ternärsystem      & \texttt{101\_3}\\
+    Dezimalsystem     & \texttt{10\_10}\\
+    Hexadezimalsystem & \texttt{A\_16}\\
+    \hline
+  \end{tabular}
+  \caption{Auswahl möglicher Eingabearten der Zahl $10$ im Debugger}
+  \tablbl{verschiedene-zahlenformate}
+\end{table}
+
+
+Für die meiner Meinung am häufigsten verwendeten Zahlensysteme gibt es die in \tabref{vereinfachungen-zahlenformate} dargestellten Vereinfachungen. Der Benutzer \emph{muss} diese Vereinfachungen aber nicht nutzen, er kann sowohl \texttt{A\_16} als auch \texttt{0xA} eingeben -- oder aber \texttt{10}.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}[h]{|rll|}
+    \hline
+    \textbf{Zahlensystem} & \textbf{ausführlich} & \textbf{vereinfacht}\\
     \hline
     Dualsystem        & \texttt{1010\_2} & \texttt{0b1010} \\
     Oktalsystem       & \texttt{12\_8}   & \texttt{0o12}   \\
@@ -55,27 +74,27 @@ Für die wohl am häufigsten verwendeten Zahlensysteme gibt es die in \tabref{ve
     Hexadezimalsystem & \texttt{A\_16}   & \texttt{0xA}    \\
     \hline
   \end{tabular}
-  \caption{Vereinfachungen typischer Zahlenformate im \md}
+  \caption{Vereinfachungen typischer Zahlenformate im Debugger am Beispiel der Zahl $10$}
   \tablbl{vereinfachungen-zahlenformate}
 \end{table}
 
 \subsection{Logs}
 \seclbl{logs}
-Im Optimalfall ist sowohl der \md als auch der Benutzer fehlerfrei. Da dies in der Praxis selten beobachtet wird, ist oftmals Fehleranalysen nötig. Log-Ausgaben protokollieren vermeintlich wichtige Vorgänge für solche Analysen und sind daher ein guter Ansatzpunkt, um die Fehlerursache zu finden.
+Sucht der Benutzer die Ursache für einen Fehler, den er oder der Debugger begangen hat, sind Log-Ausgaben ein guter Ansatzpunkt. Denn dort sind die vermeintlich wichtigen Vorgänge protokolliert und im Hinblick auf solche Analysen geschrieben.
 
-Der \md wird im Startskript so gestartet, dass die Log-Konfiguration aus der Datei \texttt{conf/logging.properties} genutzt wird. Die genaue Syntax und Semantik der Konfigurationseinträge ist hier und hier \notiz{TODO} beschrieben.
-% http://docs.oracle.com/javase/1.5.0/docs/guide/logging/overview.html
-% http://www.vogella.com/articles/Logging/article.html
+Der Debugger wird im Startskript so gestartet, dass die Log-Konfiguration aus der Datei \texttt{conf/logging.properties} genutzt wird. Da die Syntax und Semantik der Konfigurationseinträge von \name{Oracle} \cite{Oracle2004} und \name{Vogel} \cite{Vogel2012} detailliert beschrieben ist, lasse ich sie hier aus.
 
-Standardmäßig werden von \md alle Log-Ausgaben mit der Wichtigkeit \texttt{INFO} oder höher in Dateien geschrieben, die im home-Verzeichnis des Benutzers liegen. Die verschiedenen Log-Level sind von wichtig absteigend \texttt{SEVERE}, \texttt{WARNING}, \texttt{INFO}, \texttt{CONFIG}, \texttt{FINE}, \texttt{FINER} und \texttt{FINEST}.
+Die Startskripte sind so konfiguriert, dass der Debugger alle Log-Ausgaben mit dem Log-Level \texttt{INFO} oder höher in Dateien schreibt. Diese Dateien liegen im \emph{home}-Verzeichnis des Benutzers und sind von der Form \texttt{micro-debugX.log} -- wobei \texttt{X} ein Laufindex ist. Es existieren neben dem genannten noch weitere Log-Level; je nach Situation kann der Debugger beispielsweise für ausführlichere Log-Ausgaben konfiguriert werden. Die verschiedenen Log-Level sind mit absteigender Wichtigkeit: \texttt{SEVERE}, \texttt{WARNING}, \texttt{INFO}, \texttt{CONFIG}, \texttt{FINE}, \texttt{FINER} und \texttt{FINEST}.
 
 \subsection{ijvm.conf}
 \seclbl{ijvm-conf}
-Der \md ist so konstruiert, dass er theoretisch für beliebige Assembler als Debugger dienen kann. Allerdings wird der \md in der Praxis wohl vorwiegend mit IJVM-Assembler genutzt. Um diesen Assembler disassemblieren zu können, gibt es eine Konfigurationsdatei -- die \texttt{ijvm.conf}. Damit der \md einen gewissen Standardsatz an Befehlen versteht, wird diese Datei im \texttt{.jar}-Archiv ausgeliefert.
+Ich habe den Debugger so konstruiert, dass er prinzipiell für jeden beliebigen \ac genutzt werden kann. Allerdings habe ich den Debugger nur mit dem \gls{ijvm}-Assembler getestet, da der Debugger in der Praxis wohl vorwiegend mit dem \gls{ijvm}-Assembler genutzt wird.
 
-Möchte der Benutzer diese Datei anpassen genügt es, die neue Version der Datei im Verzeichnis \texttt{conf/} abzulegen; durch das Startskript wird sie dann auf dem Klassenpfad vor der entsprechenden Datei im \texttt{.jar}-Archiv geladen und ersetzt diese somit.
+Um den \ac disassemblieren zu können, gibt es eine Konfigurationsdatei -- die \texttt{ijvm.conf}. Damit der Debugger einen gewissen Standardsatz an \gls{ijvm}-Befehlen versteht, wird diese Datei in der \datei{jar} des Debuggers mit ausgeliefert.
 
-Die Datei ist zeilenweise zu lesen, wobei eine Zeile nach folgendem Format aufgebaut ist.
+Möchte der Benutzer die Datei \texttt{ijvm.conf} anpassen, genügt es, die Datei im Verzeichnis \texttt{conf/} abzulegen. Durch das Startskript wird sie dann auf den Klassenpfad geladen; vor der internen \texttt{ijvm.conf}-Datei in der \datei{jar} und ersetzt diese somit.
+
+Die Datei \texttt{ijvm.conf} ist zeilenweise zu lesen, wobei eine Zeile nach folgendem Format aufgebaut ist:\notiz{Beispiel!?}
 
 \setlength{\grammarparsep}{3pt plus 1pt minus 1pt}
 \setlength{\grammarindent}{10em} % increase separation between LHS/RHS 
@@ -101,23 +120,19 @@ Die Datei ist zeilenweise zu lesen, wobei eine Zeile nach folgendem Format aufge
 
 \section{Lokalisierung}
 \seclbl{lokalisierung}
-Die Ausgaben des \md wurden in Englisch geschrieben -- weitere Sprachen können leicht über das Verzeichnis \texttt{conf/lang/} hinzugefügt werden.
+Der Debugger wurde in Englisch geschrieben -- weitere Sprachen können über das Verzeichnis \texttt{conf/lang/} hinzugefügt werden.
 
-In diesem Verzeichnis liegen verschiedene \datei{xml}, die dazu dienen, dem Benutzer Ausgaben in seiner Landessprache anzuzeigen. Die Sprache, die der Benutzer angezeigt bekommt, hängt von der Locale-Einstellung des Computers ab.
+In diesem Verzeichnis liegen verschiedene \datei{xml}en, die dazu dienen, dem Benutzer Ausgaben in seiner Sprache anzuzeigen. Die Sprache, die der Benutzer angezeigt bekommt, hängt vom \emph{Locale} (siehe dazu ausführlich \cite{Oracle2010Loc}) der \gls{jvm} ab.
 
-Der \md sucht dann für diese Sprache folgende vier Dateien, die Key/Value-Paare für die Textkonstanten enthalten:
+Der Debugger sucht für diese Sprache folgende vier Dateien, die Schlüsselwert-Paare für die Textkonstanten enthalten:
 \begin{description}
-\item[text_lang_CT_var1.xml] wobei \emph{lang} die Sprache, \emph{CT} die Länderkennung und \emph{var1} die Variante ist, die vom Locale gegeben sind. Diese Datei ist die spezifischste und wird zuerst geladen (sofern sie existiert). Schlüssel, die hier nicht gefunden werden, werden in den folgenden Dateien gesucht.
-\item[text_lang_CT.xml]
-\item[text_lang.xml]
-\item[text.xml] die Basis-Datei für die Internationalisierung. Wenn ein Schlüssel bisher noch nicht gefunden wurde oder die anderen Dateien nicht existieren, dann wird er in dieser Datei gesucht.
+\item[text_lang_CT_var1.xml] wobei \textbf{lang} die Sprache, \textbf{CT} die Länderkennung und \textbf{var1} die Variante ist, die vom \emph{Locale} gegeben sind. Diese Datei ist die spezifischste und wird sofern sie existiert zuerst geladen. Schlüssel, die hier nicht gefunden werden, werden in den folgenden Dateien gesucht.
+\item[text_lang_CT.xml] in der Praxis existieren selten Informationen über die Variante des \emph{Locale}, daher kann \texttt{_var1} weggelassen werden.
+\item[text_lang.xml] häufig existieren zwar verschiedene Länderkennungen für die gleiche Sprache, aber meist unterscheiden sich die Übersetzungsdateien für die Länderkennungen nicht. Daher werden in der Praxis viele Dateien in dieser Form angelegt werden.
+\item[text.xml] die Basis-Datei für die Lokalisierung. Wenn ein Schlüssel in den anderen Dateien nicht gefunden wurde oder die anderen Dateien nicht existieren, dann wird er in dieser Datei gesucht.
 \end{description}
 
-Der Aufbau dieser vier Dateien ist hierarschich, ein Schlüssel, der in der spezifischsten Datei gefunden wurde, wird aus den anderen Dateien nicht mehr ausgewertet. Anhand eines Beispiels soll diese Funktionalität genauer erläutert werden:
-
-Gegeben seien die drei Dateien aus \lstref{locale-file-de-de}, \lstref{locale-file-de} und \lstref{locale-file}. \lstref{locale-result} zeigt das Ergebnis nach der Auswertung dieser drei Dateien. Es ist zu sehen, wie die Einträge sich überschreiben -- ein Benutzer mit englischem Locale würde in diesem Beispiel den Eintrag für \texttt{border2} nicht erhalten und hätte dafür keinen definierten Wert.
-
-Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig verändert werden.
+Wie ich gerade angedeutet habe, ist der Aufbau dieser vier Dateien hierarschich: ein Schlüssel, der in der spezifischsten Datei gefunden wurde, wird aus den anderen Dateien nicht mehr ausgewertet.
 
 \begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text_de_DE.xml}},label=\lstlbl{locale-file-de-de}]
 <?xml version="1.0" encoding="UTF-8"?>
@@ -128,6 +143,8 @@ Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig veränder
 </properties>
 \end{lstlisting}
 
+Anhand eines Beispiels möchte ich dieses Verhalten erläutern: Gegeben seien die drei Dateien, die in \lstref{locale-file-de-de}, \lstref{locale-file-de} und \lstref{locale-file} aufgeführt sind. Die Datei der Form \texttt{text_lang_CT_var1.xml} ist in diesem Beispiel nicht vorhanden.
+
 \begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text_de.xml}},label=\lstlbl{locale-file-de}]
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
@@ -136,6 +153,8 @@ Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig veränder
 	<entry key="version">Micro-Debug - Version {0}</entry>
 </properties>
 \end{lstlisting}
+
+\lstref{locale-result} zeigt das Ergebnis nach der Auswertung dieser drei Dateien am Beispiel des deutschen \emph{Locale}. Es ist zu sehen, wie die Einträge sich überschreiben -- ein Benutzer mit englischem Locale würde in diesem Beispiel den Eintrag für \texttt{border2} nicht erhalten und hätte dafür keinen definierten Wert.
 
 \begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text.xml}},label=\lstlbl{locale-file}]
 <?xml version="1.0" encoding="UTF-8"?>
@@ -146,6 +165,8 @@ Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig veränder
 	<entry key="border">----------------------------------------</entry>
 </properties>
 \end{lstlisting}
+
+Die Reihenfolge der Schlüsselwert-Paare ist willkürlich und hat für den Programmverlauf keine Auswirkung.
 
 \begin{lstlisting}[language=XML,caption={Beispiel für Ergebnis nach Verarbeitung der Lokalisierungsdateien},label=\lstlbl{locale-result}]
 <?xml version="1.0" encoding="UTF-8"?>
@@ -158,12 +179,12 @@ Die Reihenfolge der Key/Value-Paare ist willkürlich und kann beliebig veränder
 </properties>
 \end{lstlisting}
 
-Dieses System ermöglicht das einfache Hinzufügen neuer Sprachen -- dieser Vorgang ist nicht für den Benutzer vorgesehen, aber prinzipiell kann er in diesen Dateien Anpassungen vornehmen und sich dadurch die Ausgaben an seine Bedürfnisse anpassen.
+Dieses System ermöglicht das einfache Hinzufügen neuer Sprachen. Dieser Vorgang ist zwar bisher nicht für den Benutzer vorgesehen, aber prinzipiell kann er in diesen Dateien Anpassungen vornehmen und sich dadurch die Ausgaben des Debuggers an seine Bedürfnisse anpassen. Auch ist denkbar, dass Übersetzungen des Debuggers von Dritten angeboten wird -- der Benutzer kann dann die Sprachdateien für seine Sprache herunterladen und in dem Verzeichnis \texttt{conf/lang/} ablegen.
 
-Im Gegensatz zur Konfigurationsdatei gibt es hier allerdings kein Fallback, sodass fehlende Werte mit einem Fehlertext belegt werden. Die Übersetzungsdateien bedürfen nach einem Update daher womöglich größerer Überarbeitungen, wenn der Benutzer seine Anpassungen behalten möchte.
+Im Gegensatz zur Konfigurationsdatei gibt es bei den Lokalisierungsdateien keinen individuellen Fallback für jeden Schlüssel, sodass fehlende Werte mit einem Fehlertext belegt werden. Die Lokalisierungsdateien sind daher auch von einem Update des Debuggers betroffen -- mögliche Änderungen des Benutzers gehen verloren oder müssen in die neuen Dateien übernommen werden.
 
-Die Werte können Platzhalter enthalten. Platzhalter gelten nur für ein bestimmtes Key/Value-Paar und sind von null beginnend nummeriert in der Form \texttt{{0}} zu verwenden. Der Inhalt mit dem der Platzhalter gefüllt wird kann in den Kommentaren in der Datei nachgelesen werden.
+Einige Einträge in den Lokalisierungsdateien können Platzhalter enthalten. Platzhalter gelten nur für ein bestimmtes Schlüsselwert-Paar und sind von $0$ aufsteigend nummeriert in der Form \texttt{{0}} zu verwenden. Der Inhalt mit dem der jeweilige Platzhalter gefüllt wird kann in den Kommentaren in der Datei nachgelesen werden.
 
-Zusätzlich zu den \texttt{text...xml}-Dateien gibt es bei der grafischen Oberfläche des \md auch \texttt{text-gui...xml}-Dateien, die die Textkonstanten für die grafische Oberfläche enthalten.
+Zusätzlich zu den \texttt{text...xml}-Dateien gibt es bei der \mdg \texttt{text-gui...xml}-Dateien. Die Lokalisierungsdateien des \md und der \mdg sind also voneinander unabhängig.
 
-Die Log-Ausgaben sind immer auf Englisch und können über die \datei{xml} nicht verändert werden.
+Die Log-Ausgaben aus \secref{logs} sind immer auf Englisch und können über die \datei{xml}en nicht verändert werden.

@@ -27,6 +27,7 @@ In der Klasse \klasse{MainFrame} werden drei erwähnenswerte Objekte erzeugt: di
 Diese \emph{Actions} werden dann noch in der \klasse{MainMenuBar} untergebracht und mit Tastenkombinationen versehen, die der Benutzer konfiguriert hat.
 
 \subsection{Verarbeitung von Benutzeraktionen}
+\seclbl{verarbeitung-benutzeraktionen-threads}
 Nachdem die Oberfläche aufgebaut ist, sind die \emph{Actions} der Ausgangspunkt von weiteren Code-Ausführungen. Bis der Benutzer die \texttt{EXIT}-Aktion ausführt oder das Fenster schließt, läuft die \mdg.
 
 In der Klasse \klasse{ActionProvider} werden die Referenzen auf die \emph{Actions} gehalten und unter den Schlüsseln abgelegt, die die Enumeration \klasse{Actions} bietet.
