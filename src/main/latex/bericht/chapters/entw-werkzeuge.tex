@@ -1,62 +1,53 @@
 \chapter{Werkzeuge}
 \chplbl{werkzeuge}
-Mit diesem Teil der Arbeit möchte ich besonders eine Frage beantworten: Wie sind die bisher vorgestellten Funktionen des Debuggers implementiert? Mein Ziel ist, die Implementierung und Struktur des Debuggers so nachvollziehbar zu beschreiben, dass Sie in der Lage sind den Debugger weiterzuentwickeln.
+In diesem Teil der Arbeit möchte ich besonders eine Frage beantworten: Wie sind die bisher vorgestellten Funktionen des Debuggers implementiert? Mein Ziel ist, die Implementierung und Struktur des Debuggers so nachvollziehbar zu beschreiben, dass Leser mit Programmiererfahrung in der Lage sind, den Debugger weiterzuentwickeln.
 
-Der Debugger soll auch nach Ende dieser Arbeit weiterentwickelt werden können. Daher stelle ich in diesem Kapitel vor, welche Werkzeuge ich zur Entwicklung des Debuggers nutze und wie Sie diese zur Mitarbeit nutzen können. Dies ist nicht als Bedienungsanleitung zu verstehen. Ich bin der Ansicht, dass es das Verständnis der Implementierung und meiner Arbeit steigert, wenn geklärt ist, welche Werkzeuge ich wie nutze.
+Der Debugger soll auch nach Ende dieser Arbeit weiterentwickelt werden können. Daher stelle ich in diesem Kapitel vor, welche Werkzeuge ich zur Entwicklung des Debuggers nutze und wie diese zur Mitarbeit genutzt werden können. Dies ist nicht als Bedienungsanleitung zu verstehen! Ich bin aber der Ansicht, dass es das Verständnis für die Implementierung und meine Arbeit steigert, wenn geklärt ist, welche Werkzeuge ich wie nutze.
 
 \section{Versionskontrollsystem}
-Das Projekt ist bei github % TODO Referenz
-gehostet und ist somit mit \gls{git} versioniert.
+Die Projekte \md und \mdg sind bei \name{GitHub} (siehe \cite{Roesch2012,Roesch2012gui}) gehostet und sind somit mit \gls{git} versioniert.
 
-\gls{git} % Quelle: http://git-scm.com/about 04.12.2011 14:00
-ist:
+\gls{git} wird beispielsweise in \cite{Ohne1} beschrieben und ist demnach:
 \begin{description}
-\item[effizient] Auch bei großen Projekten zeigen Vergleiche, %TODO Beleg
-dass \gls{git} insgesamt schneller ist, als andere Versionskontrollsysteme.
-\item[verteilt] Im Gegensatz zu beispielsweise CVS % TODO CVS
-ist \gls{git} ein verteiltes Versionskontrollsystem: Jeder Entwickler erhält ein lokales Repository %TODO repository
-und kann damit arbeiten. Es wird kein zentraler Server benötigt, alle Funktionen des Systems und Commit-Informationen stehen lokal zur Verfügung.
-\item[sicher] %TODO nochmal genau nachschauen
-Bei \gls{git} werden viele Hash-Summen gebildet und sobald ein Commit veröffentlich wurde, ist es nicht möglich diesen zu manipulieren, da dies die Hash-Summe %TODo welche genau?
-verändern würde.
+\item[effizient] Auch bei großen Projekten zeigen Vergleiche, dass \gls{git} insgesamt schneller ist, als beispielsweise \gls{svn}.
+\item[verteilt] Jeder Entwickler erhält ein lokales Repository und kann damit arbeiten. Es wird kein zentraler Server benötigt, alle Funktionen des Systems und alle Versionen stehen lokal zur Verfügung.
+\item[sicher] Bei \gls{git} wird jeder Commit gehasht. Es ist praktisch nicht möglich einen Commit zu manipulieren, da dies die Hash-Summe verändern würde. Auch wenn theoretisch Kollisionen der Hash-Summe möglich sind, ist bisher eine solche Kollision noch nicht konstruierbar -- bei einem Code-Projekt müsste eine solche Kollision zudem kompilierbarer Code sein, was als hinreichend unwahrscheinlich gilt.
 \end{description}
 
-Ich habe \gls{git} gewählt, da dadurch später leicht forks %TODO fork
-gebildet werden können und das Projekt für andere Arbeiten weitergeführt werden kann. Das dezentrale Entwickeln mit \gls{git} ermöglicht es zusätzlich, dass später viele Entwickler das Projekt weiterentwickeln.
+Ich habe \gls{git} gewählt, da dadurch später leicht \emph{forks}\footnote{Zu deutsch Abspaltung, ist ein Entwicklungszweig, nachdem sich ein Software-Projekt in zwei oder mehr Teile geteilt hat. Diese Teile werden meist unabhängig voneinander weiterentwickelt. Im täglichen Arbeitsablauf mit \gls{git} ist ein fork aber auch die Möglichkeit Neuerungen für ein Projekt zu Entwickeln und den entstandenen Entwicklungszeig nach Fertigstellung der Neuerung in das Ursprungsprojekt einzupflegen.} gebildet werden können und der Debugger durch Außenstehende weiterentwickelt werden kann. Das dezentrale Entwickeln mit \gls{git} ermöglicht es zusätzlich, dass später viele Entwickler am Debugger mitentwickeln.
 
-Ich möchte nun kurz erläutern, wie man mit \gls{git} den Quelltext der Arbeit auscheckt. Zusätzlich möchte ich erläutern, wie Sie \gls{git} unterstützt, wenn Sie das Projekt weiterentwickeln möchten. Dadurch möchte ich keine umfassende Bedienungsanleitung für \gls{git} geben, sondern Ihnen die alltägliche Arbeit mit dem Werkzeug erklären.
+Wie checkt man mit \gls{git} den Quelltext der Arbeit aus? Wie unterstützt mich \gls{git}, wenn ich das Projekt weiterentwickeln möchte? Im Folgenden möchte ich auf diese Fragen antworten. Ich möchte keine umfassende Bedienungsanleitung für \gls{git} geben, sondern die Grundlagen für die alltägliche Arbeit mit \gls{git} vermitteln. \gls{git} am \md erklären, für \mdg ist das Vorgehen analog, in den meisten Fällen muss lediglich ein \texttt{-gui} eingefügt werden.
 
 \subsection{Code auschecken}
 \seclbl{git-checkout}
-Die Adresse des öffentlichen Repositories %TODO genitiv repository
-lautet:
-\code{https://github.com/croesch/micro-debug.git}
+Die Adresse des öffentlichen Repositorys lautet: \code{https://github.com/croesch/micro-debug.git}
 
-Das Auschecken des Repositories %TODO hier auch
-erzeugt ein lokales Repository im Verzeichnis \emph{micro-debug}; mit folgenden Befehlen können Sie das Repository auschecken und anschließend in das erzeugte Verzeichnis wechseln:
-\begin{verbatim}
-$ git clone git://github.com/croesch/micro-debug.git
-$ cd micro-debug
-\end{verbatim}
+\begin{lstlisting}[language=sh,caption={\md mit git auschecken},label=\lstlbl{git-auschecken}]
+git clone git://github.com/croesch/micro-debug.git
+cd micro-debug(*@\srclbl{git-auschecken-cd}@*)
+\end{lstlisting}
 
-Im Gegensatz zu SVN %TODO svn
-erstellt \gls{git} nur im Wurzelverzeichnis eines Projektes einen Ordner \emph{.git}, dieser enthält alle Informationen über das Repository. Direkt nach dem Klonen eines anderen Repositories enthält es beispielsweise einen Verweis (\emph{origin}) auf dieses Repository, um Aktualisierungen zu erhalten.
+Durch das Auschecken des Repositorys wird im aktuellen Verzeichnis ein Verzeichnis \texttt{micro-debug} angelegt. In diesem Verzeichnis wird zum einen der Inhalt des Repositorys abgelegt, als auch eine Kopie des Repositorys -- im Verzeichnis \texttt{micro-debug/.git}. \lstref{git-auschecken} zeigt, welcher Befehl zum Auschecken des Repositorys verwendet wird -- in \srcref{git-auschecken-cd} wird in das erzeugte Verzeichnis gewechselt, das Arbeitsverzeichnis.
 
-Im Laufe der Zeit wird das öffentliche Repository aktuellere Commits enthalten, als Ihr lokales Repository. Aktualisiert man mit \gls{git} das Repository,
-\begin{verbatim}
-$ git pull origin
-\end{verbatim}
-so werden die neuen Commits heruntergeladen und direkt in den aktuell ausgecheckten Branch gemergt. %TODO denglisch
+Im Gegensatz zu \gls{svn} erstellt \gls{git} nur im Wurzelverzeichnis eines Projekts ein Verzeichnis \texttt{.git}. Direkt nach dem Klonen (bei \gls{git} für Auschecken) eines anderen Repositorys enthält es beispielsweise einen Verweis (\emph{origin}) auf dieses Repository. Sobald das geklonte Repository neuere Commits enthält, kann dieser Verweis genutzt werden, um wie in \lstref{git-pull} die neuen Commits in das lokale Repository zu übernehmen.
 
-Dieses Vorgehen kann manchmal unerwünscht sein, so dass man zunächst das Repository aktualisieren möchte und später selbst mergen möchte:
-\begin{verbatim}
-$ git fetch origin
-$ git merge origin/master
-\end{verbatim}
-Mit \emph{fetch} werden die Aktualisierungen zunächst nur im \emph{.git}-Verzeichnis gespeichert. Erst \emph{merge} verändert die lokalen Dateien im aktuellen Branch.
+\begin{lstlisting}[language=sh,caption={Mit git \emph{pull} auf Originalrepository ausführen},label=\lstlbl{git-pull}]
+git pull origin
+\end{lstlisting}
+
+Mit diesem Befehl werden die neuen Commits heruntergeladen und direkt in den aktuellen Branch eingefügt.
+
+Dieses Vorgehen ist aufgrund der Änderung des aktuellen Branches häufig unerwünscht, daher kann man den Befehl aus \lstref{git-pull} wie in \lstref{git-fetch-merge} in zwei Befehle aufteilen, um zu regeln, ob und welcher Branch die Neuerungen erhält.
+
+\begin{lstlisting}[language=sh,caption={\emph{pull} in zwei Befehlen manuell ausführen},label=\lstlbl{git-fetch-merge}]
+git fetch origin(*@\srclbl{git-fetch-fetch}@*)
+git merge origin/master(*@\srclbl{git-fetch-merge}@*)
+\end{lstlisting}
+
+Mit \emph{fetch} in \srcref{git-fetch-fetch} werden die Aktualisierungen heruntergeladen und zunächst im \texttt{.git}-Verzeichnis gespeichert. Erst der Befehl \emph{merge} in \srcref{git-fetch-merge} verändert die lokalen Dateien im aktuellen Branch.
 
 \subsection{Code beitragen}
-Hat man ein lokales Repository ausgecheckt und möchte Codeänderungen dem Projekt beitragen, gibt es zwei Möglichkeiten: Man benutzt den Standard-Branch oder so genannte Feature-Branches.
+Hat man ein Repository geklont und möchte Codeänderungen dem Originalrepository zuführen, gibt es zwei Möglichkeiten: Man benutzt den Standard-Branch oder so genannte Feature-Branches.
 
 Den Standard-Branch zu nutzen, empfehle ich nur für die Entwicklung als Einzelperson. Entwickelt man alleine an einem Projekt, kann man veränderte Dateien wie folgt committen:
 \begin{verbatim}
