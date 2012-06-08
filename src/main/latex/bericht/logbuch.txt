@@ -299,3 +299,6 @@
 	- Kapitel Einleitung überarbeitet
 	- Kapitel Bedienung allgemein überarbeitet
 	- Kapitel Bedienung Konsole überarbeitet
+08.06.2012 (3 h)
+	- Kapitel Bedienung GUI überarbeitet
+	- Kapitel Werkzeuge angefangen zu überarbeiten
