@@ -1,30 +1,30 @@
 \chapter{Implementierung der GUI}
 \chplbl{gui}
-Nachdem wir nun ausführlich den \md betrachtet haben, möchte ich Dir nun vorstellen, wie die \mdg den \md nutzt und welche Klassen hier welche Rolle einnehmen. Ähnlich wie in \chpref{konsole} möchte ich im \secref{gui-ablauf} den Ablauf bei der Nutzung der \mdg vorstellen. In \secref{g-bibliotheken} möchte ich die verwendeten Bibliotheken vorstellen, die der Benutzer am Ende erhält und deren Bedeutung für die \mdg erläuetern. Am Ende dieses Kapitels möchte ich auch hier nochmal alle \packages aufführen und beschreiben, welche Funktionalität dahinter steckt und eventuell einzelne Klassen erwähnen.
+In diesem Kapitel möchte ich vorstellen, wie die \mdg den \md nutzt und welche Klassen hier welche Rolle einnehmen. Ähnlich wie in \chpref{konsole} möchte ich im \secref{gui-ablauf} die Komponenten anhand des Programmablaufs der \mdg vorstellen. In \secref{g-bibliotheken} möchte ich die verwendeten Bibliotheken vorstellen, die der Benutzer am Ende erhält und deren Bedeutung für die \mdg erläutern. Am Ende dieses Kapitels möchte ich auch hier nochmal alle \packages aufführen und beschreiben, welche Funktionalität dahinter steckt und eventuell einzelne Klassen erwähnen.
 
-Die \mdg ist ein eigenständiges Projekt und vom her ein Benutzer des \md. Alle Implementierungen der \mdg haben also keinerlei Auswirkung auf den \md, umgekehrt allerdings schon. Wie in \secref{gui-nutzung-konsole} beschrieben ist es daher möglich, dass bei vorliegender \mdg auch der \md genutzt werden kann.
+Die \mdg ist ein eigenständiges Projekt und vom Code her ein Benutzer des \md. Alle Implementierungen der \mdg haben also keinerlei Auswirkung auf den \md, umgekehrt allerdings schon. Wie in \secref{gui-nutzung-konsole} beschrieben ist es daher möglich, dass bei vorliegender \mdg auch der \md eigenständig genutzt werden kann.
 
-Im Unterschied zur Implementierung des \md befinden sich in der \mdg alle Klassen im \package \pck{com.github.croesch.micro_debug.gui} oder in \subpackages davon. Das verhindert, dass gleichnamige \packages oder Klassen zu Problemen führen. Außerdem ist je nach Paketierung die Struktur der paketierten \mdg übersichtlicher.
+Im Unterschied zur Implementierung des \md befinden sich in der \mdg alle Klassen im \package \pck{com.github.croesch.micro_debug.gui} oder in \subpackages davon. Das verhindert, dass gleichnamige \packages oder Klassen zwischen \md und \mdg zu Problemen führen. Außerdem ist je nach Paketierung die Struktur der paketierten \mdg übersichtlicher.
 
 \section{Programmablauf}
 \seclbl{gui-ablauf}
-Wie in \secref{k-ablauf} sehen wir uns gleich den Start der \mdg an und ich zeige, welche Klassen an welchen Aktionen beteiligt sind. Gelegentlich werde ich erwähnen, wo Zugriffe auf den \md stattfinden oder wann der Benutzer gefragt ist.
+Wie in \secref{k-ablauf} möchte ich zunächst den Start der \mdg betrachten und zeigen, welche Klassen an welchen Aktionen beteiligt sind. Gelegentlich werde ich erwähnen, wo Zugriffe auf den \md stattfinden oder wann der Benutzer gefragt ist.
 
 \subsection{Verarbeitung der Argumente}
 Analog zum \md gibt es auch in der \mdg eine Klasse \klasse{MicroDebug}, die die \texttt{main()}-Methode enthält. Allerdings ist es hier irrelevant, wie viele Argumente der Benutzer eingegeben hat, oder ob er überhaupt welche eingegeben hat.
 
-Die \mdg nutzt auch den Mechanismus der Klasse \klasse{AArgument}. Da die \mdg allerdings andere Argumente als der \md besitzt, müssen die neuen Argumente zunächste an der Klasse \klasse{AArgument} registriert werden. Die Argumente der \mdg findest Du im \package \pck{argument}; registriert werden diese in der Methode \texttt{createListOfPossibleArguments()} der Klasse \klasse{MicroDebug}.
+Die \mdg nutzt auch den Mechanismus der Klasse \klasse{AArgument}. Da die \mdg allerdings andere Argumente als der \md besitzt, müssen die neuen Argumente zunächste an der Klasse \klasse{AArgument} registriert werden. Die Argumente der \mdg sind im \package \pck{argument} zu finden; registriert werden diese in der Methode \texttt{createListOfPossibleArguments()} der Klasse \klasse{MicroDebug}.
 
-Die Argumente werden dann auch ausgeführt und geben jeweils einen Wahrheitswert zurück, ob der Debugger starten darf oder nicht.
+Nachdem die textuellen Argumente in Objekte vom Typ \klasse{AArgument} konvertiert wurden, werden diese ausgeführt und geben auch jeweils einen Wahrheitswert zurück, ob die \mdg starten darf oder nicht.
 
 \subsection{Aufbau der grafischen Oberfläche}
-Darf der Debugger starten, so wird eine Instanz der Klasse \klasse{Mic1Starter} erzeugt, die den Debugger starten kann. Zunächst erzeugt die Klasse jedoch das Startfenster, welches in der Klasse \klasse{StartFrame} definiert ist, und zeigt dieses an. Das Startfenster enthält einige Aktionsmöglichkeiten -- hat der Benutzer nun die richtigen Dateien ausgewählt und den Button zum Start gedrückt, wird an der Klasse \klasse{Mic1Starter} die Methode \texttt{create(String,String)} mit den zwei angegebenen Dateipfaden ausgeführt.
+Darf die \mdg starten, so wird eine Instanz der Klasse \klasse{Mic1Starter} erzeugt, die die \mdg starten kann. Zunächst erzeugt die Klasse jedoch das Startfenster aus \figref{start-frame-empty}, welches in der Klasse \klasse{StartFrame} definiert ist, und zeigt dieses an. Das Startfenster enthält einige Aktionsmöglichkeiten -- hat der Benutzer nun die richtigen Dateien ausgewählt und den Button zum Start gedrückt, wird an der Klasse \klasse{Mic1Starter} die Methode \texttt{create(String,String)} mit den zwei angegebenen Dateipfaden ausgeführt.
 
-Wie in \secref{k-aufbau-debugger} wird nun anhand dieser Dateipfade versucht die \mic zu erzeugen. Gelingt dies nicht, wird das Startfenster erneut gezeigt. Hat der Benutzer zwei korrekte Dateien angegeben, wird das Hauptfenster aufgebaut und angezeigt, was in der Klasse \klasse{MainFrame} definiert ist.
+Wie in \secref{k-aufbau-debugger} wird nun anhand dieser Dateipfade versucht die \mic zu erzeugen. Gelingt dies nicht, wird das Startfenster erneut gezeigt. Hat der Benutzer zwei korrekte Dateien angegeben, wird das Hauptfenster aus \figref{main-frame-onbegin} aufgebaut und angezeigt, was in der Klasse \klasse{MainFrame} definiert ist.
 
-In der Klasse \klasse{MainFrame} werden drei erwähnenswerte Objekte erzeugt: die \emph{View}, der \emph{Controller} und die \emph{Actions}. Die \emph{View} bildet die Oberfläche und ist zunächst in der Klasse \klasse{MainView} definiert, die wiederum weitere Klassen zur Darstellung der einzelnen Bereiche nutzt. Ein ähnliches Konzept nutzt der \emph{Controller}, der in der Klasse \klasse{MainController} definiert ist: Für die einzelnen kleinen \emph{Views} werden entsprechende \emph{Controller} erzeugt, die dadurch jeweils nur einen kleinen Aufgabenbereich erhalten. Das dritte Objekt ist von der Klasse \klasse{ActionProvider} und erzeugt die \emph{Actions}, die der Benutzer über die Oberfläche erreichen kann. Dieser \emph{ActionProvider} hält die Referenzen auf die \emph{Actions}, so dass nur dieses eine Objekt weitergereicht werden muss anstatt dutzender \emph{Actions}.
+In der Klasse \klasse{MainFrame} werden drei erwähnenswerte Objekte erzeugt: die \emph{View}, der \emph{Controller} und die \emph{Actions}. Die \emph{View} bildet die Oberfläche und ist zunächst in der Klasse \klasse{MainView} definiert, die wiederum weitere Klassen zur Darstellung der einzelnen Bereiche nutzt. Ein ähnliches Konzept nutzt der \emph{Controller}, der in der Klasse \klasse{MainController} definiert ist: Für die einzelnen kleinen \emph{Views} werden entsprechende \emph{Controller} erzeugt, die dadurch jeweils nur einen kleinen Aufgabenbereich erhalten. Das dritte Objekt ist von der Klasse \klasse{ActionProvider} und erzeugt die \emph{Actions}, die der Benutzer über die Oberfläche ausführen kann. Dieser \emph{ActionProvider} hält die Referenzen auf die \emph{Actions}, so dass nur dieses eine Objekt weitergereicht werden muss anstatt dutzender \emph{Actions}.
 
-Diese \emph{Actions} werden dann noch in der \klasse{MainMenuBar} untergebracht und mit Tastenkombinationen versehen, die der Benutzer konfiguriert hat.
+Diese \emph{Actions} werden dann in der \klasse{MainMenuBar} in Menüeinträgen visualisiert und mit Tastenkombinationen versehen, die der Benutzer konfigurieren kann.
 
 \subsection{Verarbeitung von Benutzeraktionen}
 \seclbl{verarbeitung-benutzeraktionen-threads}
@@ -32,35 +32,37 @@ Nachdem die Oberfläche aufgebaut ist, sind die \emph{Actions} der Ausgangspunkt
 
 In der Klasse \klasse{ActionProvider} werden die Referenzen auf die \emph{Actions} gehalten und unter den Schlüsseln abgelegt, die die Enumeration \klasse{Actions} bietet.
 
-Bis auf einige Ausnahmen werden die ganzen \emph{Actions} auf dem \gls{edt} ausgeführt. Bei einigen \emph{Actions} wäre dies von Nachteil: spätestens wenn die \mic eine Eingabe erwarten würde, käme es zu einem Deadlock\notiz{Deadlock erklärn!?}. Denn die Eingabe für die \mic wird in der \mdg über ein Textfeld ausgeführt. Liest die \mic nun auf dem \gls{edt} ein Zeichen aus diesem Textfeld, obwohl dort noch keines eingegeben wurde, dann blockiert der aktuelle Thread (in diesem Fall der \gls{edt}) bis der Benutzer eine Eingabe gemacht hat. Eine Eingabe kann aber nur über den \gls{edt} ausgeführt werden, der noch blockiert ist -- ein Deadlock.
+Bis auf einige Ausnahmen werden die verschiedenen \emph{Actions} auf dem \gls{edt} ausgeführt. Bei einigen \emph{Actions} wäre dies von Nachteil: spätestens wenn die \mic eine Eingabe erwarten würde, käme es zu einem Deadlock\notiz{Deadlock erklärn!?}. Denn die Eingabe für die \mic wird in der \mdg über ein Textfeld ausgeführt. Liest die \mic nun auf dem \gls{edt} ein Zeichen aus diesem Textfeld, obwohl dort noch keines eingegeben wurde, dann blockiert der aktuelle Thread (in diesem Fall der \gls{edt}) bis der Benutzer eine Eingabe gemacht hat. Eine Eingabe kann aber nur über den \gls{edt} ausgeführt werden, der noch blockiert ist -- ein Deadlock.
 
 Aus diesem Grund gibt es die Klasse \klasse{AbstractExecuteOnWorkerThreadAction}. Jede \emph{Action}, die davon ableitet, wird nicht auf dem \gls{edt} ausgeführt sondern auf einer Instanz der Klasse \klasse{WorkerThread}. Dieser Thread läuft und arbeitet kontinuierlich Objekte der Klasse \klasse{Runnable} ab und wird hier genutzt, um solche Deadlocks zu umgehen.
 
 \subsection{Konfiguration und Lokalisierung}
 Das Lesen der Konfiguration und der Textkonstanten funktioniert analog zu den Ausführungen in \secref{k-konfiguration} und \secref{k-lokalisierung}.
 
-Allerdings nutzt die \mdg hier eigene Enumerations-Klassen: die Klasse \klasse{GuiText} für die Textkonstanten und die Klassen im \package \pck{settings} zum Verarbeiten der Konfiguration. Somit können Komponenten der \mdg sowohl auf die Konfiguration des \md als auch der \mdg zugreifen und auch auf Textkonstanten aus beiden Projekten.
+Allerdings nutzt die \mdg eigene Enumerations-Klassen: die Klasse \klasse{GuiText} für die Textkonstanten und die Klassen im \package \pck{settings} zum Verarbeiten der Konfiguration. Somit können Komponenten der \mdg sowohl auf die Konfiguration des \md als auch der \mdg zugreifen und auch auf Textkonstanten aus beiden Projekten.
 
-Wie in \secref{lokalisierung} bereits erwähnt, nutzt die \mdg zur Lokalisierung einen eigene Datei-Hierarchie: Alle \datei{xml}en, die mit \texttt{text-gui} beginnen, enthalten Textkonstanten für die \mdg. Bei der Konfiguration wird allerdings die selbe Datei verwendet, die der \md auch nutzt. Das hat für den Benutzer den Vorteil, dass er nur eine Datei zu pflegen hat.
+Wie in \secref{lokalisierung} bereits erwähnt, nutzt die \mdg zur Lokalisierung eine eigene Datei-Hierarchie: Alle \datei{xml}en, die mit \texttt{text-gui} beginnen, enthalten Textkonstanten für die \mdg. Bei der Konfiguration wird allerdings die selbe Datei verwendet, die der \md auch nutzt. Das hat für den Benutzer den Vorteil, dass er nur eine Datei zu pflegen hat.
 
-Für die Pflege des Projekts \mdg bedeutet dies aber, dass sowohl die \datei{xml}en, die nur mit \texttt{text} beginnen, als auch die Konfigurationsoptionen des \md aktualisiert werden müssen, wenn die Version des benutzten \md geändert wird. Da die Projekte aber derzeit beide zusammen entwickelt werden, ist dies noch kein Problem.
+Für die Pflege des Projekts \mdg bedeutet dies aber, dass sowohl die \datei{xml}en, die nur mit \texttt{text} beginnen, als auch die Konfigurationsoptionen des \md in der Datei \texttt{micro-debug.properties} aktualisiert werden müssen, wenn die Version des benutzten \md geändert wird. Denn diese Dateien werden im Verzeichnis \texttt{java/main/ressources/} gepflegt und sind eigenständig, das heißt, sie werden nicht automatisch aktualisiert, wenn sich die entsprechenden Dateien im \md ändern. Da der \md und die \mdg aber derzeit beide zusammen entwickelt werden, ist dies noch kein Problem.
 
 \section{Bibliotheken}
 \seclbl{g-bibliotheken}
 Wie gerade angemerkt, wird der \md von der \mdg benutzt. Der Code des \md muss also der \mdg vorliegen; derzeit wird der \md der \mdg als \datei{jar} übergeben und dem Klassenpfad hinzugefügt. Dies ermöglicht es dem Benutzer, die verwendete Version des \md auszutauschen.
 
-Die \mdg enthält nur die grafische Oberfläche, das komplette Wissen über die \mic ist in der Bibliothek -- dem \md -- enthalten. Diese Bibliothek ist also sehr wichtig und in der Regel nicht vorgesehen, um durch neuere Versionen ersetzt zu werden.
+Die \mdg enthält nur die \gls{gui}, das komplette Wissen über die \mic ist in der Bibliothek -- dem \md -- enthalten. Diese Bibliothek ist also sehr wichtig und in der Regel nicht vorgesehen, um vom Benutzer durch neuere Versionen ersetzt zu werden.
 
-Eine weitere Bibliothek, die der Benutzer erhält, ist das miglayout\notiz{Referenz und Befehl}. Diese Bibliothek wird benötigt, um die Oberflächenelemente zu positionieren. Das miglayout bietet eine komfortable Schnittstelle, für das Layout von Komponenten.
+Eine weitere Bibliothek, die der Benutzer erhält, ist das miglayout (siehe dazu ausführlich \cite{Mig2011}). Diese Bibliothek wird benötigt, um die Oberflächenelemente zu positionieren. Das miglayout bietet eine komfortable und mächtige Schnittstelle, um Komponenten zu positionieren.
 
-Die Bibliothek miglayout wird zwar auch zwingend benötigt, kann aber durchaus durch neuere Versionen ersetzt werden. Auch wenn hier prinzipiell das Risiko der Inkompatibilität zu künftigen Versionen besteht, ist das Risiko hier geringer, da nur sehr wenige Schnittstellen genutzt werden.
+Die Bibliothek miglayout wird zwar auch zwingend benötigt, kann aber durchaus durch neuere Versionen ersetzt werden. Auch wenn prinzipiell das Risiko der Inkompatibilität zu künftigen Versionen besteht, ist das Risiko hier geringer, da nur sehr wenige Schnittstellen genutzt werden.
 
-An dieser Stelle möchte ich auch das Testframework \gls{fest} erwähnen: Die dazugehörigen Bibliotheken werden zwar nicht an den Benutzer ausgeliefert, aber werden zur Entwicklung benötigt. Beim \md wird dieses Framework auch schon verwendet, allerdings nur als andere \gls{api} anstatt \gls{junit}~4. Bei der \mdg wird \gls{fest} genutzt, um \gls{gui}-Tests zu schreiben.
+An dieser Stelle möchte ich auch das Testframework \gls{fest} erwähnen: Die dazugehörigen Bibliotheken werden zwar nicht an den Benutzer ausgeliefert, werden aber zur Entwicklung benötigt. Beim \md wird dieses Framework auch schon verwendet, allerdings nur um eine flexiblere \gls{api} als \gls{junit}~4 nutzen zu können. Bei der \mdg wird \gls{fest} genutzt, um \gls{gui}-Tests zu schreiben.
 
-Die \gls{gui}-Tests laufen in der Regel stabil, allerdings neigen sie häufiger zum Fehlschlagen, ohne tatsächlichen Fehler in der \gls{aut} oder dem Test selbst. Daher solltest Du beim Ausführen der Tests damit rechnen, dass gelegentlich der ein oder andere \gls{gui}-Test fehlschlägt. \gls{fest}-Tests\notiz{Oder hier Verweis auf Bericht?} die realen Resourcen deines Computers nutzen, kannst du diesen während die Tests laufen nicht benutzen, sonst schlagen die Tests fehl.
+Die \gls{gui}-Tests laufen in der Regel stabil, allerdings neigen sie häufiger zum Fehlschlagen, ohne tatsächlichen Fehler in der \gls{aut} oder dem Test selbst. Daher sollte beim Ausführen der Tests damit gerechnet werden, dass gelegentlich der ein oder andere \gls{gui}-Test fehlschlägt.
+
+Da \gls{fest}-Tests die realen Resourcen des Computers nutzen, kann dieser während die Tests laufen nicht benutzt werden, sonst schlagen die Tests fehl. Diese Eigenschaft verhindert außerdem, dass mehrere Tests parallel ausgeführt werden können -- die Tests würden sich gegenseitig behindern. \cite[Abschnitt~3.2]{Roesch2011fest}
 
 \section{\packages}
-Nun hast Du die wichtigsten Klassen der \mdg kennen gelernt. Damit Du aber später weißt, wo etwas implementiert ist, möchte ich auch hier nochmal alle \packages erwähnen und erklären, welche Funktionalität die darin enthaltenen Klassen erfüllen. Die \packages sind im Einzelnen:
+Ich habe nun die wichtigsten Klassen der \mdg vorgestellt. Um aber einen ausführlicheren Überblick über die \mdg zu bieten, möchte ich auch hier nochmal alle \packages erwähnen und erklären, welche Funktionalität die darin enthaltenen Klassen erfüllen. Die \packages sind im Einzelnen:
 
 \begin{description}
 \item[actions] enthält alle \emph{Actions}, die in der \mdg ausgeführt werden können. Hier ist auch die Klasse \klasse{AbstractExecuteOnWorkerThreadAction} enthalten, deren Unterklassen nicht auf dem \gls{edt} ausgeführt werden. In diesem \package gibt es noch ein \subpackage: \pck{api}, das enthält einige Interfaces, um zyklische Abhängigkeiten zu verhindern.
@@ -69,23 +71,27 @@ Nun hast Du die wichtigsten Klassen der \mdg kennen gelernt. Damit Du aber spät
 \item[components] enthält in den \subpackages alle Oberflächenelemente und das Hauptfenster -- die Klasse \klasse{MainFrame}.
 \item[components.about] enthält die Klasse \klasse{AboutFrame} und damit alle Komponenten, um den \emph{Über}-Dialog anzuzeigen.
 \item[components.api] enthält einige Interfaces, um zyklische Abhängigkeiten zu verhindern.
-\item[components.basic] ist ein sehr großes \package mit vielen Klassen. Diese haben aber selten eigene Logik sondern bilden Unterklassen der bekannten Swing-Komponenten, von denen dann alle Komponenten in der \mdg ableiten können. Diese Klassen haben beispielsweise erweiterte Konstruktoren, so dass jedes Oberflächenelement standardmäßig das \texttt{name}-Attribut gesetzt hat. Das \texttt{name}-Attribut ist für die automatisierten \gls{gui}-Tests wichtig.\notiz{Referenz auf Bericht?}
-\item[components.code] enthält die Komponenten, die zur Darstellung des (Mikro-)Assembler-Codes benötigt werden:
+\item[components.basic] ist ein sehr großes \package mit vielen Klassen. Diese haben aber selten eigene Logik sondern bilden Unterklassen der bekannten Swing-Komponenten, von denen dann alle Komponenten in der \mdg ableiten können.
+
+Diese Klassen haben beispielsweise erweiterte Konstruktoren, so dass jedes Oberflächenelement standardmäßig das \texttt{name}-Attribut gesetzt hat. Das \texttt{name}-Attribut ist für die automatisierten \gls{gui}-Tests wichtig.
+\item[components.code] enthält die Komponenten, die zur Darstellung des \ma und \ac benötigt werden:
   \begin{description}
-  \item[ACodeArea.java] eine abstrakte Klasse der Textkomponente, die den Code enthält. Hiervon leiten \klasse{MicroCodeArea} und \klasse{MacroCodeArea} ab, die das sind, was ihr Name vermuten lässt.
+  \item[ACodeArea.java] eine abstrakte Klasse der Textkomponente, die den Code enthält. Hiervon leiten \klasse{MicroCodeArea} und \klasse{MacroCodeArea} ab, deren Namen bereits ausdrücken, welche Aufgabe sie erfüllen -- den Code anzeigen.
   \item[ACodeFormatter.java] eine abstrakte Klasse, die für die Syntaxhervorhebung im Code verantwortlich ist. Auch hier gibt es zwei Ableitungen: \klasse{MicroCodeFormatter} und \klasse{MacroCodeFormatter}.
   \item[LineNumberLabel.java] die Komponente zur Darstellung der Zeilennummerierung.
   \item[Ruler.java] die Komponente zur Darstellung der Breakpoints.
   \end{description}
 \item[components.controller] enthält die Klasse \klasse{MainController} und die entsprechenden \emph{Controller} mit kleinerem Verantwortungsbereich, beispielsweise \klasse{RegisterController}. 
-\item[components.start] enthält die Komponenten, die vor der Klasse \klasse{MainFrame} aktiv sind: \klasse{Mic1Starter} und den \klasse{StartFrame}.
-\item[components.view] enthält die Klasse \klasse{MainView} und die entsprechenden \emph{Views}, die nur einen gewissen Teil darstellen, beispielsweise die \klasse{MicroCodeView}. Hier sind auch Komponenten, wie die \klasse{MainMenuBar} und \klasse{NumberStyleSwitcher} vorhanden.
-\item[debug] enthält die Klassen, die die Breakpoints behandeln. Hier gibt es eine zusätzliche Abstraktionsschicht zwischen der Klasse \klasse{BreakpointManager} aus dem \md und beispielsweise \klasse{Ruler}, die diese \emph{Handler} benutzt. Diese Schicht ist nötig, um auf die korrekten Zeilennummern zu schließen, das wird mit Hilfe der Klasse \klasse{LineNumberMapper} erreicht. Sie wird dazu genutzt, um zumindest für den Assembler-Code von den fortlaufenden Zeilennummern der Klasse \klasse{Ruler} auf die angezeigten Zeilennummern für den Benutzer zu schließen.
+\item[components.start] enthält die Komponenten, die im Programmablauf der \mdg vor der Klasse \klasse{MainFrame} aktiv sind: \klasse{Mic1Starter} und den \klasse{StartFrame}.
+\item[components.view] enthält die Klasse \klasse{MainView} und die entsprechenden \emph{Views}, die nur einen gewissen Teil darstellen, beispielsweise die \klasse{MicroCodeView}. Hier sind auch Komponenten, wie die \klasse{MainMenuBar} und \klasse{NumberStyleSwitcher} enthalten.
+\item[debug] enthält die Klassen, die die Breakpoints behandeln. Hier gibt es eine zusätzliche Abstraktionsschicht zwischen der Klasse \klasse{BreakpointManager} aus dem \md und beispielsweise \klasse{Ruler}, die diese \emph{Handler} benutzt. Diese Schicht ist nötig, um auf die korrekten Zeilennummern zu schließen, was mit Hilfe der Klasse \klasse{LineNumberMapper} erreicht wird.
 
-Zusätzlich gibt es die Klasse \klasse{MicroLineBreakpointHandler} und \klasse{MacroLineBreakpointHandler}, außer zur Korrektur der Zeilennummern werden diese genutzt, um die korrekten Methoden an der Klasse \klasse{BreakpointManager} aufzurufen.
+Die Klasse \klasse{LineNumberMapper} wird dazu genutzt, um zumindest für den \ac von den fortlaufenden Zeilennummern der Klasse \klasse{Ruler} auf die angezeigten Zeilennummern für den Benutzer schließen zu können.
+
+Zusätzlich gibt es die Klasse \klasse{MicroLineBreakpointHandler} und \klasse{MacroLineBreakpointHandler}, außer zur Korrektur der Zeilennummern werden diese genutzt, um die korrekten Methoden an der Klasse \klasse{BreakpointManager} aufzurufen, der die Informationen über gesetzte Breakpoints enthält und eine Klasse aus dem \md ist.
 \item[i18n] enthält die Klasse \klasse{GuiText}, die die Textkonstanten für die \mdg bereitstellt.
 \item[listener] enthält verschiedene \emph{Listener}, die in der \mdg genutzt werden.
 \item[settings] enthält Einstellungs-Enumerationen, die die Konfigurationsoptionen für die \mdg bereit stellen. Zusätzlich zu den aus dem \md bekannten Klassen \klasse{IntegerSettings} und \klasse{InternalSettings} gibt es nun auch eine Klasse \klasse{KeyStrokes}, die Tastenkombinationen aus der Konfiguration ausliest.
 \end{description}
 
-Im Gegensatz zum \md gibt es bei der \mdg keine wichtige Klasse, hier ist vielmehr das Zusammenspiel der verschiedenen Klassen wichtig zu verstehen. Am komplexesten ist dabei wahrscheinlich die Ausführung auf den zwei Threads, dem \gls{edt} und dem \emph{WorkerThread}. Aber auch die Darstellung des (Mikro-)Assembler-Codes und das Zusammenspiel zwischen Zeilennummern, Breakpoints, Zeilenhervorhebung und Code ist etwas komplexer.
+Im Gegensatz zum \md gibt es bei der \mdg keine wichtige Klasse, hier ist vielmehr das Zusammenspiel der verschiedenen Klassen wichtig zu verstehen. Am komplexesten ist dabei wahrscheinlich die Ausführung der \emph{Actions} auf den zwei Threads, dem \gls{edt} und dem \emph{WorkerThread}. Aber auch die Darstellung des \ma und \ac und das Zusammenspiel zwischen Zeilennummern, Breakpoints, Zeilenhervorhebung und Code ist etwas komplexer.
