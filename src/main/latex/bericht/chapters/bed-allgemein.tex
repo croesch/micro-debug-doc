@@ -132,7 +132,7 @@ Der Debugger sucht für diese Sprache folgende vier Dateien, die Schlüsselwert-
 \item[text.xml] die Basis-Datei für die Lokalisierung. Wenn ein Schlüssel in den anderen Dateien nicht gefunden wurde oder die anderen Dateien nicht existieren, dann wird er in dieser Datei gesucht.
 \end{description}
 
-Wie ich gerade angedeutet habe, ist der Aufbau dieser vier Dateien hierarschich: ein Schlüssel, der in der spezifischsten Datei gefunden wurde, wird aus den anderen Dateien nicht mehr ausgewertet.
+Wie ich gerade angedeutet habe, ist der Aufbau dieser vier Dateien hierarchisch: ein Schlüssel, der in der spezifischsten Datei gefunden wurde, wird aus den anderen Dateien nicht mehr ausgewertet.
 
 \begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text_de_DE.xml}},label=\lstlbl{locale-file-de-de}]
 <?xml version="1.0" encoding="UTF-8"?>
@@ -154,7 +154,7 @@ Anhand eines Beispiels möchte ich dieses Verhalten erläutern: Gegeben seien di
 </properties>
 \end{lstlisting}
 
-\lstref{locale-result} zeigt das Ergebnis nach der Auswertung dieser drei Dateien am Beispiel des deutschen \emph{Locale}. Es ist zu sehen, wie die Einträge sich überschreiben -- ein Benutzer mit englischem Locale würde in diesem Beispiel den Eintrag für \texttt{border2} nicht erhalten und hätte dafür keinen definierten Wert.
+\lstref{locale-result} zeigt das Ergebnis nach der Auswertung dieser drei Dateien am Beispiel des deutschen \emph{Locale}. Es ist zu sehen, wie die Einträge sich überschreiben -- ein Benutzer mit englischem \emph{Locale} würde in diesem Beispiel den Eintrag für \texttt{border2} nicht erhalten und hätte dafür keinen definierten Wert.
 
 \begin{lstlisting}[language=XML,caption={Beispiel für Datei \texttt{text.xml}},label=\lstlbl{locale-file}]
 <?xml version="1.0" encoding="UTF-8"?>
