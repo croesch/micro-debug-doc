@@ -18,196 +18,175 @@ Ich habe \gls{git} gewählt, da dadurch später leicht \emph{forks}\footnote{Zu 
 
 Wie checkt man mit \gls{git} den Quelltext der Arbeit aus? Wie unterstützt mich \gls{git}, wenn ich das Projekt weiterentwickeln möchte? Im Folgenden möchte ich auf diese Fragen antworten. Ich möchte keine umfassende Bedienungsanleitung für \gls{git} geben, sondern die Grundlagen für die alltägliche Arbeit mit \gls{git} vermitteln. \gls{git} am \md erklären, für \mdg ist das Vorgehen analog, in den meisten Fällen muss lediglich ein \texttt{-gui} eingefügt werden.
 
-\subsection{Code auschecken}
+\subsection{Repository klonen und Code auschecken}
 \seclbl{git-checkout}
 Die Adresse des öffentlichen Repositorys lautet: \code{https://github.com/croesch/micro-debug.git}
 
-\begin{lstlisting}[language=sh,caption={\md mit git auschecken},label=\lstlbl{git-auschecken}]
+\begin{lstlisting}[language=sh,caption={\md mit git klonen},label=\lstlbl{git-klonen}]
 git clone git://github.com/croesch/micro-debug.git
-cd micro-debug(*@\srclbl{git-auschecken-cd}@*)
+cd micro-debug(*@\srclbl{git-klonen-cd}@*)
 \end{lstlisting}
 
-Durch das Auschecken des Repositorys wird im aktuellen Verzeichnis ein Verzeichnis \texttt{micro-debug} angelegt. In diesem Verzeichnis wird zum einen der Inhalt des Repositorys abgelegt, als auch eine Kopie des Repositorys -- im Verzeichnis \texttt{micro-debug/.git}. \lstref{git-auschecken} zeigt, welcher Befehl zum Auschecken des Repositorys verwendet wird -- in \srcref{git-auschecken-cd} wird in das erzeugte Verzeichnis gewechselt, das Arbeitsverzeichnis.
+Da \gls{git} ein verteiltes Versionskontrollsystem ist, muss das entfernte Repository zunächst lokal angelegt werden -- das wird klonen genannt. Auschecken bezeichnet den Vorgang, den Inhalt aus dem lokalen Repository im Arbeitsverzeichnis zu realisieren, wo er bearbeitet werden kann.
 
-Im Gegensatz zu \gls{svn} erstellt \gls{git} nur im Wurzelverzeichnis eines Projekts ein Verzeichnis \texttt{.git}. Direkt nach dem Klonen (bei \gls{git} für Auschecken) eines anderen Repositorys enthält es beispielsweise einen Verweis (\emph{origin}) auf dieses Repository. Sobald das geklonte Repository neuere Commits enthält, kann dieser Verweis genutzt werden, um wie in \lstref{git-pull} die neuen Commits in das lokale Repository zu übernehmen.
+Klont man ein entferntes Repository, beispielsweise das Repository des \md, wird im aktuellen Verzeichnis ein Verzeichnis \texttt{micro-debug} angelegt. In diesem Verzeichnis wird standardmäßig die Kopie des entfernten Repositorys abgelegt -- im Verzeichnis \texttt{micro-debug/.git}. Außerdem wird der Inhalt des Repositorys ausgecheckt und befindet sich anschließend im Verzeichnis \texttt{micro-debug}. \lstref{git-klonen} zeigt, welcher Befehl zum Klonen (und implizit Auschecken) des \md-Repositorys verwendet wird -- in \srcref{git-klonen-cd} wird in das erzeugte Verzeichnis gewechselt, das Arbeitsverzeichnis.
+
+Im Gegensatz zu \gls{svn} erstellt \gls{git} nur im Wurzelverzeichnis eines Projekts ein Verzeichnis \texttt{.git}. Direkt nach dem Klonen eines anderen Repositorys enthält es beispielsweise einen Verweis (\emph{origin}) auf dieses Repository. Sobald das geklonte Repository neuere Commits enthält, kann dieser Verweis genutzt werden, um wie in \lstref{git-pull} die neuen Commits in das lokale Repository zu übernehmen.
 
 \begin{lstlisting}[language=sh,caption={Mit git \emph{pull} auf Originalrepository ausführen},label=\lstlbl{git-pull}]
 git pull origin
 \end{lstlisting}
 
-Mit diesem Befehl werden die neuen Commits heruntergeladen und direkt in den aktuellen Branch eingefügt.
+Mit dem Befehl \texttt{pull} werden die neuen Commits heruntergeladen, in das lokale Repository übernommen und ausgecheckt.
 
-Dieses Vorgehen ist aufgrund der Änderung des aktuellen Branches häufig unerwünscht, daher kann man den Befehl aus \lstref{git-pull} wie in \lstref{git-fetch-merge} in zwei Befehle aufteilen, um zu regeln, ob und welcher Branch die Neuerungen erhält.
+Dieses Vorgehen ist aufgrund der Änderung des aktuellen Arbeitsverzeichnisses häufig unerwünscht, daher kann man den Befehl aus \lstref{git-pull} wie in \lstref{git-fetch-merge} in zwei Befehle aufteilen, um zu regeln, ob und welcher Branch die Neuerungen erhält.
 
 \begin{lstlisting}[language=sh,caption={\emph{pull} in zwei Befehlen manuell ausführen},label=\lstlbl{git-fetch-merge}]
 git fetch origin(*@\srclbl{git-fetch-fetch}@*)
 git merge origin/master(*@\srclbl{git-fetch-merge}@*)
 \end{lstlisting}
 
-Mit \emph{fetch} in \srcref{git-fetch-fetch} werden die Aktualisierungen heruntergeladen und zunächst im \texttt{.git}-Verzeichnis gespeichert. Erst der Befehl \emph{merge} in \srcref{git-fetch-merge} verändert die lokalen Dateien im aktuellen Branch.
+Mit \emph{fetch} in \srcref{git-fetch-fetch} werden die Aktualisierungen heruntergeladen und zunächst im lokalen Repository gespeichert. Erst der Befehl \emph{merge} in \srcref{git-fetch-merge} verändert die Dateien im Arbeitsverzeichnis.
+
+Es gibt bei \gls{git} auch einen expliziten \texttt{checkout}-Befehl, der verwendet wird, um beispielsweise zwischen verschiedenen Branches zu wechseln.
 
 \subsection{Code beitragen}
 Hat man ein Repository geklont und möchte Codeänderungen dem Originalrepository zuführen, gibt es zwei Möglichkeiten: Man benutzt den Standard-Branch oder so genannte Feature-Branches.
 
-Den Standard-Branch zu nutzen, empfehle ich nur für die Entwicklung als Einzelperson. Entwickelt man alleine an einem Projekt, kann man veränderte Dateien wie folgt committen:
-\begin{verbatim}
-$ git add relativer-pfad-zur-datei
-$ git commit -m "Commit-Nachricht"
-\end{verbatim}
+\begin{lstlisting}[language=sh,caption={Eine Datei mit git committen},label=\lstlbl{git-commit}]
+git add relativer-pfad-zur-datei
+git commit -m "Commit-Nachricht"
+\end{lstlisting}
 
-Für mehrköpfige Entwicklungsteams empfehle ich Feature-Branches zu nutzen, da \gls{git} gute branch-/merge-Qualitäten aufweist. Beispielsweise können Sie so selbst Code zu dem Projekt beitragen, indem Sie folgende Schritte durchführen:
+Den Standard-Branch (\texttt{master}) zu nutzen, empfehle ich nur, wenn man alleine an einem Projekt entwickelt. \lstref{git-commit} zeigt die Befehle, um eine veränderte Datei zu commiten. Dieser Commit wirkt sich auf den aktuellen Branch aus und kann mit dem \texttt{push}-Befehl in das geklonte Repository transferiert werden. Das entfernte Repository muss dazu den gleichen Stand haben, wie das lokale Repository ohne den zu veröffentlichenden Commit.
+
+Da dies insbesondere bei mehrköpfigen Entwicklungsteams eine Herausforderung ist, empfehle ich Feature-Branches zu nutzen. Durch folgende Schritte kann jeder Leser selbst Code zum \md beitragen und diesen veröffentlichen.
 \begin{enumerate}
-\item Erstellen Sie unter \code{https://github.com/croesch/micro-debug/issues} ein Thema, das Ihre Entwicklung beschreibt.
+\item Unter \code{https://github.com/croesch/micro-debug/issues} sind die Bugs und offenen Aufgaben zu finden. Möchte jemand Code beitragen, vermerkt er dies an dem jeweiligen Thema, oder öffnet ein neues, falls kein passendes Thema gefunden werden kann.
 
-\item Erstellen Sie einen lokalen Branch zu dem Thema, wobei die Nummer die Nummer des Themas ist:
-\begin{verbatim}
-$ git checkout -b 100-themen-titel
-\end{verbatim}
+\item Im lokalen Repository wird nun ein so genannter Feature-Branch angelegt, in dem der Code geändert werden wird. \lstref{git-branch-erstellen} enthält den Befehl, mit dem ein neuer Branch im lokalen Repository angelegt und ausgecheckt wird -- eine Konvention ist, dass die Nummer des Branches der Nummer des Themas entspricht.
 
-\item Entwickeln Sie den Code weiter.
+\begin{lstlisting}[language=sh,caption={Einen Branch mit git erstellen},label=\lstlbl{git-branch-erstellen}]
+git checkout -b 100-themen-titel
+\end{lstlisting}
 
-\item Committen Sie die Änderungen:
-\begin{verbatim}
-$ git add .
-$ git commit -m 'Commit-Nachricht'
-\end{verbatim}
+\item Der entsprechende Code kann nun geändert und wie in \lstref{git-commit} committet werden -- die Commits betreffen den neu erstellten Branch.
 
-\item Laden Sie den Stand des öffentlichen Repositories:
-\begin{verbatim}
-$ git fetch origin
-\end{verbatim}
+\item Regelmäßig oder zumindest am Ende der Änderungen sollte der aktuelle Stand des Originalrepositorys geladen werden. Dazu empfehle ich den Branch \texttt{master} auszuchecken und die aktuellen Commits des Originalrepositorys dort einzupflegen -- wie in \lstref{git-master-aktualisieren} zu sehen.
 
-\item Aktualisieren Sie den lokalen master-Branch:
-\begin{verbatim}
-$ git checkout master
-$ git pull origin master
-\end{verbatim}
+\begin{lstlisting}[language=sh,caption={Mit git den Branch \texttt{master} auschecken und aktualisieren},label=\lstlbl{git-master-aktualisieren}]
+git checkout master
+git pull origin master
+\end{lstlisting}
 
-\item Wiederholen Sie die Schritte 2-6, bis Ihre Entwicklung abgeschlossen ist
+\item Nun sollte der neu erstellte Branch so verändert werden, dass seine Commits auf dem aktuellen Stand des Repositorys aufsetzen. Dies kann mit dem Befehl \texttt{rebase} erledigt werden, wie in \lstref{git-neubranch-rebase} beschrieben. Das auschecken des neuen Branches ist nötig, da \texttt{rebase} den aktuellen Branch so verändert, dass er auf dem angegebenen Branch aufsetzt; in diesem Fall \texttt{master}.
 
-\item Aktualisieren Sie den Punkt von dem Ihr Branch abgeht:
-\begin{verbatim}
-$ git checkout 100-themen-titel
-$ git rebase master
-\end{verbatim}
+\begin{lstlisting}[language=sh,caption={Mit git ein \texttt{rebase} auf einen Branch ausführen},label=\lstlbl{git-neubranch-rebase}]
+git checkout 100-themen-titel
+git rebase master
+\end{lstlisting}
 
-\item Stellen Sie Ihren Branch öffentlich zur Verfügung.
-\begin{verbatim}
-$ git push origin 100-themen-titel
-\end{verbatim}
+\item Zum Schluss ist das lokale Repository in einem Zustand, der veröffentlicht werden kann. \lstref{git-push} zeigt, wie nun der neu erstellte Branch an das Originalrepository gesendet werden kann.
+\begin{lstlisting}[language=sh,caption={Mit git einen lokalen Branch an das Originalrepository senden},label=\lstlbl{git-push}]
+git push origin 100-themen-titel
+\end{lstlisting}
 \end{enumerate}
 
-Da Sie für dieses Projekt auf github keine Schreibberechtigung haben, ist der letzte Punkt nicht so einfach möglich. Daher wählt man besonders auf gitHub einen leicht anderen Weg, den ich nun kurz vorstellen möchte.
+Die Entwickler des Originalrepositorys können den neuen Branch nun einsehen, überprüfen und in den Branch \texttt{master} einpflegen. Dadurch ist er offiziell Teil des Produkts geworden -- diese Vorgehensweise ermöglicht sehr verteiltes Arbeiten bei gleichzeitig zentraler Verwaltung und Entscheidung, welche Änderungen tatsächlich dem Projekt zugeführt werden.
 
-\subsection{Unterstützung durch gitHub}
-Die Grundidee ist, ein beliebiges Repository auf github zu klonen, so dass dieser Klon wiederum öffentlich zugänglich ist. Sie klonen dann den Klon von github auf Ihren lokalen Rechner, um daran zu entwickeln. Anschließend können Sie Ihr Ergebnis durch Ihren github-Klon veröffentlichen, so dass diese Änderung wieder in das Originalprojekt einfließen kann. Diesen Prozess möchte ich nun erläutern.
+Bei dem Arbeitsfluss, den ich gerade beschrieben habe, ist das lokale Repository ein Klon des Originalrepositorys. In der Regel hat aber nur ein oder wenige Entwickler Schreibrechte auf dem Originalrepository, das alle lesen können. Daher ist in der Praxis noch ein zusätzlicher Schritt nötig, den ich im Folgenden vorstellen möchte.
+
+\subsection{Unterstützung durch GitHub}
+Die Idee ist, dass jeder Entwickler sein eigenen öffentlichen Klon des Originalrepositorys besitzt. Dieser öffentliche Klon wird von dem jeweiligen Entwickler lokal geklont, und daran gearbeitet, wie oben beschrieben. Zur Aktualisierung des lokalen Repositorys muss zusätzlich das öffentliche Repository des Entwicklers aktualisiert werden und nach Fertigstellung der Arbeit kann das Ergebnis per \texttt{push}-Befehl in dem Repository des Entwicklers veröffentlicht werden. Der oder die Entwickler des Originalrepository können die veröffentlichten Änderungen dann in das Originalprojekt einfließen lassen.
+
+Für diesen Arbeitsablauf ist \name{GitHub} sehr gut geeignet -- daher möchte ich diesen Arbeitsablauf am Beispiel von \name{GitHub} verdeutlichen.
 
 \begin{enumerate}
-\item Registrieren Sie sich auf github, um dort Projekte veröffentlichen zu können. Legen Sie ssh-Schlüsselpaare an und laden Sie Ihren öffentlichen Schlüssel auf Ihr Benutzerkonto, dass Sie sich später bei Schreiboperationen authentifizieren können.
+\item Bei \name{GitHub} ist eine Registrierung notwendig, um Repositorys veröffentlichen zu können.
 
-\item Klicken Sie auf der Projektseite \code{https://github.com/croesch/micro-debug} den \emph{fork}-Button. Dadurch klont github das Projekt auf Ihr Benutzerkonto, wo es nun unter \code{https://github.com/ihr-name/micro-debug} verfügbar ist.
+\item Ist man nun angemeldet, erscheint auf der Projektseite \cite{Roesch2012} der \emph{fork}-Button. Dadurch klont \name{GitHub} das Projekt für den Benutzer, wo es nun unter \code{https://github.com/benutzername/micro-debug} öffentlich verfügbar ist.
 
-\item Klonen Sie Ihre Repository nun lokal, wie in \secref{git-checkout} beschrieben:
-\begin{verbatim}
-$ git clone git://github.com/ihr-name/micro-debug.git
-$ cd micro-debug
-\end{verbatim}
+\item Anschließend kann wie in \lstref{git-benutzer-klonen} das öffentliche Repository geklont werden. Der Unterschied zu \lstref{git-klonen} ist die Adresse des geklonten Repositorys und das Protokoll -- das \gls{git}-Protokoll erlaubt Schreib- und Leseoperationen, bei entsprechenden Rechten auf dem Server.
 
-\item Da Ihr Repository unter \emph{origin} nun Ihren github-Klon referenziert, setzen Sie eine Referenz auf das Hauptprojekt:
-\begin{verbatim}
-$ git remote add original-projekt git://github.com/croesch/micro-debug.git
-\end{verbatim}
+\begin{lstlisting}[language=sh,caption={\md mit git vom Benutzerrepository klonen},label=\lstlbl{git-benutzer-klonen}]
+git clone git://github.com/ihr-name/micro-debug.git
+cd micro-debug
+\end{lstlisting}
 
-\item Erstellen Sie unter \code{https://github.com/croesch/micro-debug/issues} ein Thema, das Ihre Entwicklung beschreibt.
+\item Um später Aktualisierungen des Originalrepository zu erhalten, sollte dieses noch im lokalen Repository als \texttt{remote} hinzugefügt werden, wie in \lstref{git-add-original-remote} zu sehen.
 
-\item Erstellen Sie einen lokalen Branch zu dem Thema, wobei die Nummer die Nummer des Themas ist:
-\begin{verbatim}
-$ git checkout -b 100-themen-titel
-\end{verbatim}
+\begin{lstlisting}[language=sh,caption={Originalrepository des \md dem lokalen Repository als \texttt{remote} hinzufügen},label=\lstlbl{git-add-original-remote}]
+git remote add original-projekt git://github.com/croesch/micro-debug.git
+\end{lstlisting}
 
-\item Entwickeln Sie den Code weiter.
+\item Im lokalen Repository wird nun ein Feature-Branch angelegt, wie in \lstref{git-branch-erstellen} beschrieben.
 
-\item Committen Sie die Änderungen:
-\begin{verbatim}
-$ git add .
-$ git commit -m 'Commit-Nachricht'
-\end{verbatim}
+\item Der entsprechende Code kann nun geändert und wie in \lstref{git-commit} committet werden -- die Commits betreffen den neu erstellten Branch.
 
-\item Laden Sie den Stand des öffentlichen Repositories:
-\begin{verbatim}
-$ git fetch original-projekt
-\end{verbatim}
+\item Da sich das öffentliche Repository des Benutzers nicht ändert, können Aktualisierungen nicht wie in \lstref{git-master-aktualisieren} beschrieben in das lokale Repository geholt werden. Daher benötigt das lokale Repository die Referenz auf das Originalrepository, wie in \lstref{git-add-original-remote} erstellt.
 
-\item Aktualisieren Sie den lokalen master-Branch:
-\begin{verbatim}
-$ git checkout master
-$ git pull original-projekt master
-\end{verbatim}
+\begin{lstlisting}[language=sh,caption={Mit git den Branch \texttt{master} auschecken und aktualisieren},label=\lstlbl{git-master-original-aktualisieren}]
+git checkout master
+git pull original-projekt master
+\end{lstlisting}
 
-\item Wiederholen Sie die Schritte 2-6, bis Ihre Entwicklung abgeschlossen ist
+\lstref{git-master-original-aktualisieren} enthält die Befehle, um das lokale Repository mit den Informationen aus dem Originalrepository zu aktualisieren.
 
-\item Aktualisieren Sie den Punkt von dem Ihr Branch abgeht:
-\begin{verbatim}
-$ git checkout 100-themen-titel
-$ git rebase master
-\end{verbatim}
+\item Abschließend sollte der neue Branch wie in \lstref{git-neubranch-rebase} beschrieben neu auf den \texttt{master}-Branch aufgesetzt werden und dann wie in \lstref{git-push} gezeigt, in dem öffentlichen Repository des Benutzers veröffentlicht werden.
 
-\item Veröffentlichen Sie Ihren fertigen Branch über Ihren github-Klon:
-\begin{verbatim}
-$ git push origin 100-themen-titel
-\end{verbatim}
-
-\item Klicken Sie auf Ihrer Projekt-Seite auf \emph{Pull-Request}. Anschließend kann Ihr neuer Branch beispielsweise von mir in das Originalprojekt eingepflegt werden. Dann können Sie und alle anderen, die das Projekt geklont haben, die Änderungen über \emph{fetch} in die geklonten Repositories übernehmen.
+\item \name{GitHub} bietet nun die Möglichkeit die Entwickler des Originalprojekts über den neuen Branch im öffentlichen Repository des Entwickelrs zu informieren. Dazu befindet sich auf der Projektseite des Benutzers ein Button \emph{Pull-Request}. Wenn die Entwickler des Originalrepositorys entscheiden die Änderungen in das Projekt aufzunehmen, sind diese Informationen später über die in \lstref{git-master-original-aktualisieren} beschriebene Aktualisierung im Branch \texttt{master} zu sehen.
 \end{enumerate}
 
-Sie haben nun die Möglichkeit den aktuellen Code lokal zu bearbeiten und Änderungen zum Projekt beizutragen. Im Folgenden möchte ich das Build-Management-Werkzeug erläutern, dass ich zum Entwickeln nutze: \gls{mvn}.
+Meine Ausführungen über \gls{git} sollten es ermöglichen, den Code des \md auszuchecken, zu ändern und die Änderungen zu veröffentlichen. Im Folgenden möchte ich nun das Build-Management-Werkzeug erläutern, dass ich zum Entwickeln nutze: \gls{mvn}.
 
 \section{Build-Management}
-\gls{mvn} ist ein Werkzeug zum Bauen von \gls{java}-Anwendungen. Meines Erachtens gibt es keine signifikanten Gründe für oder gegen die Nutzung von \gls{mvn}; stattdessen hätte ich auch \gls{ant} oder \gls{make} nutzen können. In diesem Abschnitt möchte ich die grundlegenden Befehle für die Arbeit mit \gls{mvn} erläutern.
+\gls{mvn} ist ein Werkzeug zum Bauen von \gls{java}-Anwendungen. Meines Erachtens gibt es keine signifikanten Gründe für oder gegen die Nutzung von \gls{mvn}; stattdessen hätte ich auch \gls{ant} oder \gls{make} nutzen können.
+
+In diesem Abschnitt möchte ich die grundlegenden Befehle für die Arbeit mit \gls{mvn} erläutern.
 
 Ich verwende \gls{mvn}, da hier viel implizites Wissen eingesetzt wird; dadurch wird der Konfigurationsaufwand geringer -- solange man den Konventionen der \gls{mvn}-Entwickler folgt. Zu dem impliziten Wissen gehört unter anderem:
 \begin{itemize}
 \item \gls{java}-Klassen befinden sich in \code{src/main/java/}
 \item \gls{java} Test-Klassen befinden sich in \code{src/test/java/}
+\item Ressourcen befinden sich in \code{src/main/resources/}
+\item Ressourcen, die nur für die Tests benötigt werden, befinden sich in \code{src/test/resources/}
 \item Kompilate und von \gls{mvn} generierte Klassen befinden sich in \code{target/}
 \item Die explizite Konfiguration steht in der Datei \code{pom.xml}
 \end{itemize}
 
-\subsection{Code kompilieren}
-Mit dem folgenden Befehl können Sie den Programmcode kompilieren; Testklassen werden dadurch weder kompiliert noch ausgeführt:
-\begin{verbatim}
-$ mvn compile
-\end{verbatim}
+Die Datei \texttt{pom.xml} enthält aus \gls{mvn}-Sicht alle nötigen Informationen über das Projekt: Die Version, der Name und benötigte Bibliotheken sind einige dieser Informationen.
 
-\gls{mvn} erkennt verschiedene Abhängigkeiten. Das führt dazu, dass beim ersten Ausführen zunächst erstmal alle benötigten Bibliotheken heruntergeladen werden. Zusätzlich erkennt \gls{mvn} auch, ob für ein bestimmtes Ziel die Klassen zunächst kompiliert werden müssen.
+Das wohl Wichtigste an einer Build-Management-Software ist, den Code kompilieren zu können. \lstref{maven-compile} zeigt den Befehl, mit dem der Code eines \gls{mvn}-Projekts wie dem \md kompiliert werden kann. Testklassen werden dadurch nicht kompiliert und auch nicht ausgeführt.
 
-Beispielsweise werden zum Packetieren einer Anwendung zunächst alle Klassen kompiliert, anschließend die Tests ausgeführt, bevor die Anwendung packetiert werden kann; dies geschieht mit:
-\begin{verbatim}
-$ mvn package
-\end{verbatim}
+\begin{lstlisting}[language=sh,caption={Den Code eines Maven-Projekts kompilieren},label=\lstlbl{maven-compile}]
+mvn compile
+\end{lstlisting}
 
-\subsection{Tests ausführen}
-Wenn Sie alle Tests ausführen möchten, können Sie dies mit folgendem Befehl erreichen:
-\begin{verbatim}
-$ mvn test
-\end{verbatim}
+\gls{mvn} liest die Abhängigkeiten für ein Projekt aus der \texttt{pom.xml} Datei und lädt die benötigten Bibliotheken selbstständig herunter. Auch für die Ausführung von \gls{mvn} werden gewisse Bibliotheken, dies führt bei der ersten Ausführung von \gls{mvn} dazu, dass zunächst einige Bibliotheken heruntergeladen werden.
 
-Je nachdem, welche Metriken Sie per Plugins noch mit \gls{mvn} ausführen, kann es nötig sein die von \gls{mvn} generierten Dateien zu löschen. Beispielsweise bei Code-Coverage-Werkzeugen ist dies nötig; alle von \gls{mvn} generierten Dateien -- das Verzeichnis \code{target} -- entfernen Sie mit:
-\begin{verbatim}
-$ mvn clean
-\end{verbatim}
+Bei der Ausführung von \gls{mvn} gibt es verschiedene Ziele, die aufeinander aufbauen. So ist beispielsweise für das Packetieren eines Projekts notwendig zunächst alle Klassen zu kompilieren und die Tests auszuführen, bevor das Projekt packetiert wird. Das Projekt wird mit dem Befehl aus \lstref{maven-package} packetiert und im Verzeichnis \texttt{target/} abgelegt.
 
-\subsection{Abhängigkeiten ändern}
-Die Date \code{pom.xml} enthält die explizite Konfiguration eines Projektes. Darin enthalten sind unter anderem der Name und die Version des Projekts, aber auch abhängige Projekte.
+\begin{lstlisting}[language=sh,caption={Den Code eines Maven-Projekts packetieren},label=\lstlbl{maven-package}]
+mvn package
+\end{lstlisting}
 
-Beispielsweise nutzt diese Arbeit \gls{fest} als Test-Werkzeug, in der \code{pom.xml} steht dazu Folgendes:
-\begin{verbatim}
+Wenn man Änderungen am Code vornimmt, ist es besonders hilfreich zu wissen, ob die automatisierten Tests fehlschlagen. Möchte man mit \gls{mvn} die Tests ausführen, kann dazu der in \lstref{maven-test} gezeigte Befehl genutzt werden.
+
+\begin{lstlisting}[language=sh,caption={Die automatisierten Tests eines Maven-Projekts ausführen},label=\lstlbl{maven-test}]
+mvn test
+\end{lstlisting}
+
+Die in der Datei \code{pom.xml} definierten abhängigen Projekte sind in \gls{xml} definiert, wie beispielsweise in \lstref{maven-dependency} am Beispiel von \gls{fest} zu sehen, das vom Debugger genutzte \gls{gui}-Test-Framework.
+
+\begin{lstlisting}[language=sh,caption={Konfiguration eines abhängigen Projekts in Maven},label=\lstlbl{maven-dependency}]
 <dependency>
     <groupId>org.easytesting</groupId>
     <artifactId>fest-swing</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.1</version>(*@\srclbl{maven-dependency-version}@*)
     <scope>test</scope>
 </dependency>
-\end{verbatim}
+\end{lstlisting}
 
-Dort können Sie nun die Version des Werkzeugs ändern, die genutzt werden soll; oder den Bereich von \emph{test} auf \emph{runtime} erweitern. Anschließend empfehle ich die Dateien zu entfernen, die mit \gls{mvn} zuvor generiert wurden und \gls{mvn} auszuführen.
+Dort kann nun die Version von \gls{fest} geändert werden, die der Debugger nutzen soll.
+
+Die hier gezeigten Befehle sind keine umfassende Beschreibung von \gls{mvn}, genügen aber, um den Debugger zu bauen. Für das Kompilieren können auch andere Werkzeuge verwendet werden, allerdings muss der Entwickler sich dann um die Bibliotheken selbst kümmern. Aber prinzipiell ist \gls{mvn} durch jedes beliebige andere Werkzeug ersetzbar.
