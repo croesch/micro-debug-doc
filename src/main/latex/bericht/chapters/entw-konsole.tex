@@ -41,7 +41,7 @@ Das \package \pck{settings} enthält verschiedene Klassen, die alle einen andere
 \item An diesem Objekt wird die Methode \texttt{get(String,String)} aufgerufen, die einen Dateinamen und den Schlüssel der Konfigurationsoption erhält.
 \item Das Objekt ruft an sich selbst \texttt{getProperties(String)} mit dem Dateinamen auf.
 \item Das Objekt hält eine \emph{Map} mit einem \emph{Properties}-Objekt für jeden Dateinamen. Da diese \emph{Map} noch leer ist, wird die Methode \texttt{createNewProperties(String)} mit dem Namen der Datei aufgerufen. Diese Methode wird von jeder Unterklasse überschrieben und liest die Datei ein und erzeugt ein \emph{Properties}-Objekt, welches in die \emph{Map} gelegt wird, um bei späteren Aufrufen darauf zugreifen zu können.\itmlbl{create-props}
-\item Dieses \emph{Properties}-Objekt wird nun einige Methodenaufrufe zurückgereicht und daran wird dann die Methode \emph{getProperty(String)} aufgerufen, um den Wert der Konfigurationsoption zu erhalten.
+\item Dieses \emph{Properties}-Objekt wird nun einige Methodenaufrufe zurück gereicht und daran wird dann die Methode \emph{getProperty(String)} aufgerufen, um den Wert der Konfigurationsoption zu erhalten.
 \item Der erhaltene Wert wird nun bis in den Konstruktor der Enumeration zurückgegeben und dort auf Validität überprüft. Stellt sich heraus, dass der Wert ungültig ist, wird die Konfigurationsoption mit einem Standardwert belegt. Das Ergebnis steht dem Benutzer dann zur Verfügung.
 \end{enumerate}
 
@@ -64,7 +64,7 @@ Ich habe nun die Hauptklassen des \md vorgestellt und einen groben Überblick ü
 
 Diese Annotationen helfen bei der Navigation durch den Code, denn einmal analysiert und markiert erspart man sich beim nächsten Betrachten der Methode die Analyse.
 \item[argument] enthält die Klasse \klasse{AArgument} und ihre Unterklassen -- somit alle möglichen Argumente des \md.
-\item[commons] enthält Klassen, die nicht zugeordnet werden konnten. Beispielsweise \klasse{Reader} und \klasse{Printer}, die für die Ein- und Ausgabe des \md verantwortlich sind. Auch die Klasse \klasse{Utils} befindet sich hier -- sie enthält einige Methoden, die keinem genauen Objekt und keiner Klasse zugeordnet werden konnten, wie beispielsweise die Methode \texttt{toBinaryString(int)}, die eine Zahl in eine Zeichenkette wandelt, die die Binärrepresentation der Zahl darstellt.
+\item[commons] enthält Klassen, die nicht zugeordnet werden konnten. Beispielsweise \klasse{Reader} und \klasse{Printer}, die für die Ein- und Ausgabe des \md verantwortlich sind. Auch die Klasse \klasse{Utils} befindet sich hier -- sie enthält einige Methoden, die keinem genauen Objekt und keiner Klasse zugeordnet werden konnten, wie beispielsweise die Methode \texttt{toBinaryString(int)}, die eine Zahl in eine Zeichenkette wandelt, die die Binärrepräsentation der Zahl darstellt.
 \item[console] enthält die Debug-Klassen, die speziell für die Benutzung per Konsole konzipiert sind. Hier sind die Klassen \klasse{Debugger}, \klasse{UserInstruction} und \klasse{Mic1Interpreter} zu finden.
 \item[debug] enthält Klassen, die mit Breakpoints zu tun haben. Hier sind sowohl der \klasse{BreakpointManager} zu finden, als auch die verschiedenen Unterklassen von \klasse{Breakpoint}, die die verschiedenen Breakpoints darstellen. Diese Unterklassen von \klasse{Breakpoint} müssen nur in dem \package sichtbar sein -- für den \klasse{BreakpointManager}.
 \item[error] enthält eigene \emph{Exceptions}.
