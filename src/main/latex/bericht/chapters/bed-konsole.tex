@@ -4,7 +4,7 @@ Wie in \chpref{allgemein} beschrieben, muss der \md nicht installiert werden: Vo
 
 \begin{enumerate}
 \item Die Datei \texttt{micro-debug-version.zip} von der Projektseite \cite{Roesch2012} herunterladen
-\item Die \datei{zip} in ein beliebiges Verzeichnis entpacken (bspw. \texttt{/opt/micro-debug/})
+\item Die \datei{zip} in ein beliebiges Verzeichnis entpacken (beispielsweise \texttt{/opt/micro-debug/})
 \item Das Verzeichnis des \md dem \texttt{PATH} hinzufügen
 \item Den \md starten -- mit \texttt{micro-debug.sh~-{}-help}
 \end{enumerate}
@@ -14,8 +14,8 @@ Der \md kann durch einige Parameter gesteuert werden und wird nach dem Start dur
 \section{Parameter}
 Der Standardaufruf für den \md ist in \lstref{aufruf-konsolenversion} zu sehen. Es gibt zwei verpflichtende Parameter: Die Pfade zur \ma und zur \ac -Datei\notiz{Irgendwo den Aufbau der beiden Dateien erwähnen}. Die beiden Pfade können sowohl relativ als auch absolut angegeben werden, wichtig ist allerdings, dass zuerst der Pfad zur \ma und dann der Pfad zur \ac -Datei angegeben wird. Werden die beiden Pfade vertauscht, so startet der \md nicht und bricht mit einer Fehlermeldung ab.
 
-\begin{lstlisting}[language=sh,caption={Aufruf des \md -- Konsolenversion},label=\lstlbl{aufruf-konsolenversion}]
-  micro-debug.sh [PARAMETER]... MIC1 IJVM
+\begin{lstlisting}[language=sh,caption={Aufruf des \md},label=\lstlbl{aufruf-konsolenversion}]
+micro-debug.sh [PARAMETER]... MIC1 IJVM
 \end{lstlisting}
 
 Neben den beiden Dateipfaden gibt es im Folgenden erklärte optionale Parameter. Jeder Parameter kann sowohl in der langen (mit doppeltem Minus) als auch in der kurzen (einfaches Minus gefolgt von einem Zeichen) Variante angegeben werden.
@@ -42,9 +42,9 @@ Neben den beiden Dateipfaden gibt es im Folgenden erklärte optionale Parameter.
 
 Wenn einer der Parameter \texttt{-{}-help} oder \texttt{-{}-version} angegeben wurde, startet der \md nicht. Dies kann genutzt werden, um ohne vorhandene Bytecode-Dateien Informationen über den \md anzeigen zu können. \lstref{aufrufe-ohne-start} zeigt, wie der \md daher ohne Bytecode-Dateien aufgerufen werden kann.
 
-\begin{lstlisting}[language=sh,caption={Aufruf des \md ohne Start -- Konsolenversion},label=\lstlbl{aufrufe-ohne-start}]
-  micro-debug.sh --help
-  micro-debug.sh --version
+\begin{lstlisting}[language=sh,caption={Aufruf des \md ohne Start},label=\lstlbl{aufrufe-ohne-start}]
+micro-debug.sh --help
+micro-debug.sh --version
 \end{lstlisting}
 
 Bei der Abarbeitung der gegebenen Parameter hängt die Reihenfolge der Parameter nicht von der Reihenfolge ab, in der sie dem \md als Parameter übergeben wurden. Wichtig ist nur, dass die beiden Bytecode-Dateien die letzten beiden Parameter und in der richtigen Reihenfolge aufgeführt sind.
@@ -73,7 +73,7 @@ Je nach Befehl kann der zulässige Wertebereich eingeschränkt sein -- eine solc
 
 \item[help] \hspace*{\fill}\\
 
-  zeigt die verfügbaren Befehle mit einer kurzen Beschreibung an. Zeigt desweiteren einige Zusatzinformationen über den \md an.
+  zeigt die verfügbaren Befehle mit einer kurzen Beschreibung an. Zeigt des weiteren einige Zusatzinformationen über den \md an.
 
 \item[ls-break] \hspace*{\fill}\\
 
@@ -84,7 +84,7 @@ Je nach Befehl kann der zulässige Wertebereich eingeschränkt sein -- eine solc
   zeigt den disassemblierten \ac an. Dabei gibt es drei mögliche Konstellationen der Parameter:
   \begin{itemize}
   \item Wird \textbf{kein Parameter} gegeben, wird der vollständige \ac angezeigt.
-  \item Wird \textbf{ein Parameter} \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der aktuellen Codezeile angezeigt.
+  \item Wird \textbf{ein Parameter} \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der aktuellen Zeile angezeigt.
   \item Werden \textbf{zwei Parameter} gegeben, wird der \ac von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
   \end{itemize}
 
@@ -95,7 +95,7 @@ Je nach Befehl kann der zulässige Wertebereich eingeschränkt sein -- eine solc
   zeigt den disassemblierten \mac an und arbeitet wie \texttt{ls-macro-code}. Es gibt drei mögliche Konstellationen der Parameter:
   \begin{itemize}
   \item Wird \textbf{kein Parameter} gegeben, wird der vollständige \mac angezeigt.
-  \item Wird \textbf{ein Parameter} \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der aktuellen Codezeile angezeigt.
+  \item Wird \textbf{ein Parameter} \emph{Zahl1} gegeben, wird die angegebene Anzahl an Zeilen vor und nach der aktuellen Zeile angezeigt.
   \item Werden \textbf{beide Parameter} gegeben, wird der Mikro-Assembler-Code von Zeile \emph{Zahl1} bis zur Zeile \emph{Zahl2} (inklusive) angezeigt.
   \end{itemize}
 
@@ -194,7 +194,7 @@ Möchte man den realen (im Speicher vorhandenen) Stack sehen, sollte man sichers
 
 \section{Tutorial}
 \seclbl{tutorial-konsole}
-In diesem Abschnitt möchte ich ein Tutorial beschreiben, um in das Arbeiten mit dem \md einzuführen. Ich beschreibe das Debuggen eines Assembler-Programms: ein Programm zum Einlesen von Binärzahlen. \lstref{binary-read-c} zeigt den Code für das Programm in C\notiz{C referenz? erklärn?} und soll hier als Verständnis des Algorithmuses dienen.
+In diesem Abschnitt möchte ich ein Tutorial beschreiben, um in das Arbeiten mit dem \md einzuführen. Ich beschreibe das Debuggen eines Assembler-Programms: ein Programm zum Einlesen von Binärzahlen. \lstref{binary-read-c} zeigt den Code für das Programm in C\notiz{C referenz? erklärn?} und soll hier als Verständnis des Algorithmus dienen.
 
 \begin{lstlisting}[language=c,caption={C-Programm zum Einlesen einer Binärzahl},label=\lstlbl{binary-read-c}]
 int main() {
@@ -420,7 +420,7 @@ Stack doesn't contain any elements, nothing to display.(*@\srclbl{tutorial-check
 
 An den Konsolenausgaben ist zu erkennen, dass zunächst beide Zahlen korrekt auf den Stack gelegt werden. Der Vergleich sollte die beiden Werte vom Stack entfernen und sie dann vergleichen; in \srcref{tutorial-check-var-stack-empty} in \lstref{tutorial-check-var} sieht man, dass der Stack korrekterweise keine Elemente enthält. Wenn ich nun die nächste \ai ausführe, kann ich an der Adresse der \ai erkennen, ob der bedingte Sprung ausgeführt wurde.
 
-\begin{lstlisting}[language=,caption={Ausführen der \ais zur Berrechnung des temporären Ergebnisses},label=\lstlbl{tutorial-calc-temp-result}]
+\begin{lstlisting}[language=,caption={Ausführen der \ais zur Berechnung des temporären Ergebnisses},label=\lstlbl{tutorial-calc-temp-result}]
 micro-debug> step
 Executed:      0xE: [ 0x84] IINC  0 0xD0
 Local variable 0: 1
@@ -462,7 +462,7 @@ Diese Vermutung soll nun näher überprüft werden. Dazu setze ich noch einen Br
 
 \lstref{tutorial-trace-vars} zeigt das Setzen des Breakpoints in Zeile \texttt{0x18}; anschließend ist die Anzeige aller Breakpoints zu sehen. In \srcref{tutorial-trace-vars-v0} wird die lokale Variable \texttt{0} beobachtet, die das gelesene Zeichen enthält. Der Vermutung nach wird die lokale Variable \texttt{1}, die das Ergebnis enthalten sollte, nie beschrieben; um meine Vermutung eventuell verwerfen zu können, beobachte ich auch diese in Zeile \srcref{tutorial-trace-vars-v1}.
 
-Anschließend entferne ich den alten Breakpoint aus Zeile \texttt{0x4} -- die Nummer, die ich dabei angegebe, ist die Nummer des Breakpoints, die der Befehl \texttt{ls-break} liefert. Nachdem nun die verschiedenen Werte beobachtet werden und ein neuer Breakpoint gesetzt ist, kann mit dem \texttt{RUN}-Befehl jeweils ein Schleifendurchlauf bis zum Ende des Programms ausgeführt werden.
+Anschließend entferne ich den alten Breakpoint aus Zeile \texttt{0x4} -- die Nummer, die ich dabei angebe, ist die Nummer des Breakpoints, die der Befehl \texttt{ls-break} liefert. Nachdem nun die verschiedenen Werte beobachtet werden und ein neuer Breakpoint gesetzt ist, kann mit dem \texttt{RUN}-Befehl jeweils ein Schleifendurchlauf bis zum Ende des Programms ausgeführt werden.
 
 \begin{lstlisting}[language=,caption={Setzen eines Breakpoints und Beobachten der lokalen Variablen},label=\lstlbl{tutorial-trace-vars}]
 micro-debug> macro-break 0x18
