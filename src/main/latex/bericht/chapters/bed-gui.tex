@@ -6,7 +6,7 @@ Auch die \mdg erfordert keine Installation -- die \mdg ist nach dem Entpacken de
 
 \begin{enumerate}
 \item Die Datei \texttt{micro-debug-gui-version.zip} von der Projektseite \cite{Roesch2012gui} herunterladen
-\item Die \datei{zip} in ein beliebiges Verzeichnis entpacken (bspw. \texttt{/opt/micro-debug-gui/})
+\item Die \datei{zip} in ein beliebiges Verzeichnis entpacken (beispielsweise \texttt{/opt/micro-debug-gui/})
 \item Das Verzeichnis der \mdg dem \texttt{PATH} hinzufügen
 \item Die \mdg starten -- mit \texttt{micro-debug-gui.sh~-{}-help}
 \end{enumerate}
@@ -74,7 +74,7 @@ Allerdings bietet die \mdg dem Benutzer im Gegensatz zum \md die Möglichkeit, d
 \subsection{Geschwindigkeit}
 Die \mdg nutzt die Funktionen des \md, um die \mic simulieren und debuggen zu können. Folglich kann die \mdg prinzipiell nicht schneller sein als der \md, sondern eher langsamer.
 
-Diese Vermutung bestätigte sich bei ersten Tests der \mdg. Bei einfachen Befehlen, wie eine (Mikro-)Instruktion auszuführen oder die \mic zu resetten war kein Geschwindigkeitsunterschied beobachtbar. Aber besonders bei dem \texttt{run}-Befehl war deutlich zu beobachten, dass die \mdg mehr Zeit benötigte.
+Diese Vermutung bestätigte sich bei ersten Tests der \mdg. Bei einfachen Befehlen, wie eine (Mikro-)Instruktion auszuführen oder die \mic zurückzusetzen war kein Geschwindigkeitsunterschied beobachtbar. Aber besonders bei dem \texttt{run}-Befehl war deutlich zu beobachten, dass die \mdg mehr Zeit benötigte.
 
 Was machte die \mdg besonders langsam? Wie konnte dieses Problem gelöst werden? Die Ursache der langsamen Ausführung war die Aktualisierung der \gls{gui}: Die Werte der Register und des sichtbaren Hauptspeichers, sowie die aktuell ausgeführte Zeile wurden ständig aktualisiert.
 
@@ -143,7 +143,7 @@ Die Checkboxen repräsentieren die Breakpoints für die Register, in \figref{mai
 \subsection{Hauptspeicher}
 Unter der Registeransicht befindet sich im Hauptfenster die Ansicht des Hauptspeichers. Hier kann wie bei der Registeransicht das Zahlenformat der Hauptspeicherwerte jederzeit geändert werden.
 
-In der Ansicht des Hauptspeichers sind nur eine feste Anzahl an Einträgen zu sehen, die sich nicht dynamisch an die Größe des sichtbaren Bereichs anpassen. Dies habe ich wegen der besseren Performanz so gelöst.
+In der Ansicht des Hauptspeichers sind nur eine feste Anzahl an Einträgen zu sehen, die sich nicht dynamisch an die Größe des sichtbaren Bereichs anpassen. Dies habe ich wegen der besseren Performance so gelöst.
 
 Die Ansicht zeigt den gesamten Hauptspeicher -- neben den lokalen Variablen, dem Stack und den Konstanten kann dadurch auch der disassemblierten \ac in Bit-Form betrachtet werden.
 
