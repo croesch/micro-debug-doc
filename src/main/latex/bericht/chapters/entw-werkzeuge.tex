@@ -14,7 +14,7 @@ Die Projekte \md und \mdg sind bei \name{GitHub} (siehe \cite{Roesch2012,Roesch2
 \item[sicher] Bei \gls{git} wird jeder Commit gehasht. Es ist praktisch nicht möglich einen Commit zu manipulieren, da dies die Hash-Summe verändern würde. Auch wenn theoretisch Kollisionen der Hash-Summe möglich sind, ist bisher eine solche Kollision noch nicht konstruierbar -- bei einem Code-Projekt müsste eine solche Kollision zudem kompilierbarer Code sein, was als hinreichend unwahrscheinlich gilt.
 \end{description}
 
-Ich habe \gls{git} gewählt, da dadurch später leicht \emph{forks}\footnote{Zu deutsch Abspaltung, ist ein Entwicklungszweig, nachdem sich ein Software-Projekt in zwei oder mehr Teile geteilt hat. Diese Teile werden meist unabhängig voneinander weiterentwickelt. Im täglichen Arbeitsablauf mit \gls{git} ist ein fork aber auch die Möglichkeit Neuerungen für ein Projekt zu Entwickeln und den entstandenen Entwicklungszeig nach Fertigstellung der Neuerung in das Ursprungsprojekt einzupflegen.} gebildet werden können und der Debugger durch Außenstehende weiterentwickelt werden kann. Das dezentrale Entwickeln mit \gls{git} ermöglicht es zusätzlich, dass später viele Entwickler am Debugger mitentwickeln.
+Ich habe \gls{git} gewählt, da dadurch später leicht \emph{forks}\footnote{Zu deutsch Abspaltung, ist ein Entwicklungszweig, nachdem sich ein Software-Projekt in zwei oder mehr Teile geteilt hat. Diese Teile werden meist unabhängig voneinander weiterentwickelt. Im täglichen Arbeitsablauf mit \gls{git} ist ein fork aber auch die Möglichkeit Neuerungen für ein Projekt zu Entwickeln und den entstandenen Entwicklungszweig nach Fertigstellung der Neuerung in das Ursprungsprojekt einzupflegen.} gebildet werden können und der Debugger durch Außenstehende weiterentwickelt werden kann. Das dezentrale Entwickeln mit \gls{git} ermöglicht es zusätzlich, dass später viele Entwickler am Debugger mitentwickeln.
 
 Wie checkt man mit \gls{git} den Quelltext der Arbeit aus? Wie unterstützt mich \gls{git}, wenn ich das Projekt weiterentwickeln möchte? Im Folgenden möchte ich auf diese Fragen antworten. Ich möchte keine umfassende Bedienungsanleitung für \gls{git} geben, sondern die Grundlagen für die alltägliche Arbeit mit \gls{git} vermitteln. \gls{git} am \md erklären, für \mdg ist das Vorgehen analog, in den meisten Fällen muss lediglich ein \texttt{-gui} eingefügt werden.
 
@@ -58,7 +58,7 @@ git add relativer-pfad-zur-datei
 git commit -m "Commit-Nachricht"
 \end{lstlisting}
 
-Den Standard-Branch (\texttt{master}) zu nutzen, empfehle ich nur, wenn man alleine an einem Projekt entwickelt. \lstref{git-commit} zeigt die Befehle, um eine veränderte Datei zu commiten. Dieser Commit wirkt sich auf den aktuellen Branch aus und kann mit dem \texttt{push}-Befehl in das geklonte Repository transferiert werden. Das entfernte Repository muss dazu den gleichen Stand haben, wie das lokale Repository ohne den zu veröffentlichenden Commit.
+Den Standard-Branch (\texttt{master}) zu nutzen, empfehle ich nur, wenn man alleine an einem Projekt entwickelt. \lstref{git-commit} zeigt die Befehle, um eine veränderte Datei zu committen. Dieser Commit wirkt sich auf den aktuellen Branch aus und kann mit dem \texttt{push}-Befehl in das geklonte Repository transferiert werden. Das entfernte Repository muss dazu den gleichen Stand haben, wie das lokale Repository ohne den zu veröffentlichenden Commit.
 
 Da dies insbesondere bei mehrköpfigen Entwicklungsteams eine Herausforderung ist, empfehle ich Feature-Branches zu nutzen. Durch folgende Schritte kann jeder Leser selbst Code zum \md beitragen und diesen veröffentlichen.
 \begin{enumerate}
@@ -134,7 +134,7 @@ git pull original-projekt master
 
 \item Abschließend sollte der neue Branch wie in \lstref{git-neubranch-rebase} beschrieben neu auf den \texttt{master}-Branch aufgesetzt werden und dann wie in \lstref{git-push} gezeigt, in dem öffentlichen Repository des Benutzers veröffentlicht werden.
 
-\item \name{GitHub} bietet nun die Möglichkeit die Entwickler des Originalprojekts über den neuen Branch im öffentlichen Repository des Entwickelrs zu informieren. Dazu befindet sich auf der Projektseite des Benutzers ein Button \emph{Pull-Request}. Wenn die Entwickler des Originalrepositorys entscheiden die Änderungen in das Projekt aufzunehmen, sind diese Informationen später über die in \lstref{git-master-original-aktualisieren} beschriebene Aktualisierung im Branch \texttt{master} zu sehen.
+\item \name{GitHub} bietet nun die Möglichkeit die Entwickler des Originalprojekts über den neuen Branch im öffentlichen Repository des Entwicklers zu informieren. Dazu befindet sich auf der Projektseite des Benutzers ein Button \emph{Pull-Request}. Wenn die Entwickler des Originalrepositorys entscheiden die Änderungen in das Projekt aufzunehmen, sind diese Informationen später über die in \lstref{git-master-original-aktualisieren} beschriebene Aktualisierung im Branch \texttt{master} zu sehen.
 \end{enumerate}
 
 Meine Ausführungen über \gls{git} sollten es ermöglichen, den Code des \md auszuchecken, zu ändern und die Änderungen zu veröffentlichen. Im Folgenden möchte ich nun das Build-Management-Werkzeug erläutern, dass ich zum Entwickeln nutze: \gls{mvn}.
