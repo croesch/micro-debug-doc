@@ -17,17 +17,17 @@
 <h1>micro-debug - LIESMICH</h1>
   <h2>Allgemein und Benutzung</h2>
   <p>
-    micro-debug ist ein Debugger f&uuml;r den Prozessor Mic-1, der von <em>Andrew S. Tannenbaum</em> entwickelt wurde <a href="http://cw.prenhall.com/bookbind/pubbooks/tanenbaum2/">Structured Computer Organization, Fourth Edition</a> (<a href="http://www.prenhall.com/">Prentice-Hall</a>, 1998) und von <em>Prof. Dr. Karl Stroetmann</em> detailliert beschrieben.
+    micro-debug ist ein Debugger f&uuml;r den Prozessor Mic-1, der von <em>Andrew S. Tannenbaum</em> entwickelt wurde <a href="http://cw.prenhall.com/bookbind/pubbooks/tanenbaum2/">Structured Computer Organization, Fourth Edition</a> (<a href="http://www.prenhall.com/">Prentice-Hall</a>, 1998).
     Du kannst sowohl Assembler-Code, als auch den Mikro-Assembler-Code debuggen.
   </p>
   <p>
     Der Debugger wurde in einer Studienarbeit an der DHBW Stuttgart entwickelt.
-    Die Studienarbeit ist in dem Projekt <a href="https://github.com/croesch/micro-debug-doc">croesch/micro-debug-doc</a> gespeichert.
+    Die Studienarbeit selbst ist in dem Projekt <a href="https://github.com/croesch/micro-debug-doc">croesch/micro-debug-doc</a> gespeichert.
   </p>
 
   <h3>Systemanforderungen</h3>
   <p>
-    Der Debugger l&auml;uft mit Java, du ben&ouml;tigst also kein spezielles Betriebssystem. Es gen&uuml;gt mindestens <strong>Java 5</strong> installiert zu haben.
+    Der Debugger l&auml;uft mit Java, Du ben&ouml;tigst also kein spezielles Betriebssystem. Es gen&uuml;gt mindestens <strong>Java 5</strong> installiert zu haben.
   </p>
 
   <h3>Installation / Start</h3>
@@ -51,7 +51,7 @@
   <h3>Erste Schritte</h3>
 
   <p>
-    F&uuml;r detaillierte Informationen zur Benutzung kannst du den Debugger wie gerade beschrieben mit dem Argument <code>--help</code> starten.
+    F&uuml;r detaillierte Informationen zur Benutzung kannst Du den Debugger wie gerade beschrieben mit dem Argument <code>--help</code> starten.
     Um zun&auml;chst mal eine Assembler-Datei mit einer Mikro-Assembler-Implementierung auszuf&uuml;hren, f&uuml;hre folgendes Kommando aus
     <code>
       $ ./micro-debug.sh pfad-zum-mikro-assembler.mic1 pfad-zum-assembler.ijvm
@@ -82,7 +82,7 @@
   <h4>Logger</h4>
 
   <p>
-    Die Date <code>logging.properties</code> enth&auml;lt die Konfiguration f&uuml;r den Java Logger, die automatisch benutzt wird, wenn du das Startskript benutzt.
+    Die Datei <code>logging.properties</code> enth&auml;lt die Konfiguration f&uuml;r den Java Logger, die automatisch benutzt wird, wenn du das Startskript benutzt.
     Bei Fragen, wie du den Logger im Detail konfigurierst, schau Dir die Dokumentation von <code>java.util.logging</code> an.
   </p>
 
@@ -92,6 +92,11 @@
     Da das Verzeichnis <code>config</code> im Klassenpfad vor der jar-Datei des Debuggers steht, kannst Du einzelne Dateien einfach Ersetzen, indem Du sie in das <code>config</code>
     Verzeichnis legst. Der Debugger benutzt eine <code>ijvm.conf</code> Datei, um den Assembler-Code zu disassemblieren; diese ist in der jar-Datei enthalten.
     Wenn Du deine eigene <code>ijvm.conf</code> Datei nutzen m&ouml;chtest, dann lege sie einfach in das <code>config</code> Verzeichnis und starte den Debugger neu.
+  </p>
+
+  <p>
+    Es ist generell zu empfehlen, dass du deine eigene <code>ijvm.conf</code> Datei nutzt. Diese muss nicht im <code>config</code> Verzeichnis liegen, sondern sie kann auch
+    in dem jeweiligen Verzeichnis liegen, von dem aus Du den Debugger startest. Dadurch wird die Datei auch vor der <code>ijvm.conf</code> aus dem jar-Archiv geladen.
   </p>
 
   <h3>Internationalisierung</h3>
@@ -130,10 +135,31 @@
     Wir w&uuml;rden uns freuen deinen Beitrag dem Projekt hinzuzuf&uuml;gen!
   </p>
 
+  <h2>micro-debug-gui</h2>
+
+  <p>
+    Für den Debugger existiert auch eine grafische Oberfläche. Diese ist ein eigenes Projekt und kann auf der entsprechenden
+    <a href="https://github.com/croesch/micro-debug-gui/downloads">Projektseite</a> heruntergeladen werden.
+  </p>
+
+  <p>
+    Der Aufbau des Projekts ist prinzipiell sehr ähnlich zum <i>micro-debug</i>; aus diesem Grund sind Konfiguration und Lokalisierungsdateien im gleichen Verzeichnis zu finden,
+    wie beim <i>micro-debug</i>. Die Lokalisierungsdateien für die grafische Oberfläche sind allerdings in separaten xml-Dateien abgelegt.
+  </p>
+
+  <p>
+    Im Unterschied zum <i>micro-debug</i> benötigt die grafische Oberfläche allerdings Bibliotheken. Diese kannst Du im Verzeichnis <code>lib/</code> finden;
+    benötigt wird zum einen eine Bibliothek zum Layout der Komponenten - <a href="http://www.miglayout.com">miglayout</a> - und der <i>micro-debug</i>.
+  </p>
+
+  <p>
+    Ein weiterer Unterschied ist, dass die <i>micro-debug-gui</i> keine Parameter zum Start benötigt. Das Startskript kann also im Dateiexplorer per Doppelklick gestartet werden.
+  </p>
+
   <h2>Mitarbeit</h2>
 
   <p>
-    Obwohl dieses Projekt in einer Studienarbeit entwickelt wurde, kannst Du nun deinen Teil dazu beitragen. Es gibt verschiedene Wege dies zu tun:
+    Obwohl dieses Projekt in einer Studienarbeit entwickelt wurde, kannst Du nun Deinen Teil dazu beitragen. Es gibt verschiedene Wege dies zu tun:
   </p>
 
   <ul>
@@ -150,7 +176,10 @@
   </p>
 
   <p>
-    <a href="https://github.com/croesch/micro-debug/issues">https://github.com/croesch/micro-debug/issues</a>
+    <ul>
+      <li><i>micro-debug</i>: <a href="https://github.com/croesch/micro-debug/issues">https://github.com/croesch/micro-debug/issues</a></li>
+      <li><i>micro-debug-gui</i>: <a href="https://github.com/croesch/micro-debug-gui/issues">https://github.com/croesch/micro-debug-gui/issues</a></li>
+    </ul>
   </p>
 
   <h3>Entwicklung</h3>
@@ -160,6 +189,7 @@
   </p>
 
   <ul>
+    <li><code>$ mvn compile</code> zum Kompilieren des Projekts</li>
     <li><code>$ mvn clean package</code> zum Kompilieren, Testen und Packetieren des Projekts</li>
     <li><code>$ mvn test</code> zum Kompilieren und Ausf&uuml;hren der Tests</li>
   </ul>
