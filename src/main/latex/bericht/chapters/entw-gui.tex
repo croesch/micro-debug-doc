@@ -4,7 +4,7 @@ In diesem Kapitel möchte ich vorstellen, wie die \mdg den \md nutzt und welche 
 
 Die \mdg ist ein eigenständiges Projekt und vom Code her ein Benutzer des \md. Alle Implementierungen der \mdg haben also keinerlei Auswirkung auf den \md, umgekehrt allerdings schon. Wie in \secref{gui-nutzung-konsole} beschrieben ist es daher möglich, dass bei vorliegender \mdg auch der \md eigenständig genutzt werden kann.
 
-Im Unterschied zur Implementierung des \md befinden sich in der \mdg alle Klassen im \package \pck{com.github.croesch.micro_debug.gui} oder in \subpackages davon. Das verhindert, dass gleichnamige \packages oder Klassen zwischen \md und \mdg zu Problemen führen. Außerdem ist je nach Paketierung die Struktur der paketierten \mdg übersichtlicher.
+Im Unterschied zur Implementierung des \md befinden sich in der \mdg alle Klassen im \package \pck{com.github.croesch.micro_debug.gui} oder in \subpackages davon. Das verhindert, dass gleichnamige \packages oder Klassen zwischen \md und \mdg zu Problemen führen. Außerdem ist je nach Packetierung die Struktur der packetieren \mdg übersichtlicher.
 
 \section{Programmablauf}
 \seclbl{gui-ablauf}
@@ -13,7 +13,7 @@ Wie in \secref{k-ablauf} möchte ich zunächst den Start der \mdg betrachten und
 \subsection{Verarbeitung der Argumente}
 Analog zum \md gibt es auch in der \mdg eine Klasse \klasse{MicroDebug}, die die \texttt{main()}-Methode enthält. Allerdings ist es hier irrelevant, wie viele Argumente der Benutzer eingegeben hat, oder ob er überhaupt welche eingegeben hat.
 
-Die \mdg nutzt auch den Mechanismus der Klasse \klasse{AArgument}. Da die \mdg allerdings andere Argumente als der \md besitzt, müssen die neuen Argumente zunächste an der Klasse \klasse{AArgument} registriert werden. Die Argumente der \mdg sind im \package \pck{argument} zu finden; registriert werden diese in der Methode \texttt{createListOfPossibleArguments()} der Klasse \klasse{MicroDebug}.
+Die \mdg nutzt auch den Mechanismus der Klasse \klasse{AArgument}. Da die \mdg allerdings andere Argumente als der \md besitzt, müssen die neuen Argumente zunächst an der Klasse \klasse{AArgument} registriert werden. Die Argumente der \mdg sind im \package \pck{argument} zu finden; registriert werden diese in der Methode \texttt{createListOfPossibleArguments()} der Klasse \klasse{MicroDebug}.
 
 Nachdem die textuellen Argumente in Objekte vom Typ \klasse{AArgument} konvertiert wurden, werden diese ausgeführt und geben auch jeweils einen Wahrheitswert zurück, ob die \mdg starten darf oder nicht.
 
@@ -59,7 +59,7 @@ An dieser Stelle möchte ich auch das Testframework \gls{fest} erwähnen: Die da
 
 Die \gls{gui}-Tests laufen in der Regel stabil, allerdings neigen sie häufiger zum Fehlschlagen, ohne tatsächlichen Fehler in der \gls{aut} oder dem Test selbst. Daher sollte beim Ausführen der Tests damit gerechnet werden, dass gelegentlich der ein oder andere \gls{gui}-Test fehlschlägt.
 
-Da \gls{fest}-Tests die realen Resourcen des Computers nutzen, kann dieser während die Tests laufen nicht benutzt werden, sonst schlagen die Tests fehl. Diese Eigenschaft verhindert außerdem, dass mehrere Tests parallel ausgeführt werden können -- die Tests würden sich gegenseitig behindern. \cite[Abschnitt~3.2]{Roesch2011fest}
+Da \gls{fest}-Tests die realen Ressourcen des Computers nutzen, kann dieser während die Tests laufen nicht benutzt werden, sonst schlagen die Tests fehl. Diese Eigenschaft verhindert außerdem, dass mehrere Tests parallel ausgeführt werden können -- die Tests würden sich gegenseitig behindern. \cite[Abschnitt~3.2]{Roesch2011fest}
 
 \section{\packages}
 Ich habe nun die wichtigsten Klassen der \mdg vorgestellt. Um aber einen ausführlicheren Überblick über die \mdg zu bieten, möchte ich auch hier nochmal alle \packages erwähnen und erklären, welche Funktionalität die darin enthaltenen Klassen erfüllen. Die \packages sind im Einzelnen:
