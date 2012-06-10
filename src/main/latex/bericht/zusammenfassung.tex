@@ -1,0 +1,11 @@
+\chapter{Zusammenfassung}
+
+Ich habe in der vorliegenden Arbeit einen Einblick in den \md und die \mdg gegeben. Das Ziel einen Debugger für die \mic zu entwerfen und implementieren konnte ich erreichen; in \secref{tutorial-konsole} habe ich ein mögliches Szenario gezeigt, wie der \md eingesetzt werden kann.
+
+Auch die \gls{gui} für den \md -- die \mdg -- ist funktionsfähig und performant ausführbar. Einige Funktionen aus dem \md sind in der \mdg nicht vorhanden, da diese nicht mehr benötigt werden, wie beispielsweise das Anzeigen des \ma oder \ac. Andere Funktionen fehlen noch gänzlich, wie beispielsweise das setzen eines Wertes im Hauptspeicher oder das Verändern der Werte von Registern. Dafür bietet die \mdg allerdings einige Vorteile, zunächst bietet sie eine gute Übersicht -- jederzeit ist der Code, die Register und der Hauptspeicher zu sehen. Aber auch ein funktionaler Vorteil ist nennenswert: die Möglichkeit den laufenden Prozessor zu unterbrechen.
+
+Die beiden Aufgabenteile wurden als eigenständige Projekte entwickelt. Veränderungen an der \gls{gui} haben demnach keinen Einfluss auf den \md. Zwei wichtige Ziele waren die Erweiterbarkeit und Lesbarkeit des Codes, damit andere Personen sich einarbeiten können und den Debugger weiterentwickeln können. Ich habe gezeigt, dass auch dieses Ziel erreicht wurde, unter anderem durch einen hohen Testaufwand: die Codeabdeckung der \mdg liegt über $93\%$\footnote{Gemessen mit \name{sonar} (siehe \cite{Sonar2012}) am 05. Juni 2012.}, des \md sogar über $97\%$\footnote{Gemessen mit \name{sonar} (siehe \cite{Sonar2012}) am 02. Juni 2012.}.
+
+Der Umfang der entwickelten Funktionen erfüllt nicht alle Anforderungen, die während der Entwicklung entstanden. Der Debugger ist aber nun eine gute Basis, um eben solche Funktionalitäten nach und nach zu entwickeln. Diese Arbeit und die Dokumentation im Code sollte ausreichen, dass auch Außenstehende künftig solche Funktionalitäten implementieren.
+
+Ich hoffe nun auf viele Nutzer und Rückmeldungen, was am Debugger verbessert werden kann. Oder welche Funktionalität gut wäre, wenn sie der Debugger hätte.

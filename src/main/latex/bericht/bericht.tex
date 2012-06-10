@@ -1,5 +1,5 @@
 \input{includes/header}
-%\renewcommand{\notiz}[1]{} %uncomment for _NOT_ showing sidenotes!
+\renewcommand{\notiz}[1]{} %uncomment for _NOT_ showing sidenotes!
 \newcommand\thema{Design und Implementierung eines Debuggers für Mikro-Assembler-Programme}
 
 \hypersetup{
@@ -17,35 +17,51 @@
 \loadglsentries[\acronymtype]{abkuerzungen}
 \makeglossaries
 
+
 \begin{document}
 
-	%\nocite{*} % Alle Einträge der .bib-Datei werden auch wenn unzitiert ins Literaturverzeichnis übernommen
+% \nocite{*} % Alle Einträge der .bib-Datei werden auch wenn unzitiert ins Literaturverzeichnis übernommen
 	
-	% don't write the text of these acronyms
-	% \glsunset{asf}
-	% \glsunset{html}
+% don't write the text of these acronyms \glsunset{asf}
+% \glsunset{html}
 
-	\input{deckblatt}\clearpage
+\input{deckblatt}\clearpage
 
-	\pagenumbering{roman}
-% 	\include{Erklaerung}\clearpage
+\pagenumbering{roman}
+
+\include{abstract}
+
+% \include{Erklaerung}\clearpage
 
 %	\startprintinglogo
- 	\include{chapters/einleitung}\clearpage
-	\tableofcontents\clearpage
-	\printglossary\clearpage
-	\printglossary[type=\acronymtype, title={Abkürzungsverzeichnis}, toctitle={Abkürzungsverzeichnis}]\clearpage
-	\listoffigures\clearpage
-	\listoftables\clearpage
-	\lstlistoflistings\clearpage
-	\pagenumbering{arabic}
 
-	\include{part-bedienung}\clearpage
-        \include{part-implementierung}\clearpage
+\tableofcontents\clearpage
 
-	\appendix
-	\pagenumbering{Roman}
-	\bibliography{bericht}\clearpage
-	\include{erklaerung}\clearpage
+\printglossary\clearpage
+
+\printglossary[type=\acronymtype,title={Abkürzungsverzeichnis}]\clearpage
+
+\listoffigures\clearpage
+
+\listoftables\clearpage
+
+\lstlistoflistings\clearpage
+
+\pagenumbering{arabic}
+
+\include{chapters/einleitung}\clearpage
+
+\include{part-bedienung}\clearpage
+
+\include{part-implementierung}\clearpage
+
+\include{zusammenfassung}\clearpage
+
+\appendix
+\pagenumbering{Roman}
+
+\bibliography{bericht}\clearpage
+
+\include{erklaerung}\clearpage
 
 \end{document}

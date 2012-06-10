@@ -29,6 +29,7 @@
      "Roesch2012"
      "Roesch2012gui"
      "Smart2008"
+     "Sonar2012"
      "Spillner2006"
      "Stroetmann2007"
      "Stroetmann2009"
