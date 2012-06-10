@@ -1,6 +1,6 @@
 \chapter{Implementierung der \mic}
 \chplbl{prozessor}
-Nachdem ich nun die Vorteile der automatisierten Tests genannt habe, möchte ich den Code fokusieren. Ich werde kann hier aus Zeit- und Platzgründen nur gewisse Eckpunkte der Implementierung beleuchten, die verschiedenen Klassen und Methoden sind jeweils gut dokumentiert und sollten nach dem Lesen der folgenden Kapitel schnell verstanden werden können.
+Nachdem ich nun die Vorteile der automatisierten Tests genannt habe, möchte ich den Code fokussieren. Ich werde kann hier aus Zeit- und Platzgründen nur gewisse Eckpunkte der Implementierung beleuchten, die verschiedenen Klassen und Methoden sind jeweils gut dokumentiert und sollten nach dem Lesen der folgenden Kapitel schnell verstanden werden können.
 
 Der erste Schritt bei der Implementierung des Debuggers ist die Simulation der \mic, erst wenn dies zufriedenstellend funktioniert, können die Debug-Funktionen entwickelt werden. Ich möchte daher in diesem Kapitel die Implementierung des Prozessors anschauen und zeigen, welche Besonderheiten es gibt.
 
@@ -30,7 +30,7 @@ Die \gls{alu} der \mic setzt sich aus 32~Ein-Bit-\gls{alu}s zusammen -- so ist d
 
 Die Klasse besitzt eine Methode \texttt{calculate()}, in der aus den Eingangssignalen das Ausgangssignal der \gls{alu} berechnet wird; dieses Signal wird an den Shifter weitergeleitet. Die Klasse \klasse{Shifter} im gleichnamigen \package bildet den Shifter ab und besitzt ebenso eine Methode \texttt{calculate()}, um die Verarbeitung der Signale anzustoßen.
 
-Die Berechnung der \gls{alu} und des Shifters werden bei jedem Zyklus der \mic angestoßen. Durch die sehr hardwarenahe Implementierung bilden sie daher vermutlich ein Performanzengpass zur Laufzeit des \md.
+Die Berechnung der \gls{alu} und des Shifters werden bei jedem Zyklus der \mic angestoßen. Durch die sehr hardwarenahe Implementierung bilden sie daher vermutlich ein Performance-Engpass zur Laufzeit des \md.
 
 \section{Register}
 \seclbl{mic-register}
@@ -64,6 +64,6 @@ Die einzelnen Komponenten werden in der Klasse \klasse{Mic1} zusammengeführt un
 
 Die Klasse \klasse{Mic1} bekommt im Konstruktor zwei Objekte der Klasse \klasse{InputStream} -- eines enthält den \ma und das andere den \ac. Mit diesen beiden Objekten wird dann der \mac-Speicher und der Hauptspeicher erzeugt, die jeweils selbst für das Lesen des Bytecodes verantwortlich sind. Stimmt eine \emph{magic number} nicht, oder sind die Eingabedateien aus anderen Gründen ungültig, wird eine \emph{Exception} geworfen.
 
-Auf die einzelnen Methoden möchte ich hier nicht eingehen, bis auf eine: In der Methode \texttt{doTick()} wird ein einzelner Zyklus der \mic ausgeführt. Diese Methode ist nur für Testzwecke sichtbar und wird von außen über die Methoden \texttt{run()}, \texttt{step()} und \texttt{microStep()} aufgerufen, die unterschiedlich viele Zyklen aufeinmal abarbeiten lassen.
+Auf die einzelnen Methoden möchte ich hier nicht eingehen, bis auf eine: In der Methode \texttt{doTick()} wird ein einzelner Zyklus der \mic ausgeführt. Diese Methode ist nur für Testzwecke sichtbar und wird von außen über die Methoden \texttt{run()}, \texttt{step()} und \texttt{microStep()} aufgerufen, die unterschiedlich viele Zyklen auf einmal abarbeiten lassen.
 
 Aufgrund der gesammelten Funktionalität ist die Klasse \klasse{Mic1} eine der größten und damit komplexesten im \md.
