@@ -97,7 +97,7 @@ Wenn man aber den Testcode aus \lstref{integerparser-test1} anschaut, dann erhä
   }
 \end{lstlisting}
 
-Es ist zu sehen, dass der zu testenden Klasse Zeichenketten übergeben werden und geprüft wird, ob das Ergebnis die erwartete Zahl ist. Die Vermutung war also korrekt! Außerdem ist zu sehen, welche Werte die Komponente zurückgibt, wenn ungültige Zeichenketten übergeben werden: \texttt{null}. Durch Analyse des Tests hat man also erstens eine gute Vorstellung davon, was die Klasse macht und zweitens durch den automatisierten Test gesichert, dass bei künftigen Refaktorierungen oder sonstigen Änderungen das Verhalten nicht manipuliert wird.
+Es ist zu sehen, dass der zu testenden Klasse Zeichenketten übergeben werden und geprüft wird, ob das Ergebnis die erwartete Zahl ist. Die Vermutung war also korrekt! Außerdem ist zu sehen, welche Werte die Komponente zurück gibt, wenn ungültige Zeichenketten übergeben werden: \texttt{null}. Durch Analyse des Tests hat man also erstens eine gute Vorstellung davon, was die Klasse macht und zweitens durch den automatisierten Test gesichert, dass bei künftigen Refaktorierungen oder sonstigen Änderungen das Verhalten nicht manipuliert wird.
 
 \begin{lstlisting}[caption={\klasse{IntegerParser} -- Test auf Invalidität},label=\lstlbl{integerparser-test2}]
   @Test
